@@ -11,10 +11,10 @@ import thread
 class screen(AVGApp):
     def __init__(self, parentNode):
         
-        player = avg.Player.get()  
+        player = avg.Player.get()   #player
         global a,b,z
-        (a,b) = parentNode.size
-        canvas = player.createMainCanvas(size=(a,b)) #Aufloesung Bildschirm
+        (a,b) = parentNode.size     #aufloesung
+        canvas = player.createMainCanvas(size=(a,b)) #canvas kreieren
         self.rootNode = canvas.getRootNode()
         self.back = avg.RectNode (pos=(0,0), size=(a,b), parent=self.rootNode, color="A4A4A4", fillcolor="A4A4A4", fillopacity=1) 
         self.z = int (a-449)
@@ -23,23 +23,52 @@ class screen(AVGApp):
         self.timer=avg.WordsNode (font="arial", variant="Bold", text="Song-Countdown 30:00", color="000000", fontsize=40, indent=self.z, parent=self.rootNode)
 
         
-        def left():
-            self.divNode=avg.DivNode(pos=(0,50), size=((a/2)-20,b-50),parent=self.rootNode)
-            self.leftr=avg.RectNode (pos=(25,0), size=(((a/2)-50), b-50), parent=self.divNode, color="F0F0F0", fillopacity=1)
+        def left(): #links
+            self.divNode=avg.DivNode(pos=(0,50), size=(3*(a/5),b-50),parent=self.rootNode)
+            self.leftr=avg.RectNode (pos=(0,0), size=(3*(a/5), b-50), parent=self.divNode, color="F0F0F0", fillopacity=1)
             self.title=avg.WordsNode (pos=(100,0),font="arial", variant="Bold", text="Top 7 Songs", color="000000", fontsize=30, parent=self.divNode)
-            self.votes=avg.WordsNode (pos=(350,0),font="arial", variant="Bold", text="Votes", color="000000", fontsize=30, parent=self.divNode)
-            self.platz1=avg.WordsNode (pos=(70,80),font="arial", variant="Bold", text="1. ", color="DDDC3C", fontsize=30, parent=self.divNode)
-            self.platz2=avg.WordsNode (pos=(70,120),font="arial", variant="Bold", text="2. ", color="C9C9C5", fontsize=30, parent=self.divNode)
-            self.platz3=avg.WordsNode (pos=(70,160),font="arial", variant="Bold", text="3. ", color="EFBF34", fontsize=30, parent=self.divNode)
-            self.platz4=avg.WordsNode (pos=(70,200),font="arial", variant="Bold", text="4. ", color="000000", fontsize=30, parent=self.divNode)
-            self.platz5=avg.WordsNode (pos=(70,240),font="arial", variant="Bold", text="5. ", color="000000", fontsize=30, parent=self.divNode)
-            self.platz6=avg.WordsNode (pos=(70,280),font="arial", variant="Bold", text="6. ", color="000000", fontsize=30, parent=self.divNode)
-            self.platz7=avg.WordsNode (pos=(70,320),font="arial", variant="Bold", text="7. ", color="000000", fontsize=30, parent=self.divNode)
+            self.votes=avg.WordsNode (pos=(600,0),font="arial", variant="Bold", text="Votes", color="000000", fontsize=30, parent=self.divNode)
+            
+            self.div1=avg.DivNode(pos=(70,110), size=(3*(a/5)-20,30),parent=self.rootNode)
+            self.platz1a=avg.WordsNode (pos=(0,0),font="arial", variant="Bold", text="1. ", color="DDDC3C", fontsize=30, parent=self.div1)
+            self.platz1b=avg.WordsNode (pos=(33,40),font="arial", variant="Bold", text="1. ", color="DDDC3C", fontsize=20, parent=self.div1)
+            self.platz1c=avg.WordsNode (pos=(563,0),font="arial", variant="Bold", text="1. ", color="DDDC3C", fontsize=30, parent=self.div1)
+            
+            self.div2=avg.DivNode(pos=(70,210), size=(3*(a/5)-20,30),parent=self.rootNode)
+            self.platz2a=avg.WordsNode (pos=(0,0),font="arial", variant="Bold", text="2. ", color="C9C9C5", fontsize=30, parent=self.div2)
+            self.platz2b=avg.WordsNode (pos=(33,40),font="arial", variant="Bold", text="2. ", color="C9C9C5", fontsize=20, parent=self.div2)
+            self.platz2c=avg.WordsNode (pos=(563,0),font="arial", variant="Bold", text="2. ", color="C9C9C5", fontsize=30, parent=self.div2)
+            
+            self.div3=avg.DivNode(pos=(70,310), size=(3*(a/5)-20,30),parent=self.rootNode)
+            self.platz3a=avg.WordsNode (pos=(0,0),font="arial", variant="Bold", text="3. ", color="EFBF34", fontsize=30, parent=self.div3)
+            self.platz3b=avg.WordsNode (pos=(33,40),font="arial", variant="Bold", text="3. ", color="EFBF34", fontsize=20, parent=self.div3)
+            self.platz3c=avg.WordsNode (pos=(563,0),font="arial", variant="Bold", text="3. ", color="EFBF34", fontsize=30, parent=self.div3)
             
             
-        def right():
-            self.divNode=avg.DivNode(pos=(a/2,50), size=((a/2)-20,b-50),parent=self.rootNode)
-            self.rightr=avg.RectNode (pos=(0,0), size=((a/2)-20, b-50), parent=self.divNode, color="F0F0F4", fillopacity=1)
+            self.div4=avg.DivNode(pos=(70,410), size=(3*(a/5)-20,30),parent=self.rootNode)
+            self.platz4a=avg.WordsNode (pos=(0,0),font="arial", variant="Bold", text="4. ", color="000000", fontsize=30, parent=self.div4)
+            self.platz4b=avg.WordsNode (pos=(33,40),font="arial", variant="Bold", text="4. ", color="000000", fontsize=20, parent=self.div4)
+            self.platz4c=avg.WordsNode (pos=(563,0),font="arial", variant="Bold", text="4. ", color="000000", fontsize=30, parent=self.div4)
+            
+            self.div5=avg.DivNode(pos=(70,510), size=(3*(a/5)-20,30),parent=self.rootNode)
+            self.platz5a=avg.WordsNode (pos=(0,0),font="arial", variant="Bold", text="5. ", color="000000", fontsize=30, parent=self.div5)
+            self.platz5b=avg.WordsNode (pos=(33,40),font="arial", variant="Bold", text="5. ", color="000000", fontsize=20, parent=self.div5)
+            self.platz5c=avg.WordsNode (pos=(563,0),font="arial", variant="Bold", text="5. ", color="000000", fontsize=30, parent=self.div5)
+            
+            self.div6=avg.DivNode(pos=(70,610), size=(3*(a/5)-20,30),parent=self.rootNode)
+            self.platz6a=avg.WordsNode (pos=(0,0),font="arial", variant="Bold", text="6. ", color="000000", fontsize=30, parent=self.div6)
+            self.platz6b=avg.WordsNode (pos=(33,40),font="arial", variant="Bold", text="6. ", color="000000", fontsize=20, parent=self.div6)
+            self.platz6c=avg.WordsNode (pos=(563,0),font="arial", variant="Bold", text="6. ", color="000000", fontsize=30, parent=self.div6)
+            
+            self.div7=avg.DivNode(pos=(70,710), size=(3*(a/5)-20,30),parent=self.rootNode)
+            self.platz7a=avg.WordsNode (pos=(0,0),font="arial", variant="Bold", text="7. ", color="000000", fontsize=30, parent=self.div7)
+            self.platz7b=avg.WordsNode (pos=(33,40),font="arial", variant="Bold", text="7. ", color="000000", fontsize=20, parent=self.div7)
+            self.platz7c=avg.WordsNode (pos=(563,0),font="arial", variant="Bold", text="7. ", color="000000", fontsize=30, parent=self.div7)
+            
+            
+        def right(): #rechts 
+            self.divNode=avg.DivNode(pos=(a-2*(a/5),50), size=(2*(a/5),b-50),parent=self.rootNode)
+            self.rightr=avg.RectNode (pos=(0,0), size=(2*(a/5), b-50), parent=self.divNode, color="F0F0F4", fillopacity=1)
             
             
         def receiveArraywithSongs():
@@ -50,7 +79,7 @@ class screen(AVGApp):
             title.append("Nickelback##Silver side up##5")
             title.append("Carly Rae Jeapson##I just met you##4")
             title.append("Sportfreunde Stiller##Applaus Applaus##3")
-            title.append("Will.I.am##Scream&Shout##2")
+            title.append("Will.I.am##Scream and Shout##2")
             title.append("Justin Timberlake##Mirrors##1")
             stringarray=[]
 
@@ -62,13 +91,29 @@ class screen(AVGApp):
             print stringarray[0][0]
             
             
-            self.platz1.text= "1. "+stringarray[0]
-            self.platz2.text= "2. "+stringarray[1]
-            self.platz3.text= "3. "+stringarray[2]
-            self.platz4.text= "4. "+stringarray[3]
-            self.platz5.text= "5. "+stringarray[4]
-            self.platz6.text= "6. "+stringarray[5]
-            self.platz7.text= "7. "+stringarray[6]
+            self.platz1a.text= stringarray[0][1]
+            self.platz2a.text= stringarray[1][1]
+            self.platz3a.text= stringarray[2][1]
+            self.platz4a.text= stringarray[3][1]
+            self.platz5a.text= stringarray[4][1]
+            self.platz6a.text= stringarray[5][1]
+            self.platz7a.text= stringarray[6][1]
+            
+            self.platz1b.text= stringarray[0][0]
+            self.platz2b.text= stringarray[1][0]
+            self.platz3b.text= stringarray[2][0]
+            self.platz4b.text= stringarray[3][0]
+            self.platz5b.text= stringarray[4][0]
+            self.platz6b.text= stringarray[5][0]
+            self.platz7b.text= stringarray[6][0]
+            
+            self.platz1c.text= stringarray[0][2]
+            self.platz2c.text= stringarray[1][2]
+            self.platz3c.text= stringarray[2][2]
+            self.platz4c.text= stringarray[3][2]
+            self.platz5c.text= stringarray[4][2]
+            self.platz6c.text= stringarray[5][2]
+            self.platz7c.text= stringarray[6][2]
             
 
             
