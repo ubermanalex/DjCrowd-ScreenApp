@@ -17,5 +17,7 @@ ArrayLen = len(title)
 for i in range(0,ArrayLen):
     string = title[i]
     string2 = string.split("##")
-    stringarray.append(string2[0]+" "+"-"+" "+string2[1]+" "+string2[2])
+    stringarray.append([string2[0],string2[1],string2[2]])
+    
 print stringarray
+print stringarray[0][0]
