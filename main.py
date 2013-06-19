@@ -8,12 +8,14 @@ from libavg import *
 import time
 import thread
 import sys
+from pprint import pprint
  
 from twisted.internet import *
 from twisted.python import *
  
 from autobahn.websocket import *
 
+from autobahn.wamp import WampClientFactory, WampCraClientProtocol
 
 
 class screen(AVGApp):
@@ -74,7 +76,7 @@ class screen(AVGApp):
             self.platz7c=avg.WordsNode (pos=(561,0),font="arial", variant="Bold", text="7. ", color="000000", fontsize=30, parent=self.div7)
             
         
-        def Tauschen(a,b,AX,AY,BX,BY):
+        def Tauschen(a,b,AX,AY,BX,BY): # Tauschen vom Ranking 
                 def startAnim():
                     animObj.start()
         
@@ -85,7 +87,7 @@ class screen(AVGApp):
 
                 player.setTimeout(2000, startAnim) 
         
-        def TauschenDIV(a,b,AX,BX):
+        def TauschenDIV(a,b,AX,BX): # Tauschen vom Balken
                 def startAnim():
                     animObj.start()
         
@@ -331,10 +333,11 @@ class screen(AVGApp):
                 self.dritter.size=(30,Punktedritter)
                 SetzenimArray(self.leute, neueLeute[2][0], neueLeute[2][1])   
                 
-        def receiveArraywithSongs(): ## Initialisieren
+        def receiveArraywithSongs(stringsongs): ## Initialisieren
             
-            a="Silbermond##Nichts passiert##7!#!Juli##Gute Zeit##6!#!Nickelback##Silver side up##5!#!Citizens##True Romance##4!#!Sportfreunde Stiller##Applaus Applaus##3!#!Will.I.am##Scream and Shout##2!#!Justin Timberlake##Mirrors##1" 
-            songinput = a.split("!#!")
+#             a="Silbermond##Nichts passiert##7!#!Juli##Gute Zeit##6!#!Nickelback##Silver side up##5!#!Citizens##True Romance##4!#!Sportfreunde Stiller##Applaus Applaus##3!#!Will.I.am##Scream and Shout##2!#!Justin Timberlake##Mirrors##1" 
+            print stringsongs
+            songinput = stringsongs.split("!#!")
             stringarray=[]
 
             ArrayLen = len(songinput)
@@ -370,14 +373,9 @@ class screen(AVGApp):
             self.platz7c.text= stringarray[6][2]
             
         
-        def checkArraysthenchange(array1, array2):
+        # TODO def checkArraysthenchange(array1, array2):
 
-            ArrayLen = len(array1)
-            for i in range(0,ArrayLen):
-                string = songinput[i]
-                string2 = string.split("##")
-                stringarray.append([string2[0],string2[1],string2[2]]) ##Interpret , Titel, Votes
-            print stringarray
+           
             
                
             
@@ -404,26 +402,45 @@ class screen(AVGApp):
                     
         
         def initializeWebSocket():##Starts the WebSocket
+            log.startLogging(sys.stdout)
             self.receiver = WebSocketClientFactory("ws://localhost:9034", debug = False)
+            self.receiver.protocol=MessageBasedHashClientProtocol
+            connectWS(self.receiver)
             a="websocket ok"
             print a
-            listenWS(self.receiver)
             reactor.run(installSignalHandlers=0)##"installSignalHandlers=0" Necessary for Multithreading 
-        
-  
+           
             
         left()
         right()
         thread.start_new_thread(countdown,(0,2))
         string = ("Balken###Pascal###460###Alexander###210###Rebecca###60")
         thread.start_new_thread(recievedpunkte,(string,0))
-        receiveArraywithSongs()
         thread.start_new_thread(initializeWebSocket,()) ##start the WebSocket in new Thread
 #         Tauschen(self.div1, self.div2, self.div1.x, self.div1.y, self.div2.x , self.div2.y)
+
+            
+        class MessageBasedHashClientProtocol(WebSocketClientProtocol):
+
+            def sendClientName(self):
+                data = "Pclient"
+                self.sendMessage(data, binary = True)
+                print data
+     
+            def onOpen(self):
+                self.sendClientName()
+                print "Clientname gesendet"
     
+            def onMessage(self, message, binary):
+                print "Nachricht erhalten"
+                self.messagetest="Silbermond##Nichts passiert##7!#!Juli##Gute Zeit##6!#!Nickelback##Silver side up##5!#!Citizens##True Romance##4!#!Sportfreunde Stiller##Applaus Applaus##3!#!Will.I.am##Scream and Shout##2!#!Justin Timberlake##Mirrors##1"
+                print "on message"+self.messagetest
+                receiveArraywithSongs(self.messagetest)
+                print "receivearray ausgefuehrt"
+            
          
         
 if __name__=='__main__':
-    screen.start(resolution=(900, 600))   
+    screen.start(resolution=(1440, 900))   
   
 
