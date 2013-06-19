@@ -7,6 +7,14 @@ Created on 06.06.2013
 from libavg import *
 import time
 import thread
+import sys
+ 
+from twisted.internet import *
+from twisted.python import *
+ 
+from autobahn.websocket import *
+
+
 
 class screen(AVGApp):
     def __init__(self, parentNode):
@@ -371,11 +379,7 @@ class screen(AVGApp):
                 stringarray.append([string2[0],string2[1],string2[2]]) ##Interpret , Titel, Votes
             print stringarray
             
-            
-            
-
-            
-            
+               
             
         def countdown(m,s):
             
@@ -397,7 +401,16 @@ class screen(AVGApp):
                 time.sleep(1)
                 if seconds ==0:
                     seconds = 1800
+                    
         
+        def initializeWebSocket():##Starts the WebSocket
+            self.receiver = WebSocketClientFactory("ws://localhost:9034", debug = False)
+            a="websocket ok"
+            print a
+            listenWS(self.receiver)
+            reactor.run(installSignalHandlers=0)##"installSignalHandlers=0" Necessary for Multithreading 
+        
+  
             
         left()
         right()
@@ -405,12 +418,10 @@ class screen(AVGApp):
         string = ("Balken###Pascal###460###Alexander###210###Rebecca###60")
         thread.start_new_thread(recievedpunkte,(string,0))
         receiveArraywithSongs()
-        Tauschen(self.div1, self.div2, self.div1.x, self.div1.y, self.div2.x , self.div2.y)
+        thread.start_new_thread(initializeWebSocket,()) ##start the WebSocket in new Thread
+#         Tauschen(self.div1, self.div2, self.div1.x, self.div1.y, self.div2.x , self.div2.y)
     
-        
-        
-        
-  
+         
         
 if __name__=='__main__':
     screen.start(resolution=(900, 600))   
