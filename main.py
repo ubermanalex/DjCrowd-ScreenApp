@@ -29,7 +29,7 @@ class screen(AVGApp):
         self.back = avg.RectNode (pos=(0,0), size=(a,b), parent=self.rootNode, color="A4A4A4", fillcolor="A4A4A4", fillopacity=1) 
         self.z = int (a-449)
         self.title=avg.WordsNode (font="arial", variant="Bold", text="DjCrowd - Canossa", color="000000", fontsize=40, alignment="left", parent=self.rootNode)
-        self.timer=avg.WordsNode (font="arial", variant="Bold", text="Song-Countdown 30:00", color="000000", fontsize=40, indent=self.z, parent=self.rootNode)
+        self.timer=avg.WordsNode (font="arial", variant="Bold", text="Countdown 60:00", color="000000", fontsize=40, indent=self.z, parent=self.rootNode)
         
         def left(): #links Songs Votes usw
             self.divNode=avg.DivNode(pos=(0,50), size=(3*(a/5),b-50),parent=self.rootNode)
@@ -147,14 +147,9 @@ class screen(AVGApp):
             self.dritterName=avg.WordsNode(pos=(50,b-100), text=" " ,parent=self.divNode3, font='arial', color="6E6E6E", fontsize=20)
             self.dritterName.text=self.leute[2][0]
             
-        def recievedpunkte(string,null):
+        def recievedpunkte(arrayuser,null):
             
-            array = string.split("###")
-                         
-            neueLeute = []
-            neueLeute.append([array[1], array[2]])
-            neueLeute.append([array[3], array[4]])
-            neueLeute.append([array[5], array[6]])
+            neueLeute=arrayuser
             
             
             PunkteErster = neueLeute[0][1]
@@ -333,21 +328,67 @@ class screen(AVGApp):
                 self.dritter.size=(30,Punktedritter)
                 SetzenimArray(self.leute, neueLeute[2][0], neueLeute[2][1])   
                 
-        def receiveArraywithSongs(stringsongs): ## Initialisieren
-            
-#             a="Silbermond##Nichts passiert##7!#!Juli##Gute Zeit##6!#!Nickelback##Silver side up##5!#!Citizens##True Romance##4!#!Sportfreunde Stiller##Applaus Applaus##3!#!Will.I.am##Scream and Shout##2!#!Justin Timberlake##Mirrors##1" 
-            print stringsongs
-            songinput = stringsongs.split("!#!")
+#         def receiveArraywithSongs(stringsongs): ## Initialisieren
+#             
+# #             a="Silbermond##Nichts passiert##7!#!Juli##Gute Zeit##6!#!Nickelback##Silver side up##5!#!Citizens##True Romance##4!#!Sportfreunde Stiller##Applaus Applaus##3!#!Will.I.am##Scream and Shout##2!#!Justin Timberlake##Mirrors##1" 
+#             print stringsongs
+#             songinput = stringsongs.split("!#!")
+#             stringarray=[]
+# 
+#             ArrayLen = len(songinput)
+#             for i in range(0,ArrayLen):
+#                 string = songinput[i]
+#                 string2 = string.split("##")
+#                 stringarray.append([string2[0],string2[1],string2[2]]) ##Interpret , Titel, Votes
+#             print stringarray
+#             return stringarray
+        
+        def builtArrayOutOfString(rcvstring): 
+
+            print rcvstring
+            songinput = rcvstring.split("!#!")
             stringarray=[]
 
             ArrayLen = len(songinput)
-            for i in range(0,ArrayLen):
-                string = songinput[i]
-                string2 = string.split("##")
-                stringarray.append([string2[0],string2[1],string2[2]]) ##Interpret , Titel, Votes
-            print stringarray
-                   
+            print ArrayLen
             
+            if (ArrayLen ==7):
+                for i in range(0,ArrayLen):
+                    string = songinput[i]
+                    string2 = string.split("##")
+                    stringarray.append([string2[0],string2[1],string2[2]]) ##Interpret , Titel, Votes
+                print stringarray
+                return stringarray
+            if (ArrayLen==3):
+                for i in range(0,ArrayLen):
+                    string = songinput[i]
+                    string2 = string.split("##")
+                    stringarray.append([string2[0],string2[1]]) ##Interpret , Titel, Votes
+                print stringarray
+                return stringarray
+            print "Falschen String erhalten"
+                
+                
+                
+                
+                
+        def checkLenArray(str_builtArrayOutofString):
+             
+            ArrayLen=len(str_builtArrayOutofString)
+             
+            if (ArrayLen == 7):
+                initializeDivs (str_builtArrayOutofString)
+            
+            elif (ArrayLen==3):
+                thread.start_new_thread(recievedpunkte,(str_builtArrayOutofString,0))
+            
+            else: 
+                print "falsches Array gebaut"
+                
+        
+        
+                   
+        def initializeDivs (stringarray):   
             self.platz1a.text= stringarray[0][1]
             self.platz2a.text= stringarray[1][1]
             self.platz3a.text= stringarray[2][1]
@@ -372,10 +413,7 @@ class screen(AVGApp):
             self.platz6c.text= stringarray[5][2]
             self.platz7c.text= stringarray[6][2]
             
-        
-        # TODO def checkArraysthenchange(array1, array2):
-
-           
+                 
             
                
             
@@ -394,11 +432,18 @@ class screen(AVGApp):
             seconds = MsToSecs(m,s)
             while seconds > 0:
                 (mint,sect)=secsToMs(seconds)
-                self.timer.text="Countdown " + mint + ":" + sect
-                seconds -= 1
+                if int(sect) < 10 and int (mint)<10:
+                    self.timer.text="Countdown "+"0"+mint+":" +"0"+sect 
+                elif int(sect) <10:
+                    self.timer.text="Countdown "+mint+":"+"0"+sect
+                elif int(mint) <10:
+                    self.timer.text="Countdown "+"0"+mint+":"+sect    
+                else: 
+                    self.timer.text="Countdown " + mint + ":" + sect
                 time.sleep(1)
-                if seconds ==0:
-                    seconds = 1800
+                seconds -= 1
+                if seconds ==-0:
+                    seconds = 3599
                     
         
         def initializeWebSocket():##Starts the WebSocket
@@ -414,8 +459,8 @@ class screen(AVGApp):
         left()
         right()
         thread.start_new_thread(countdown,(0,2))
-        string = ("Balken###Pascal###460###Alexander###210###Rebecca###60")
-        thread.start_new_thread(recievedpunkte,(string,0))
+#         string = builtArrayOutOfString("Pascal##460!#!Alexander##210!#!Rebecca##60")
+#         thread.start_new_thread(recievedpunkte,(string,0))
         thread.start_new_thread(initializeWebSocket,()) ##start the WebSocket in new Thread
 #         Tauschen(self.div1, self.div2, self.div1.x, self.div1.y, self.div2.x , self.div2.y)
 
@@ -433,10 +478,13 @@ class screen(AVGApp):
     
             def onMessage(self, message, binary):
                 print "Nachricht erhalten"
-                self.messagetest="Silbermond##Nichts passiert##7!#!Juli##Gute Zeit##6!#!Nickelback##Silver side up##5!#!Citizens##True Romance##4!#!Sportfreunde Stiller##Applaus Applaus##3!#!Will.I.am##Scream and Shout##2!#!Justin Timberlake##Mirrors##1"
+                self.messagetest="Gabi##900!#!Ralf##700!#!Marcel##300"
+#                 self.messagetest="Silbermond##Nichts passiert##7!#!Juli##Gute Zeit##6!#!Nickelback##Silver side up##5!#!Citizens##True Romance##4!#!Sportfreunde Stiller##Applaus Applaus##3!#!Will.I.am##Scream and Shout##2!#!Justin Timberlake##Mirrors##1"
                 print "on message"+self.messagetest
-                receiveArraywithSongs(self.messagetest)
+                checkLenArray(builtArrayOutOfString(self.messagetest))
                 print "receivearray ausgefuehrt"
+                
+                            
             
          
         
