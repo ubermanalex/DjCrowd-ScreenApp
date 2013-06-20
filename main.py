@@ -8,14 +8,11 @@ from libavg import *
 import time
 import thread
 import sys
-from pprint import pprint
  
 from twisted.internet import *
 from twisted.python import *
- 
 from autobahn.websocket import *
 
-from autobahn.wamp import WampClientFactory, WampCraClientProtocol
 
 
 class screen(AVGApp):
@@ -29,9 +26,19 @@ class screen(AVGApp):
         self.back = avg.RectNode (pos=(0,0), size=(a,b), parent=self.rootNode, color="A4A4A4", fillcolor="A4A4A4", fillopacity=1) 
         self.z = int (a-449)
         self.title=avg.WordsNode (font="arial", variant="Bold", text="DjCrowd - Canossa", color="000000", fontsize=40, alignment="left", parent=self.rootNode)
-        self.timer=avg.WordsNode (font="arial", variant="Bold", text="Countdown 60:00", color="000000", fontsize=40, indent=self.z, parent=self.rootNode)
+        self.timer=avg.WordsNode (font="arial", variant="Bold", text="Song-Countdown 30:00", color="000000", fontsize=40, indent=self.z, parent=self.rootNode)
         
         def left(): #links Songs Votes usw
+            
+            self.alteOrdnung = []
+            self.alteOrdnung.append(["Interpret1", "Song1", "0"])
+            self.alteOrdnung.append(["Interpret2", "Song2", "0"])
+            self.alteOrdnung.append(["Interpret3", "Song3", "0"])
+            self.alteOrdnung.append(["Interpret4", "Song4", "0"])
+            self.alteOrdnung.append(["Interpret5", "Song5", "0"])
+            self.alteOrdnung.append(["Interpret6", "Song6", "0"])
+            self.alteOrdnung.append(["Interpret7", "Song7", "0"])
+            
             self.divNode=avg.DivNode(pos=(0,50), size=(3*(a/5),b-50),parent=self.rootNode)
             self.ranking=avg.WordsNode (pos=(45,110),font="arial", variant="Bold", width=40, height= (b-50),text="1. <br/> <br/> <br/> 2. <br/> <br/> <br/> 3. <br/> <br/> <br/> 4. <br/> <br/> <br/> 5. <br/> <br/> <br/> 6. <br/> <br/> <br/> 7.", color="000000", fontsize=30, parent=self.rootNode)
             self.leftr=avg.RectNode (pos=(0,0), size=(3*(a/5), b-50), parent=self.divNode, color="F0F0F0", fillopacity=1)
@@ -71,12 +78,638 @@ class screen(AVGApp):
             self.platz6c=avg.WordsNode (pos=(561,0),font="arial", variant="Bold", text="6. ", color="000000", fontsize=30, parent=self.div6)
             
             self.div7=avg.DivNode(pos=(75,740), size=(3*(a/5)-20,30),parent=self.rootNode)
+            #Titel
             self.platz7a=avg.WordsNode (pos=(0,0),font="arial", variant="Bold", text="7. ", color="000000", fontsize=30, parent=self.div7)
+            #Interpret
             self.platz7b=avg.WordsNode (pos=(33,40),font="arial", variant="Bold", text="7. ", color="000000", fontsize=20, parent=self.div7)
+            #Votes
             self.platz7c=avg.WordsNode (pos=(561,0),font="arial", variant="Bold", text="7. ", color="000000", fontsize=30, parent=self.div7)
             
         
-        def Tauschen(a,b,AX,AY,BX,BY): # Tauschen vom Ranking 
+        def schonda (alteOrdnung, song, interpret):
+            #print suchobjekt
+            #print alteOrdnung
+            #print arrayposition
+            i = 0
+            while i < 7 :
+                #print "iter"
+                if alteOrdnung[i][1] == song and alteOrdnung[i][0] == interpret:
+                    #print i
+                    #print "mach doch endlich!"
+                    return i
+                i += 1
+            #print "schonda?"
+            return -1
+        
+        def swap (a, b):
+            def startAnim():
+                animObj.start()
+                #print "anim"
+                
+            posa = a.pos
+            posb = b.pos
+            #print "pos"
+            animObj = ParallelAnim([LinearAnim(a, "pos", 2000, posa, posb),
+                                    LinearAnim(b, "pos", 2000, posb, posa)])
+            player.setTimeout(0, startAnim)
+            #print "swapsleep"
+            time.sleep(2)
+            
+            
+        def colswap (w1a, w1b, w1c, w2a, w2b, w2c):
+            #tauscht die Farben der Wordsnodes in 2 divs
+            col1 = w1a.color
+            col2 = w2a.color
+            w1a.color = col2
+            w1b.color = col2
+            w1c.color = col2
+            w2a.color = col1
+            w2b.color = col1
+            w2c.color = col1
+            
+        
+        def sevenSix():
+            swap(self.div7, self.div6)
+            colswap(self.platz6a, self.platz6b, self.platz6c, self.platz7a, self.platz7b, self.platz7c)
+            time.sleep(2)
+            #array anpassen
+            TauschenAlteOrdnung(5, 6)
+            #divs tauschen
+            TauschenSongDivs(self.div6, self.div7, 5, 6, self.platz6a, self.platz6b, self.platz6c, self.platz7a, self.platz7b, self.platz7c)
+            
+            
+            
+        def sixFive():
+            swap(self.div6, self.div5)
+            colswap(self.platz5a, self.platz5b, self.platz5c, self.platz6a, self.platz6b, self.platz6c)
+            time.sleep(2)
+            #array anpassen
+            TauschenAlteOrdnung(4, 5)
+            #divs tauschen
+            TauschenSongDivs(self.div5, self.div6, 4, 5, self.platz5a, self.platz5b, self.platz5c, self.platz6a, self.platz6b, self.platz6c)
+            
+            
+            
+        def fiveFour():
+            swap(self.div5, self.div4)
+            colswap(self.platz4a, self.platz4b, self.platz4c, self.platz5a, self.platz5b, self.platz5c)
+            time.sleep(2)
+            #array anpassen
+            TauschenAlteOrdnung(3, 4)
+            #divs tauschen
+            TauschenSongDivs(self.div4, self.div5, 3, 4, self.platz4a, self.platz4b, self.platz4c, self.platz5a, self.platz5b, self.platz5c)
+            
+            
+            
+        def fourThree():
+            swap(self.div4, self.div3)
+            colswap(self.platz3a, self.platz3b, self.platz3c, self.platz4a, self.platz4b, self.platz4c)
+            time.sleep(2)
+            #array anpassen
+            TauschenAlteOrdnung(2, 3)
+            #divs tauschen
+            TauschenSongDivs(self.div3, self.div4, 2, 3, self.platz3a, self.platz3b, self.platz3c, self.platz4a, self.platz4b, self.platz4c)
+            
+            
+            
+        def threeTwo():
+            swap(self.div3, self.div2)
+            colswap(self.platz2a, self.platz2b, self.platz2c, self.platz3a, self.platz3b, self.platz3c)
+            #print "threetwosleep"
+            time.sleep(2)
+            #array anpassen
+            TauschenAlteOrdnung(1, 2)
+            #divs tauschen
+            TauschenSongDivs(self.div2, self.div3, 1, 2, self.platz2a, self.platz2b, self.platz2c, self.platz3a, self.platz3b, self.platz3c)
+            
+            
+            
+        def twoOne():
+            swap(self.div2, self.div1)
+            colswap(self.platz1a, self.platz1b, self.platz1c, self.platz2a, self.platz2b, self.platz2c)
+            #print "twoonesleep"
+            time.sleep(2)
+            #array anpassen
+            TauschenAlteOrdnung(0, 1)
+            #divs tauschen
+            TauschenSongDivs(self.div1, self.div2, 0, 1, self.platz1a, self.platz1b, self.platz1c, self.platz2a, self.platz2b, self.platz2c)
+            
+            
+        def TauschenSongDivs(div1, div2, arrayposition1, arrayposition2, platz1a, platz1b, platz1c, platz2a, platz2b, platz2c):
+            pos1 = div1.pos
+            pos2 = div2.pos
+            div1.pos = pos2
+            div2.pos = pos1
+            
+            platz1a.text = self.alteOrdnung[arrayposition1][1]
+            platz1b.text = self.alteOrdnung[arrayposition1][0]
+            platz1c.text = self.alteOrdnung[arrayposition1][2]
+            
+            platz2a.text = self.alteOrdnung[arrayposition2][1]
+            platz2b.text = self.alteOrdnung[arrayposition2][0]
+            platz2c.text = self.alteOrdnung[arrayposition2][2]
+            
+            colswap(platz1a, platz1b, platz1c, platz2a, platz2b, platz2c)
+           
+            
+        def TauschenAlteOrdnung(position1, position2):
+            interpret1 = self.alteOrdnung[position1][0]
+            song1 = self.alteOrdnung[position1][1]
+            votes1 = self.alteOrdnung[position1][2]
+            
+            self.alteOrdnung[position1][0] = self.alteOrdnung[position2][0]
+            self.alteOrdnung[position1][1] = self.alteOrdnung[position2][1]
+            self.alteOrdnung[position1][2] = self.alteOrdnung[position2][2]
+            
+            self.alteOrdnung[position2][0] = interpret1
+            self.alteOrdnung[position2][1] = song1
+            self.alteOrdnung[position2][2] = votes1
+            
+        def div7Setzen(neueOrdnung0,neueOrdnung1, neueOrdnung2):
+            fadeOut(self.platz7a, 1000)
+            fadeOut(self.platz7b, 1000)
+            fadeOut(self.platz7c, 1000)
+            time.sleep(1)
+            self.platz7a.text = neueOrdnung1
+            self.platz7b.text = neueOrdnung0
+            self.platz7c.text = neueOrdnung2
+            fadeIn(self.platz7a, 1000)
+            fadeIn(self.platz7b, 1000)
+            fadeIn(self.platz7c, 1000)
+            time.sleep(1)
+            
+        def aktualisiereVotes(position, wordsnode, neueVotes):
+            fadeOut(wordsnode, 1000)
+            time.sleep(1)
+            wordsnode.text = neueVotes
+            fadeIn(wordsnode, 1000)
+            time.sleep(1)
+            self.alteOrdnung[position][2] = neueVotes
+            time.sleep(0.5)
+            
+        def votesInAlteOrdnungAnpassen(platz, neueVotes):
+            self.alteOrdnung[platz][2] = neueVotes
+       
+        def platz7inAlteOrdnungSetzen(song, interpret, votes):
+            self.alteOrdnung[6][0] = interpret
+            self.alteOrdnung[6][1] = song
+            self.alteOrdnung[6][2] = votes
+            
+        
+        def updateRanking (neueOrdnung, null):  #mit recieveArraywithSongs -> 2 dim stringarray
+            #stringarray mit interpret, titel, votes
+            time.sleep(2)
+            #print "neueOrdnung: "
+            #print neueOrdnung
+            #ersern Song setzten
+            #noch nicht da:
+            where = schonda(self.alteOrdnung, neueOrdnung[0][1], neueOrdnung[0][0])
+            if where == -1:
+                #div 7 setzen
+                #print "change"
+                div7Setzen(neueOrdnung[0][0], neueOrdnung[0][1], neueOrdnung[0][2])
+                
+                #infos in array anpassen
+                platz7inAlteOrdnungSetzen(self.platz7a.text, self.platz7b.text, self.platz7c.text)
+                #print self.alteOrdnung
+                
+                sevenSix()
+                sixFive()
+                fiveFour()
+                fourThree()
+                threeTwo()
+                twoOne()
+                
+                #print self.alteOrdnung
+                
+            else:
+                if where == 6: #testen ob interpret gleich und votes aktualisiern
+                    aktualisiereVotes(6, self.platz7c, neueOrdnung[0][2])
+                    sevenSix()
+                    sixFive()
+                    fiveFour()
+                    fourThree()
+                    threeTwo()
+                    twoOne()
+                elif where == 5:
+                    aktualisiereVotes(5, self.platz6c, neueOrdnung[0][2])
+                    sixFive()
+                    fiveFour()
+                    fourThree()
+                    threeTwo()
+                    twoOne()
+                elif where == 4:
+                    aktualisiereVotes(4, self.platz5c, neueOrdnung[0][2])
+                    fiveFour()
+                    fourThree()
+                    threeTwo()
+                    twoOne()
+                elif where == 3:
+                    aktualisiereVotes(3, self.platz4c, neueOrdnung[0][2])
+                    fourThree()
+                    threeTwo()
+                    twoOne()
+                elif where == 2:
+                    aktualisiereVotes(2, self.platz3c, neueOrdnung[0][2])
+                    threeTwo()
+                    twoOne()
+                elif where == 1:
+                    #print "platz2 mit platz1 tauschen"
+                    aktualisiereVotes(1, self.platz2c, neueOrdnung[0][2])
+                    twoOne()
+                elif where == 0:
+                    #votes updaten
+                    #print "Noemi ist nett"
+                    if self.platz1c.text != neueOrdnung[0][2]:
+                        #print self.platz1c.text
+                        #print neueOrdnung[0][2]
+                        aktualisiereVotes(0, self.platz1c, neueOrdnung[0][2])
+                    
+                    
+            #print "platz 1 gesetzt"
+            
+            #print "starte platz 2"   
+            where2 = schonda(self.alteOrdnung, neueOrdnung[1][1], neueOrdnung[1][0])
+            if where2 == -1:
+                #div 7 setzen
+                #print "change"
+                div7Setzen(neueOrdnung[1][0], neueOrdnung[1][1], neueOrdnung[1][2])
+                
+                #infos in array anpassen
+                platz7inAlteOrdnungSetzen(self.platz7a.text, self.platz7b.text, self.platz7c.text)
+                #print self.alteOrdnung
+                
+                sevenSix()
+                sixFive()
+                fiveFour()
+                fourThree()
+                threeTwo()
+                
+            else:
+                if where2 == 6: #testen ob interpret gleich und votes aktualisiern
+                    aktualisiereVotes(6, self.platz7c, neueOrdnung[1][2])
+                    sevenSix()
+                    sixFive()
+                    fiveFour()
+                    fourThree()
+                    threeTwo()
+                elif where2 == 5:
+                    aktualisiereVotes(5, self.platz6c, neueOrdnung[1][2])
+                    sixFive()
+                    fiveFour()
+                    fourThree()
+                    threeTwo()
+                elif where2 == 4:
+                    aktualisiereVotes(4, self.platz5c, neueOrdnung[1][2])
+                    fiveFour()
+                    fourThree()
+                    threeTwo()
+                elif where2 == 3:
+                    aktualisiereVotes(3, self.platz4c, neueOrdnung[1][2])
+                    fourThree()
+                    threeTwo()
+                elif where2 == 2:
+                    aktualisiereVotes(2, self.platz3c, neueOrdnung[1][2])
+                    threeTwo()
+                elif where2 == 1:
+                    #print "platz2 mit platz1 tauschen"
+                    if self.platz2c.text != neueOrdnung[1][2]:
+                        aktualisiereVotes(1, self.platz2c, neueOrdnung[1][2])
+            #print "platz 2 gesetzt"
+                    
+            #print "starte platz 3"   
+            where3 = schonda(self.alteOrdnung, neueOrdnung[2][1], neueOrdnung[2][0])
+            if where3 == -1:
+                #div 7 setzen
+                #print "change"
+                div7Setzen(neueOrdnung[2][0], neueOrdnung[2][1], neueOrdnung[2][2])
+                
+                #infos in array anpassen
+                platz7inAlteOrdnungSetzen(self.platz7a.text, self.platz7b.text, self.platz7c.text)
+                #print self.alteOrdnung
+                
+                sevenSix()
+                sixFive()
+                fiveFour()
+                fourThree()
+                                          
+            else:
+                if where3 == 6: #testen ob interpret gleich und votes aktualisiern
+                    aktualisiereVotes(6, self.platz7c, neueOrdnung[2][2])
+                    sevenSix()
+                    sixFive()
+                    fiveFour()
+                    fourThree()
+                elif where3 == 5:
+                    aktualisiereVotes(5, self.platz6c, neueOrdnung[2][2])
+                    sixFive()
+                    fiveFour()
+                    fourThree()
+                elif where3 == 4:
+                    aktualisiereVotes(4, self.platz5c, neueOrdnung[2][2])
+                    fiveFour()
+                    fourThree()
+                elif where3 == 3:
+                    aktualisiereVotes(3, self.platz4c, neueOrdnung[2][2])
+                    fourThree()
+                elif where3 == 2:
+                    if self.platz3c.text != neueOrdnung[2][2]:
+                        aktualisiereVotes(2, self.platz3c, neueOrdnung[2][2])
+            #print "platz 3 gesetzt"
+            
+            #print "starte platz 4"   
+            where4 = schonda(self.alteOrdnung, neueOrdnung[3][1], neueOrdnung[3][0])
+            if where4 == -1:
+                #div 7 setzen
+                #print "change"
+                div7Setzen(neueOrdnung[3][0], neueOrdnung[3][1], neueOrdnung[3][2])
+                
+                #infos in array anpassen
+                platz7inAlteOrdnungSetzen(self.platz7a.text, self.platz7b.text, self.platz7c.text)
+                #print self.alteOrdnung
+                
+                sevenSix()
+                sixFive()
+                fiveFour()
+                                          
+            else:
+                if where4 == 6: #testen ob interpret gleich und votes aktualisiern
+                    aktualisiereVotes(6, self.platz7c, neueOrdnung[3][2])
+                    sevenSix()
+                    sixFive()
+                    fiveFour()
+                elif where4 == 5:
+                    aktualisiereVotes(5, self.platz6c, neueOrdnung[3][2])
+                    sixFive()
+                    fiveFour()
+                elif where4 == 4:
+                    aktualisiereVotes(4, self.platz5c, neueOrdnung[3][2])
+                    fiveFour()
+                elif where4 == 3:
+                    if self.platz4c.text != neueOrdnung[3][2]:
+                        aktualisiereVotes(3, self.platz4c, neueOrdnung[3][2])
+            #print "platz 4 gesetzt"
+            
+            #print "starte platz 5"   
+            where5 = schonda(self.alteOrdnung, neueOrdnung[4][1], neueOrdnung[4][0])
+            if where5 == -1:
+                #div 7 setzen
+                #print "change"
+                div7Setzen(neueOrdnung[4][0], neueOrdnung[4][1], neueOrdnung[4][2])
+                
+                #infos in array anpassen
+                platz7inAlteOrdnungSetzen(self.platz7a.text, self.platz7b.text, self.platz7c.text)
+                #print self.alteOrdnung
+                
+                sevenSix()
+                sixFive()
+                                          
+            else:
+                if where5 == 6: #testen ob interpret gleich und votes aktualisiern
+                    aktualisiereVotes(6, self.platz7c, neueOrdnung[4][2])
+                    sevenSix()
+                    sixFive()
+                elif where5 == 5:
+                    aktualisiereVotes(5, self.platz6c, neueOrdnung[4][2])
+                    sixFive()
+                elif where5 == 4:
+                    if self.platz5c.text != neueOrdnung[4][2]:
+                        aktualisiereVotes(4, self.platz5c, neueOrdnung[4][2])
+            #print "platz 5 gesetzt"
+            
+            #print "starte platz 6"   
+            where6 = schonda(self.alteOrdnung, neueOrdnung[5][1], neueOrdnung[5][0])
+            if where6 == -1:
+                #div 7 setzen
+                #print "change"
+                div7Setzen(neueOrdnung[5][0], neueOrdnung[5][1], neueOrdnung[5][2])
+                
+                #infos in array anpassen
+                platz7inAlteOrdnungSetzen(self.platz7a.text, self.platz7b.text, self.platz7c.text)
+                #print self.alteOrdnung
+                
+                sevenSix()
+                                          
+            else:
+                if where6 == 6: #testen ob interpret gleich und votes aktualisiern
+                    aktualisiereVotes(6, self.platz7c, neueOrdnung[5][2])
+                    sevenSix()
+                elif where6 == 5:
+                    if self.platz6c.text != neueOrdnung[5][2]:
+                        aktualisiereVotes(5, self.platz6c, neueOrdnung[5][2])
+            #print "platz 6 gesetzt"
+            
+            #print "starte platz 7"   
+            where7 = schonda(self.alteOrdnung, neueOrdnung[6][1], neueOrdnung[6][0])
+            if where7 == -1:
+                #div 7 setzen
+                #print "change"
+                div7Setzen(neueOrdnung[6][0], neueOrdnung[6][1], neueOrdnung[6][2])
+                
+                #infos in array anpassen
+                platz7inAlteOrdnungSetzen(self.platz7a.text, self.platz7b.text, self.platz7c.text)
+                #print self.alteOrdnung
+                
+                                          
+            else:
+                if where7 == 6: #testen ob interpret gleich und votes aktualisiern
+                    if self.platz7c.text != neueOrdnung[6][2]:
+                        aktualisiereVotes(6, self.platz7c, neueOrdnung[6][2])
+            #print "platz 6 gesetzt"
+            
+            #print self.alteOrdnung
+            
+            
+        """def recievedpunkte(string,null):
+                  
+             
+            #Erster der neuen Liste nicht in alter Liste
+            
+                
+                SetzenimArray(self.leute, neueLeute[0][0], neueLeute[0][1])
+                TauschenimArray(self.leute, 1, 2)                
+                TauschenimArray(self.leute, 0, 1)
+                
+                self.divNode1.pos = (0,0) 
+                self.erster.pos=(50,50) 
+                self.erster.size=(30,Hundertprozent)
+                self.ersterName.text=self.leute[0][0]
+            
+                self.divNode2.pos = (breite/3, 0)
+                self.zweiter.pos=(50,b-155)
+                self.zweiter.size=(30,5)
+                self.zweiterName.text=self.leute[1][0]
+            
+                self.divNode3.pos = (breite-(breite/3),0)
+                self.dritter.pos=(50,b-155)      
+                self.dritter.size=(30,5)
+                self.dritterName.text=self.leute[2][0]
+                
+            #Erster schon in der Liste 
+            else :
+                i = Suchen(self.leute, neueLeute[0][0])
+                if i == 2:
+                    self.dritter.pos=(50,50)
+                    self.dritter.size=(30,Hundertprozent)
+                    TauschenDIV(self.divNode2, self.divNode3, breite/3, breite-(breite/3))     
+                    time.sleep(5)           
+                    TauschenDIV(self.divNode3, self.divNode1, breite/3, 0)
+                    self.leute[2][1] = neueLeute[2][1]
+                    TauschenimArray(self.leute, 1, 2)                
+                    TauschenimArray(self.leute, 0, 1)
+                    
+                    time.sleep(5)
+                    
+                    self.divNode1.pos = (0,0) 
+                    self.erster.pos=(50,50) 
+                    self.erster.size=(30,Hundertprozent)
+                    self.ersterName.text=self.leute[0][0]
+            
+                    self.divNode2.pos = (breite/3, 0)
+                    self.zweiter.pos=(50,b-155)
+                    self.zweiter.size=(30,5)
+                    self.zweiterName.text=self.leute[1][0]
+            
+                    self.divNode3.pos = (breite-(breite/3),0)
+                    self.dritter.pos=(50,b-155)      
+                    self.dritter.size=(30,5)
+                    self.dritterName.text=self.leute[2][0]
+                    
+                    
+                elif i ==1:
+                    self.zweiter.pos=(50,50)
+                    self.zweiter.size=(30,Hundertprozent)
+                    TauschenDIV(self.divNode2, self.divNode1, breite/3, 0)
+                    self.leute[1][1] = neueLeute[1][1]
+                    TauschenimArray(self.leute, 0, 1)
+                    
+                    time.sleep(5)
+                    
+                    self.divNode1.pos = (0,0) 
+                    self.erster.pos=(50,50) 
+                    self.erster.size=(30,Hundertprozent)
+                    self.ersterName.text=self.leute[0][0]
+            
+                    self.divNode2.pos = (breite/3, 0)
+                    self.zweiter.pos=(50,b-155)
+                    self.zweiter.size=(30,5)
+                    self.zweiterName.text=self.leute[1][0]
+                    
+                    
+                else :
+                    self.erster.pos=(50,50)
+                    self.erster.size=(30,Hundertprozent)
+                    self.leute[0][1] = neueLeute[0][1]
+                    
+                    
+            time.sleep(2)
+            
+            #Zwite Person noch nicht in der Liste
+            if Suchen(self.leute, neueLeute[1][0])== -1 :
+                
+                self.dritter.pos= (50,50+(b-200)-Punktezweiter)
+                self.dritter.size=(30,Punktezweiter)
+                self.dritterName.text=NameZweiter
+                
+                TauschenDIV(self.divNode3, self.divNode2, breite-(breite/3), breite/3)
+                
+                SetzenimArray(self.leute, neueLeute[1][0], neueLeute[1][1])   
+                TauschenimArray(self.leute, 1, 2)
+                
+                time.sleep(5)
+            
+                self.divNode2.pos = (breite/3, 0)
+                self.zweiter.pos=(50,50+(b-200)-Punktezweiter)
+                self.zweiter.size=(30,Punktezweiter)
+                self.zweiterName.text=self.leute[1][0]
+            
+                self.divNode3.pos = (breite-(breite/3),0)
+                self.dritter.pos=(50,b-155)      
+                self.dritter.size=(30,5)
+                self.dritterName.text=self.leute[2][0]
+                
+                
+            #Zweite Person schon in Liste      
+            else :
+                i = Suchen(self.leute, neueLeute[1][0])
+                if i == 2:
+                    self.dritter.pos=(50,50+(b-200)-Punktezweiter)
+                    self.dritter.size=(30,Punktezweiter)
+                    TauschenDIV(self.divNode2, self.divNode3, breite/3, breite-(breite/3))
+                    self.leute[2][1] = neueLeute[2][1]
+                    TauschenimArray(self.leute, 1, 2)       
+                    
+                    time.sleep(5)
+            
+                    self.divNode2.pos = (breite/3, 0)
+                    self.zweiter.pos=(50,50+(b-200)-Punktezweiter)
+                    self.zweiter.size=(30,Punktezweiter)
+                    self.zweiterName.text=self.leute[1][0]
+            
+                    self.divNode3.pos = (breite-(breite/3),0)
+                    self.dritter.pos=(50,b-155)      
+                    self.dritter.size=(30,5)
+                    self.dritterName.text=self.leute[2][0] 
+                    
+                else:
+                    self.zweiter.pos=(50,50+(b-200)-Punktezweiter)
+                    self.zweiter.size=(30,Punktezweiter)
+                    self.leute[1][1] = neueLeute[1][1]
+                    
+            time.sleep(2)
+            #Dritter noch nicht in Liste
+            if Suchen(self.leute, neueLeute[2][0])== -1 :
+                
+                self.dritter.pos= (50,50+(b-200)-Punktedritter)
+                self.dritter.size=(30,Punktedritter)
+                self.dritterName.text=NameDritter
+                
+                SetzenimArray(self.leute, neueLeute[2][0], neueLeute[2][1])   
+            #Dritter in Liste
+            else:
+                self.dritter.pos= (50,50+(b-200)-Punktedritter)
+                self.dritter.size=(30,Punktedritter)
+                SetzenimArray(self.leute, neueLeute[2][0], neueLeute[2][1])"""
+        
+        
+        def Top3Anim (number1div, number2div, number3div, number1titel, number2titel, number3titel, size1t, size2t, size3t, pos1div, pos2div, pos3div, 
+                      number1inter, number2inter, number3inter, pos1inter, pos2inter, pos3inter, size1inter, size2inter, size3inter,
+                      div4, div5, div6, div7, ranking, number1votes, number2votes, number3votes, top7, votes):
+                def topthreeanim():
+                    animObj.start()
+                    
+                animObj = ParallelAnim ([LinearAnim(number1titel, "fontsize", 2000, size1t, size1t + 30),
+                                        LinearAnim(number2titel, "fontsize", 2000, size2t, size2t + 30),
+                                        LinearAnim(number3titel, "fontsize", 2000, size3t, size3t + 30),
+                                        
+                                        LinearAnim(number1div, "pos", 2000, pos1div, (75, a/10)),
+                                        LinearAnim(number2div, "pos", 2000, pos2div, (75, a/4)),
+                                        LinearAnim(number3div, "pos", 2000, pos3div, (75, 2*a/5)),
+                                        
+                                        LinearAnim(number1inter, "pos", 2000, pos1inter, (33, 70)),
+                                        LinearAnim(number2inter, "pos", 2000, pos2inter, (33, 70)),
+                                        LinearAnim(number3inter, "pos", 2000, pos3inter, (33, 70)),
+                                        
+                                        LinearAnim(number1inter, "fontsize", 2000, size1inter, size1inter + 20),
+                                        LinearAnim(number2inter, "fontsize", 2000, size2inter, size2inter + 20),
+                                        LinearAnim(number3inter, "fontsize", 2000, size3inter, size3inter + 20),
+                                        
+                                        
+                                        LinearAnim(div4, "opacity", 2000, 1, 0),
+                                        LinearAnim(div5, "opacity", 2000, 1, 0),
+                                        LinearAnim(div6, "opacity", 2000, 1, 0),
+                                        LinearAnim(div7, "opacity", 2000, 1, 0),
+                                        LinearAnim(ranking, "opacity", 2000, 1, 0),
+                                        LinearAnim(number1votes, "opacity", 2000, 1, 0),
+                                        LinearAnim(number2votes, "opacity", 2000, 1, 0),
+                                        LinearAnim(number3votes, "opacity", 2000, 1,0),
+                                        
+                                        LinearAnim(top7, "opacity", 2000, 1, 0),
+                                        LinearAnim(votes, "opacity", 2000, 1, 0)])
+                
+                player.setTimeout(0, topthreeanim)
+        
+        def Tauschen(a,b,AX,AY,BX,BY):
                 def startAnim():
                     animObj.start()
         
@@ -87,7 +720,7 @@ class screen(AVGApp):
 
                 player.setTimeout(2000, startAnim) 
         
-        def TauschenDIV(a,b,AX,BX): # Tauschen vom Balken
+        def TauschenDIV(a,b,AX,BX):
                 def startAnim():
                     animObj.start()
         
@@ -147,9 +780,14 @@ class screen(AVGApp):
             self.dritterName=avg.WordsNode(pos=(50,b-100), text=" " ,parent=self.divNode3, font='arial', color="6E6E6E", fontsize=20)
             self.dritterName.text=self.leute[2][0]
             
-        def recievedpunkte(arrayuser,null):
+        def recievedpunkte(string,null):
             
-            neueLeute=arrayuser
+            array = string.split("###")
+                         
+            neueLeute = []
+            neueLeute.append([array[1], array[2]])
+            neueLeute.append([array[3], array[4]])
+            neueLeute.append([array[5], array[6]])
             
             
             PunkteErster = neueLeute[0][1]
@@ -328,67 +966,22 @@ class screen(AVGApp):
                 self.dritter.size=(30,Punktedritter)
                 SetzenimArray(self.leute, neueLeute[2][0], neueLeute[2][1])   
                 
-#         def receiveArraywithSongs(stringsongs): ## Initialisieren
-#             
-# #             a="Silbermond##Nichts passiert##7!#!Juli##Gute Zeit##6!#!Nickelback##Silver side up##5!#!Citizens##True Romance##4!#!Sportfreunde Stiller##Applaus Applaus##3!#!Will.I.am##Scream and Shout##2!#!Justin Timberlake##Mirrors##1" 
-#             print stringsongs
-#             songinput = stringsongs.split("!#!")
-#             stringarray=[]
-# 
-#             ArrayLen = len(songinput)
-#             for i in range(0,ArrayLen):
-#                 string = songinput[i]
-#                 string2 = string.split("##")
-#                 stringarray.append([string2[0],string2[1],string2[2]]) ##Interpret , Titel, Votes
-#             print stringarray
-#             return stringarray
-        
-        def builtArrayOutOfString(rcvstring): 
-
-            print rcvstring
-            songinput = rcvstring.split("!#!")
+        def receiveArraywithSongs(): ## Initialisieren
+            
+            a="Silbermond##Nichts passiert##7!#!Juli##Gute Zeit##6!#!Nickelback##Silver side up##5!#!Citizens##True Romance##4!#!Sportfreunde Stiller##Applaus Applaus##3!#!Will.I.am##Scream and Shout##2!#!Justin Timberlake##Mirrors##1" 
+            songinput = a.split("!#!")
             stringarray=[]
 
             ArrayLen = len(songinput)
-            print ArrayLen
-            
-            if (ArrayLen ==7):
-                for i in range(0,ArrayLen):
-                    string = songinput[i]
-                    string2 = string.split("##")
-                    stringarray.append([string2[0],string2[1],string2[2]]) ##Interpret , Titel, Votes
-                print stringarray
-                return stringarray
-            if (ArrayLen==3):
-                for i in range(0,ArrayLen):
-                    string = songinput[i]
-                    string2 = string.split("##")
-                    stringarray.append([string2[0],string2[1]]) ##Interpret , Titel, Votes
-                print stringarray
-                return stringarray
-            print "Falschen String erhalten"
-                
-                
-                
-                
-                
-        def checkLenArray(str_builtArrayOutofString):
-             
-            ArrayLen=len(str_builtArrayOutofString)
-             
-            if (ArrayLen == 7):
-                initializeDivs (str_builtArrayOutofString)
-            
-            elif (ArrayLen==3):
-                thread.start_new_thread(recievedpunkte,(str_builtArrayOutofString,0))
-            
-            else: 
-                print "falsches Array gebaut"
-                
-        
-        
+            for i in range(0,ArrayLen):
+                string = songinput[i]
+                string2 = string.split("##")
+                stringarray.append([string2[0],string2[1],string2[2]]) ##Interpret , Titel, Votes
+            #print "alteOrdnung: "
+            #print stringarray
+            return stringarray
                    
-        def initializeDivs (stringarray):   
+        def initializeDivs(stringarray):
             self.platz1a.text= stringarray[0][1]
             self.platz2a.text= stringarray[1][1]
             self.platz3a.text= stringarray[2][1]
@@ -413,9 +1006,29 @@ class screen(AVGApp):
             self.platz6c.text= stringarray[5][2]
             self.platz7c.text= stringarray[6][2]
             
-                 
+            #alte Ordnung array aktualisieren
+            self.alteOrdnung[0][0] = self.platz1b.text 
+            self.alteOrdnung[0][1] = self.platz1a.text
+            self.alteOrdnung[0][2] = self.platz1c.text
+            self.alteOrdnung[1][0] = self.platz2b.text 
+            self.alteOrdnung[1][1] = self.platz2a.text
+            self.alteOrdnung[1][2] = self.platz2c.text
+            self.alteOrdnung[2][0] = self.platz3b.text 
+            self.alteOrdnung[2][1] = self.platz3a.text
+            self.alteOrdnung[2][2] = self.platz3c.text
+            self.alteOrdnung[3][0] = self.platz4b.text 
+            self.alteOrdnung[3][1] = self.platz4a.text
+            self.alteOrdnung[3][2] = self.platz4c.text
+            self.alteOrdnung[4][0] = self.platz5b.text 
+            self.alteOrdnung[4][1] = self.platz5a.text
+            self.alteOrdnung[4][2] = self.platz5c.text
+            self.alteOrdnung[5][0] = self.platz6b.text 
+            self.alteOrdnung[5][1] = self.platz6a.text
+            self.alteOrdnung[5][2] = self.platz6c.text
+            self.alteOrdnung[6][0] = self.platz7b.text 
+            self.alteOrdnung[6][1] = self.platz7a.text
+            self.alteOrdnung[6][2] = self.platz7c.text
             
-               
             
         def countdown(m,s):
             
@@ -432,63 +1045,56 @@ class screen(AVGApp):
             seconds = MsToSecs(m,s)
             while seconds > 0:
                 (mint,sect)=secsToMs(seconds)
-                if int(sect) < 10 and int (mint)<10:
-                    self.timer.text="Countdown "+"0"+mint+":" +"0"+sect 
-                elif int(sect) <10:
-                    self.timer.text="Countdown "+mint+":"+"0"+sect
-                elif int(mint) <10:
-                    self.timer.text="Countdown "+"0"+mint+":"+sect    
-                else: 
-                    self.timer.text="Countdown " + mint + ":" + sect
-                time.sleep(1)
+                self.timer.text="Countdown " + mint + ":" + sect
+                """if mint == "30" and sect == "0": #wann soll die animation starten
+                    Top3Anim(self.div1, self.div2, self.div3, 
+                             self.platz1a, self.platz2a, self.platz3a, 
+                             self.platz1a.fontsize, self.platz2a.fontsize, self.platz3a.fontsize, 
+                             self.div1.pos, self.div2.pos, self.div3.pos,
+                             self.platz1b, self.platz2b, self.platz3b, 
+                             self.platz1b.pos, self.platz2b.pos, self.platz3b.pos,
+                             self.platz1b.fontsize, self.platz2b.fontsize, self.platz3b.fontsize,
+                             self.div4, self.div5, self.div6, self.div7,
+                             self.ranking,
+                             self.platz1c, self.platz2c, self.platz3c,
+                             self.title, self.votes)"""
                 seconds -= 1
-                if seconds ==-0:
-                    seconds = 3599
+                time.sleep(1)
+                if seconds ==0:
+                    seconds = 1800
                     
         
         def initializeWebSocket():##Starts the WebSocket
-            log.startLogging(sys.stdout)
             self.receiver = WebSocketClientFactory("ws://localhost:9034", debug = False)
-            self.receiver.protocol=MessageBasedHashClientProtocol
-            connectWS(self.receiver)
             a="websocket ok"
-            print a
+            #print a
+            listenWS(self.receiver)
             reactor.run(installSignalHandlers=0)##"installSignalHandlers=0" Necessary for Multithreading 
-           
+        
+  
             
         left()
         right()
-        thread.start_new_thread(countdown,(0,2))
-#         string = builtArrayOutOfString("Pascal##460!#!Alexander##210!#!Rebecca##60")
-#         thread.start_new_thread(recievedpunkte,(string,0))
+        thread.start_new_thread(countdown,(0,5))
+        string = ("Balken###Pascal###460###Alexander###210###Rebecca###60")
+        thread.start_new_thread(recievedpunkte,(string,0))
+        initializeDivs(receiveArraywithSongs())
+        
         thread.start_new_thread(initializeWebSocket,()) ##start the WebSocket in new Thread
 #         Tauschen(self.div1, self.div2, self.div1.x, self.div1.y, self.div2.x , self.div2.y)
-
-            
-        class MessageBasedHashClientProtocol(WebSocketClientProtocol):
-
-            def sendClientName(self):
-                data = "Pclient"
-                self.sendMessage(data, binary = True)
-                print data
-     
-            def onOpen(self):
-                self.sendClientName()
-                print "Clientname gesendet"
-    
-            def onMessage(self, message, binary):
-                print "Nachricht erhalten"
-                self.messagetest="Gabi##900!#!Ralf##700!#!Marcel##300"
-#                 self.messagetest="Silbermond##Nichts passiert##7!#!Juli##Gute Zeit##6!#!Nickelback##Silver side up##5!#!Citizens##True Romance##4!#!Sportfreunde Stiller##Applaus Applaus##3!#!Will.I.am##Scream and Shout##2!#!Justin Timberlake##Mirrors##1"
-                print "on message"+self.messagetest
-                checkLenArray(builtArrayOutOfString(self.messagetest))
-                print "receivearray ausgefuehrt"
-                
-                            
-            
+        #time.sleep(2)
+        #neu = [['Silbermond', 'Nichts passiert', '7'], ['Juli', 'Gute Zeit', '6'], ['Nickelback', 'Silver side up', '5'], ['Citizens', 'True Romance', '4'], 
+        #      ['Sportfreunde Stiller', 'Applaus Applaus', '3'], ['Will.I.am', 'Scream and Shout', '2'], ['Justin Timberlake', 'Mirrors', '1']]
+        #neu = [['Silbermond', 'Nichts passiert','7'],['Lady Gaga','Fraukegirl','89'],['Babapapa','Braunbaer','70'],['Gustav','Die Enten','55'],
+        #       ['Lausebub','Fruehling','40'],['Antonio','Krueger','30'],['Blue','Scheisse','20'],['Mandarin','Mandarin','3']]
+        neu = [['Silbermond', 'Nichts passiert', '100'], ['Juli', 'Gute Zeit', '88'], ['Nickelback', 'Silver side up', '77'], ['Citizens', 'True Romance', '50'], 
+              ['Sportfreunde Stiller', 'Applaus Applaus', '43'], ['Will.I.am', 'Scream and Shout', '23'], ['Justin Timberlake', 'Mirrors', '12']]
+        thread.start_new_thread(updateRanking, (neu,  0))
+        
+        
          
         
 if __name__=='__main__':
-    screen.start(resolution=(1440, 900))   
+    screen.start(resolution=(1500, 800))   
   
 
