@@ -101,10 +101,10 @@ class screen(AVGApp):
                 
             posa = a.pos
             posb = b.pos
-            animObj = ParallelAnim([LinearAnim(a, "pos", 2000, posa, posb),
-                                    LinearAnim(b, "pos", 2000, posb, posa)])
+            animObj = ParallelAnim([LinearAnim(a, "pos", 500, posa, posb),
+                                    LinearAnim(b, "pos", 500, posb, posa)])
             player.setTimeout(0, startAnim)
-            time.sleep(2)
+            time.sleep(0.5)
             
             
         def colswap (w1a, w1b, w1c, w2a, w2b, w2c): #farben aendern der DIVNodes wenn Ranking 1 2 3 usw.
@@ -122,7 +122,7 @@ class screen(AVGApp):
         def sevenSix(): #Tauschfunktion von Paar
             swap(self.div7, self.div6)
             colswap(self.platz6a, self.platz6b, self.platz6c, self.platz7a, self.platz7b, self.platz7c)
-            time.sleep(2)
+            time.sleep(0.5)
             #array anpassen
             TauschenAlteOrdnung(5, 6)
             #divs tauschen
@@ -133,7 +133,7 @@ class screen(AVGApp):
         def sixFive(): #Tauschfunktion von Paar
             swap(self.div6, self.div5)
             colswap(self.platz5a, self.platz5b, self.platz5c, self.platz6a, self.platz6b, self.platz6c)
-            time.sleep(2)
+            time.sleep(0.5)
             #array anpassen
             TauschenAlteOrdnung(4, 5)
             #divs tauschen
@@ -144,7 +144,7 @@ class screen(AVGApp):
         def fiveFour(): #Tauschfunktion von Paar
             swap(self.div5, self.div4)
             colswap(self.platz4a, self.platz4b, self.platz4c, self.platz5a, self.platz5b, self.platz5c)
-            time.sleep(2)
+            time.sleep(0.5)
             #array anpassen
             TauschenAlteOrdnung(3, 4)
             #divs tauschen
@@ -155,7 +155,7 @@ class screen(AVGApp):
         def fourThree():#Tauschfunktion von Paar
             swap(self.div4, self.div3)
             colswap(self.platz3a, self.platz3b, self.platz3c, self.platz4a, self.platz4b, self.platz4c)
-            time.sleep(2)
+            time.sleep(0.5)
             #array anpassen
             TauschenAlteOrdnung(2, 3)
             #divs tauschen
@@ -166,7 +166,7 @@ class screen(AVGApp):
         def threeTwo():#Tauschfunktion von Paar
             swap(self.div3, self.div2)
             colswap(self.platz2a, self.platz2b, self.platz2c, self.platz3a, self.platz3b, self.platz3c)
-            time.sleep(2)
+            time.sleep(0.5)
             #array anpassen
             TauschenAlteOrdnung(1, 2)
             #divs tauschen
@@ -177,7 +177,7 @@ class screen(AVGApp):
         def twoOne():#Tauschfunktion von Paar
             swap(self.div2, self.div1)
             colswap(self.platz1a, self.platz1b, self.platz1c, self.platz2a, self.platz2b, self.platz2c)
-            time.sleep(2)
+            time.sleep(0.5)
             #array anpassen
             TauschenAlteOrdnung(0, 1)
             #divs tauschen
@@ -215,24 +215,24 @@ class screen(AVGApp):
             self.alteOrdnung[position2][2] = votes1
             
         def div7Setzen(neueOrdnung0,neueOrdnung1, neueOrdnung2):  #neues Lied ganz unten initialisieren
-            fadeOut(self.platz7a, 1000)
-            fadeOut(self.platz7b, 1000)
-            fadeOut(self.platz7c, 1000)
-            time.sleep(1)
+            fadeOut(self.platz7a, 500)
+            fadeOut(self.platz7b, 500)
+            fadeOut(self.platz7c, 500)
+            time.sleep(0.5)
             self.platz7a.text = neueOrdnung1
             self.platz7b.text = neueOrdnung0
             self.platz7c.text = neueOrdnung2
-            fadeIn(self.platz7a, 1000)
-            fadeIn(self.platz7b, 1000)
-            fadeIn(self.platz7c, 1000)
-            time.sleep(1)
+            fadeIn(self.platz7a, 500)
+            fadeIn(self.platz7b, 500)
+            fadeIn(self.platz7c, 500)
+            time.sleep(0.5)
             
         def aktualisiereVotes(position, wordsnode, neueVotes): #Votes aktualisieren, nur wenn das Lied bereits vorhanden
-            fadeOut(wordsnode, 1000)
-            time.sleep(1)
+            fadeOut(wordsnode, 500)
+            time.sleep(0.5)
             wordsnode.text = neueVotes
-            fadeIn(wordsnode, 1000)
-            time.sleep(1)
+            fadeIn(wordsnode, 500)
+            time.sleep(0.5)
             self.alteOrdnung[position][2] = neueVotes
             time.sleep(0.5)
             
@@ -247,7 +247,7 @@ class screen(AVGApp):
         
         def updateRanking (neueOrdnung, null):  #mit recieveArraywithSongs -> 2 dim stringarray
             #stringarray mit interpret, titel, votes
-            time.sleep(2)
+            time.sleep(0.5)
             #print "neueOrdnung: "
             #print neueOrdnung
             #ersern Song setzten
@@ -975,8 +975,9 @@ class screen(AVGApp):
 #                 self.messagetest="START"
                 print message
                 if (message=="START"):
-                    thread.start_new_thread(countdown,(0,2))
-                
+                    global countvar
+                    countvar=thread.start_new_thread(countdown,(0,2))
+
                 else:
                     checkLenArray(builtArrayOutOfString(message))                            
                 print "receivestring ausgefuehrt"
@@ -985,3 +986,4 @@ class screen(AVGApp):
 if __name__=='__main__':
     screen.start(resolution=(1500, 800))   
   
+
