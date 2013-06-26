@@ -20,6 +20,12 @@ class screen(AVGApp):
         
         player = avg.Player.get()   #player
         global a,b,z
+        timeAnim = 2000
+        timeFade = 2
+        #timeVotesFade = 1000
+        #timeVotes = 1
+        #timeHalf = 0.5
+        #timeHalfVotes = 500
         (a,b) = parentNode.size     #aufloesung
         canvas = player.createMainCanvas(size=(a,b)) #canvas kreieren
         self.rootNode = canvas.getRootNode()
@@ -86,6 +92,56 @@ class screen(AVGApp):
             self.platz7c=avg.WordsNode (pos=(561,0),font="arial", variant="Bold", text=self.alteOrdnung[6][2], color="000000", fontsize=30, parent=self.div7)
             
             
+        def fadeAnimSongsNormal (neueOrdnung, null):
+            time.sleep(0.1)
+            #print "ahhhh"
+            fadeOut(self.div1, timeAnim)
+            #print "hi"
+            fadeOut(self.div2, timeAnim)
+            #print "nein"
+            fadeOut(self.div3, timeAnim)
+            fadeOut(self.div4, timeAnim)
+            fadeOut(self.div5, timeAnim)
+            fadeOut(self.div6, timeAnim)
+            fadeOut(self.div7, timeAnim)
+            time.sleep(timeFade)
+            #print "was"
+            
+            self.platz1a.text= neueOrdnung[0][1]
+            self.platz2a.text= neueOrdnung[1][1]
+            self.platz3a.text= neueOrdnung[2][1]
+            self.platz4a.text= neueOrdnung[3][1]
+            self.platz5a.text= neueOrdnung[4][1]
+            self.platz6a.text= neueOrdnung[5][1]
+            self.platz7a.text= neueOrdnung[6][1]
+                
+            self.platz1b.text= neueOrdnung[0][0]
+            self.platz2b.text= neueOrdnung[1][0]
+            self.platz3b.text= neueOrdnung[2][0]
+            self.platz4b.text= neueOrdnung[3][0]
+            self.platz5b.text= neueOrdnung[4][0]
+            self.platz6b.text= neueOrdnung[5][0]
+            self.platz7b.text= neueOrdnung[6][0]
+             
+            self.platz1c.text= neueOrdnung[0][2]
+            self.platz2c.text= neueOrdnung[1][2]
+            self.platz3c.text= neueOrdnung[2][2]
+            self.platz4c.text= neueOrdnung[3][2]
+            self.platz5c.text= neueOrdnung[4][2]
+            self.platz6c.text= neueOrdnung[5][2]
+            self.platz7c.text= neueOrdnung[6][2]
+            #print "jetzt doch?"
+            
+            #print "waaas"
+            fadeIn(self.div1, timeAnim)
+            fadeIn(self.div2, timeAnim)
+            fadeIn(self.div3, timeAnim)
+            fadeIn(self.div4, timeAnim)
+            fadeIn(self.div5, timeAnim)
+            fadeIn(self.div6, timeAnim)
+            fadeIn(self.div7, timeAnim)
+                
+            #print "ich"
         
         def schonda (alteOrdnung, song, interpret): #check in alter Ordnung, ob in geg. Lied schon im alterOrdnung drin ist
             i = 0
@@ -954,6 +1010,7 @@ class screen(AVGApp):
 #               ['Sportfreunde Stiller', 'Applaus Applaus', '43'], ['Will.I.am', 'Scream and Shout', '23'], ['Justin Timberlake', 'Mirrors', '12']]
 #         thread.start_new_thread(updateRanking, (neu,  0))
 #         checkLenArray(neu) #TEST
+#         thread.start_new_thread(fadeAnimSongsNormal, (neu, 0))
             
         class MessageBasedHashClientProtocol(WebSocketClientProtocol):
 
