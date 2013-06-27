@@ -8,6 +8,7 @@ from libavg import *
 import time
 import thread
 import sys
+import ctypes
  
 from twisted.internet import *
 from twisted.python import *
@@ -19,6 +20,8 @@ class screen(AVGApp):
     def __init__(self, parentNode):
         
         player = avg.Player.get()   #player
+        testsize=player.getPhysicalScreenDimensions()
+        print testsize
         global a,b,z
         timeAnim = 2000
         timeFade = 2
@@ -26,13 +29,14 @@ class screen(AVGApp):
         #timeVotes = 1
         #timeHalf = 0.5
         #timeHalfVotes = 500
-        (a,b) = parentNode.size     #aufloesung
-        canvas = player.createMainCanvas(size=(a,b)) #canvas kreieren
+        (a,b) = parentNode.size     #solution in (float,float)
+        canvas = player.createMainCanvas(size=(a,b)) #create canvas
         self.rootNode = canvas.getRootNode()
-        self.back = avg.RectNode (pos=(0,0), size=(a,b), parent=self.rootNode, color="A4A4A4", fillcolor="A4A4A4", fillopacity=1) 
-        self.z = int (a-449)
-        self.title=avg.WordsNode (font="arial", variant="Bold", text="DjCrowd - Canossa", color="000000", fontsize=40, alignment="left", parent=self.rootNode) 
-        self.timer=avg.WordsNode (font="arial", variant="Bold", text="Countdown 60:00", color="000000", fontsize=40, indent=self.z, parent=self.rootNode)
+        self.back = avg.RectNode (pos=(0,0), size=(a,b), parent=self.rootNode, color="FFFFFF", fillcolor="3D4163", fillopacity=1) 
+        self.z = int (a-(a/3.5)) #Countdown verschoben
+        self.title=avg.WordsNode (pos=(a/30,0),font="marketing script", variant="Bold", text="DjCrowd", color="000000", fontsize=55, alignment="left", parent=self.rootNode) 
+        self.logog=avg.ImageNode (href="logodj100pxpng.png", pos=(((a/2)-100),0),parent=self.rootNode)
+        self.timer=avg.WordsNode (font="marketing script", variant="Bold", text="Countdown 60:00", color="000000", fontsize=55, indent=self.z, parent=self.rootNode)
         
         def left(): #links Songs Votes usw
             
@@ -45,51 +49,53 @@ class screen(AVGApp):
             self.alteOrdnung.append(["Interpret6", "Song6", "0"])
             self.alteOrdnung.append(["Interpret7", "Song7", "0"])
             
-            self.divNode=avg.DivNode(pos=(0,50), size=(3*(a/5),b-50),parent=self.rootNode)
-            self.ranking=avg.WordsNode (pos=(45,110),font="arial", variant="Bold", width=40, height= (b-50),text="1. <br/> <br/> <br/> 2. <br/> <br/> <br/> 3. <br/> <br/> <br/> 4. <br/> <br/> <br/> 5. <br/> <br/> <br/> 6. <br/> <br/> <br/> 7.", color="000000", fontsize=30, parent=self.rootNode)
-            self.leftr=avg.RectNode (pos=(0,0), size=(3*(a/5), b-50), parent=self.divNode, color="F0F0F0", fillopacity=1)
-            self.title=avg.WordsNode (pos=(75,0),font="arial", variant="Bold", text=" Top 7 Songs ", color="000000", fontsize=40, parent=self.divNode)
-            self.votes=avg.WordsNode (pos=(600,0),font="arial", variant="Bold", text="Votes", color="000000", fontsize=40, parent=self.divNode)
+            middle=a/2.5+10
             
-            self.div1=avg.DivNode(pos=(75,110), size=(3*(a/5)-20,30),parent=self.rootNode)
+            self.divNode=avg.DivNode(pos=(0,(b/12)), size=(3*(a/5),b-50),parent=self.rootNode)
+            self.ranking=avg.WordsNode (pos=(a/30,int(b/6)),font="arial", variant="Bold", width=40, height= (b-50),text="1. <br/> <br/> <br/> 2. <br/> <br/> <br/> 3. <br/> <br/> <br/> 4. <br/> <br/> <br/> 5. <br/> <br/> <br/> 6. <br/> <br/> <br/> 7.", color="000000", fontsize=30, parent=self.rootNode)
+            self.leftr=avg.RectNode (pos=(0,0), size=(3*(a/5), b-50), parent=self.divNode, color="F0F0F0", fillopacity=1)
+            self.title=avg.WordsNode (pos=(int(a/5.5),0),font="marketing script", variant="Bold", text=" Top 7 Songs ", color="000000", fontsize=40, parent=self.divNode)
+            self.votes=avg.WordsNode (pos=(int(a/2-80),0),font="marketing script", variant="Bold", text="Votes", color="000000", fontsize=40, parent=self.divNode)
+            
+            self.div1=avg.DivNode(pos=(a/18,b/6), size=(3*(a/5)-20,30),parent=self.rootNode)
             self.platz1a=avg.WordsNode (pos=(0,0),font="arial", variant="Bold", text=self.alteOrdnung[0][1], color="DDDC3C", fontsize=30, parent=self.div1)
             self.platz1b=avg.WordsNode (pos=(33,40),font="arial", variant="Bold", text=self.alteOrdnung[0][0], color="DDDC3C", fontsize=20, parent=self.div1)
-            self.platz1c=avg.WordsNode (pos=(561,0),font="arial", variant="Bold", text=self.alteOrdnung[0][2], color="DDDC3C", fontsize=30, parent=self.div1)
+            self.platz1c=avg.WordsNode (pos=(middle,0),font="arial", variant="Bold", text=self.alteOrdnung[0][2], color="DDDC3C", fontsize=30, parent=self.div1)
             
             
-            self.div2=avg.DivNode(pos=(75,215), size=(3*(a/5)-20,30),parent=self.rootNode)
+            self.div2=avg.DivNode(pos=(a/18,b/3.5175), size=(3*(a/5)-20,30),parent=self.rootNode)
             self.platz2a=avg.WordsNode (pos=(0,0),font="arial", variant="Bold", text=self.alteOrdnung[1][1], color="C9C9C5", fontsize=30, parent=self.div2)
             self.platz2b=avg.WordsNode (pos=(33,40),font="arial", variant="Bold", text=self.alteOrdnung[1][0], color="C9C9C5", fontsize=20, parent=self.div2)
-            self.platz2c=avg.WordsNode (pos=(561,0),font="arial", variant="Bold", text=self.alteOrdnung[1][2], color="C9C9C5", fontsize=30, parent=self.div2)
+            self.platz2c=avg.WordsNode (pos=(middle,0),font="arial", variant="Bold", text=self.alteOrdnung[1][2], color="C9C9C5", fontsize=30, parent=self.div2)
             
-            self.div3=avg.DivNode(pos=(75,320), size=(3*(a/5)-20,30),parent=self.rootNode)
+            self.div3=avg.DivNode(pos=(a/18,b/2.495), size=(3*(a/5)-20,30),parent=self.rootNode)
             self.platz3a=avg.WordsNode (pos=(0,0),font="arial", variant="Bold", text=self.alteOrdnung[2][1], color="EFBF34", fontsize=30, parent=self.div3)
             self.platz3b=avg.WordsNode (pos=(33,40),font="arial", variant="Bold", text=self.alteOrdnung[2][0], color="EFBF34", fontsize=20, parent=self.div3)
-            self.platz3c=avg.WordsNode (pos=(561,0),font="arial", variant="Bold", text=self.alteOrdnung[2][2], color="EFBF34", fontsize=30, parent=self.div3)
+            self.platz3c=avg.WordsNode (pos=(middle,0),font="arial", variant="Bold", text=self.alteOrdnung[2][2], color="EFBF34", fontsize=30, parent=self.div3)
             
             
-            self.div4=avg.DivNode(pos=(75,426), size=(3*(a/5)-20,30),parent=self.rootNode)
+            self.div4=avg.DivNode(pos=(a/18,b/1.935), size=(3*(a/5)-20,30),parent=self.rootNode)
             self.platz4a=avg.WordsNode (pos=(0,0),font="arial", variant="Bold", text=self.alteOrdnung[3][1], color="000000", fontsize=30, parent=self.div4)
             self.platz4b=avg.WordsNode (pos=(33,40),font="arial", variant="Bold", text=self.alteOrdnung[3][0], color="000000", fontsize=20, parent=self.div4)
-            self.platz4c=avg.WordsNode (pos=(561,0),font="arial", variant="Bold", text=self.alteOrdnung[3][2], color="000000", fontsize=30, parent=self.div4)
+            self.platz4c=avg.WordsNode (pos=(middle,0),font="arial", variant="Bold", text=self.alteOrdnung[3][2], color="000000", fontsize=30, parent=self.div4)
             
-            self.div5=avg.DivNode(pos=(75,530), size=(3*(a/5)-20,30),parent=self.rootNode)
+            self.div5=avg.DivNode(pos=(a/18,b/1.58), size=(3*(a/5)-20,30),parent=self.rootNode)
             self.platz5a=avg.WordsNode (pos=(0,0),font="arial", variant="Bold", text=self.alteOrdnung[4][1], color="000000", fontsize=30, parent=self.div5)
             self.platz5b=avg.WordsNode (pos=(33,40),font="arial", variant="Bold", text=self.alteOrdnung[4][0], color="000000", fontsize=20, parent=self.div5)
-            self.platz5c=avg.WordsNode (pos=(561,0),font="arial", variant="Bold", text=self.alteOrdnung[4][2], color="000000", fontsize=30, parent=self.div5)
+            self.platz5c=avg.WordsNode (pos=(middle,0),font="arial", variant="Bold", text=self.alteOrdnung[4][2], color="000000", fontsize=30, parent=self.div5)
             
-            self.div6=avg.DivNode(pos=(75,636), size=(3*(a/5)-20,30),parent=self.rootNode)
+            self.div6=avg.DivNode(pos=(a/18,b/1.335), size=(3*(a/5)-20,30),parent=self.rootNode)
             self.platz6a=avg.WordsNode (pos=(0,0),font="arial", variant="Bold", text=self.alteOrdnung[5][1], color="000000", fontsize=30, parent=self.div6)
             self.platz6b=avg.WordsNode (pos=(33,40),font="arial", variant="Bold", text=self.alteOrdnung[5][0], color="000000", fontsize=20, parent=self.div6)
-            self.platz6c=avg.WordsNode (pos=(561,0),font="arial", variant="Bold", text=self.alteOrdnung[5][2], color="000000", fontsize=30, parent=self.div6)
+            self.platz6c=avg.WordsNode (pos=(middle,0),font="arial", variant="Bold", text=self.alteOrdnung[5][2], color="000000", fontsize=30, parent=self.div6)
             
-            self.div7=avg.DivNode(pos=(75,740), size=(3*(a/5)-20,30),parent=self.rootNode)
+            self.div7=avg.DivNode(pos=(a/18,b/1.155), size=(3*(a/5)-20,30),parent=self.rootNode)
             #Titel
             self.platz7a=avg.WordsNode (pos=(0,0),font="arial", variant="Bold", text=self.alteOrdnung[6][1], color="000000", fontsize=30, parent=self.div7)
             #Interpret
             self.platz7b=avg.WordsNode (pos=(33,40),font="arial", variant="Bold", text=self.alteOrdnung[6][0], color="000000", fontsize=20, parent=self.div7)
             #Votes
-            self.platz7c=avg.WordsNode (pos=(561,0),font="arial", variant="Bold", text=self.alteOrdnung[6][2], color="000000", fontsize=30, parent=self.div7)
+            self.platz7c=avg.WordsNode (pos=(middle,0),font="arial", variant="Bold", text=self.alteOrdnung[6][2], color="000000", fontsize=30, parent=self.div7)
             
             
         def fadeAnimSongsNormal (neueOrdnung, null):
@@ -1069,6 +1075,10 @@ class screen(AVGApp):
                 if (message=="START"):
                     global countvar
                     countvar=thread.start_new_thread(countdown,(0,2))
+                    
+#                 if (message[:6] == 'PLAYED'):
+#                     fadeAnimSongsTop3(builtArrayOutOfString(message[6:]))
+        
 
                 else:
                     checkLenArray(builtArrayOutOfString(message))                            
@@ -1076,6 +1086,8 @@ class screen(AVGApp):
         
         
 if __name__=='__main__':
-    screen.start(resolution=(1500, 800))   
+    user32 = ctypes.windll.user32
+    screensize = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
+    screen.start(resolution=(screensize[0], screensize[1])) 
   
 
