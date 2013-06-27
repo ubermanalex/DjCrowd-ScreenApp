@@ -20,8 +20,7 @@ class screen(AVGApp):
     def __init__(self, parentNode):
         
         player = avg.Player.get()   #player
-        testsize=player.getPhysicalScreenDimensions()
-        print testsize
+
         global a,b,z
         timeAnim = 2000
         timeFade = 2
@@ -30,6 +29,7 @@ class screen(AVGApp):
         #timeHalf = 0.5
         #timeHalfVotes = 500
         (a,b) = parentNode.size     #solution in (float,float)
+        player.setResolution(True,int(a),int(b),32)
         canvas = player.createMainCanvas(size=(a,b)) #create canvas
         self.rootNode = canvas.getRootNode()
         self.back = avg.RectNode (pos=(0,0), size=(a,b), parent=self.rootNode, color="FFFFFF", fillcolor="3D4163", fillopacity=1) 
@@ -654,7 +654,7 @@ class screen(AVGApp):
             
             
         def right(): #rechts mit Balken
-            self.divNode=avg.DivNode(pos=(a-2*(a/5),50), size=(2*(a/5),b-50),parent=self.rootNode)
+            self.divNode=avg.DivNode(pos=(a-2*(a/5),75), size=(2*(a/5),b-50),parent=self.rootNode)
             self.rightr=avg.RectNode (pos=(0,0), size=(2*(a/5), b-50), parent=self.divNode, color="F0F0F4", fillopacity=1)
             
             breite = 2*(a/5)
@@ -665,18 +665,18 @@ class screen(AVGApp):
             self.leute.append(["Antonio", "0"])
             
             self.divNode1=avg.DivNode(pos=(0,0), size=((breite/3),b-50),parent=self.divNode)
-            self.erster=avg.RectNode(pos=(50,b-155), size=(30,5), parent=self.divNode1, color="0489B1", fillcolor="2E9AFE", fillopacity=1)
-            self.ersterName=avg.WordsNode(pos=(50,b-100), text=" " ,parent=self.divNode1, font='arial', color="6E6E6E", fontsize=20)
+            self.erster=avg.RectNode(pos=(50,b/1.3), size=(30,5), parent=self.divNode1, color="0489B1", fillcolor="2E9AFE", fillopacity=1)
+            self.ersterName=avg.WordsNode(pos=(15,b/1.25), text=" " ,parent=self.divNode1, font='arial', color="6E6E6E", fontsize=20)
             self.ersterName.text=self.leute[0][0]
             
             self.divNode2=avg.DivNode(pos=((breite/3),0), size=((breite/3),b-50),parent=self.divNode)
-            self.zweiter=avg.RectNode(pos=(50,b-155), size=(30,5), parent=self.divNode2, color="0489B1", fillcolor="2E9AFE", fillopacity=1)
-            self.zweiterName=avg.WordsNode(pos=(50,b-100), text=" " ,parent=self.divNode2, font='arial', color="6E6E6E", fontsize=20)
+            self.zweiter=avg.RectNode(pos=(50,b/1.3), size=(30,5), parent=self.divNode2, color="0489B1", fillcolor="2E9AFE", fillopacity=1)
+            self.zweiterName=avg.WordsNode(pos=(30,b/1.25), text=" " ,parent=self.divNode2, font='arial', color="6E6E6E", fontsize=20)
             self.zweiterName.text=self.leute[1][0]
             
             self.divNode3=avg.DivNode(pos=((breite-(breite/3)),0), size=((breite/3),b-50),parent=self.divNode)
-            self.dritter=avg.RectNode(pos=(50, b-155), size=(30,5), parent=self.divNode3, color="0489B1", fillcolor="2E9AFE",fillopacity=1)      
-            self.dritterName=avg.WordsNode(pos=(50,b-100), text=" " ,parent=self.divNode3, font='arial', color="6E6E6E", fontsize=20)
+            self.dritter=avg.RectNode(pos=(50, b/1.3), size=(30,5), parent=self.divNode3, color="0489B1", fillcolor="2E9AFE",fillopacity=1)      
+            self.dritterName=avg.WordsNode(pos=(35,b/1.25), text=" " ,parent=self.divNode3, font='arial', color="6E6E6E", fontsize=20)
             self.dritterName.text=self.leute[2][0]
             
         def recievedpunkte(arrayuser,null): ###TODO!!!!! Arrayuebergabe
@@ -710,11 +710,11 @@ class screen(AVGApp):
             
                 if PunkteErster ==0:
                     PunkteErster=5
-                    balkenpos=b-155
+                    balkenpos=b/1.3
                     Hundertprozent = 5
                 else:
                     balkenpos=50
-                    Hundertprozent=b-200
+                    Hundertprozent=b-250
                 
                 Punktezweiter = 5
                 Punktedritter = 5
@@ -740,13 +740,13 @@ class screen(AVGApp):
             
                 if PunkteErster ==0:
                     PunkteErster=5
-                    balkenpos=b-155
+                    balkenpos=b/1.3
                     Hundertprozent = 5
                     Punktezweiter = 5
                     Punktedritter = 5
                 else:
                     balkenpos=50
-                    Hundertprozent=b-200
+                    Hundertprozent=b-250
                     Punktezweiter = (Hundertprozent/PunkteErster)*PunkteZweiter
                     Punktedritter = (Hundertprozent/PunkteErster)*PunkteDritter
                 breite = 2*(a/5)          
@@ -767,13 +767,13 @@ class screen(AVGApp):
 
                 if PunkteErster ==0:
                     PunkteErster=5
-                    balkenpos=b-155
+                    balkenpos=b/1.3
                     Hundertprozent = 5
                     Punktezweiter = 5
                     Punktedritter = 5
                 else:
                     balkenpos=50
-                    Hundertprozent=b-200
+                    Hundertprozent=b-250
                     Punktezweiter = (Hundertprozent/PunkteErster)*PunkteZweiter
                     Punktedritter = (Hundertprozent/PunkteErster)*PunkteDritter
                 
@@ -803,12 +803,12 @@ class screen(AVGApp):
                 self.ersterName.text=self.leute[0][0]
             
                 self.divNode2.pos = (breite/3, 0)
-                self.zweiter.pos=(50,b-155)
+                self.zweiter.pos=(50,b/1.3)
                 self.zweiter.size=(30,5)
                 self.zweiterName.text=self.leute[1][0]
             
                 self.divNode3.pos = (breite-(breite/3),0)
-                self.dritter.pos=(50,b-155)      
+                self.dritter.pos=(50,b/1.3)      
                 self.dritter.size=(30,5)
                 self.dritterName.text=self.leute[2][0]
                 
@@ -833,12 +833,12 @@ class screen(AVGApp):
                     self.ersterName.text=self.leute[0][0]
             
                     self.divNode2.pos = (breite/3, 0)
-                    self.zweiter.pos=(50,b-155)
+                    self.zweiter.pos=(50,b/1.3)
                     self.zweiter.size=(30,5)
                     self.zweiterName.text=self.leute[1][0]
             
                     self.divNode3.pos = (breite-(breite/3),0)
-                    self.dritter.pos=(50,b-155)      
+                    self.dritter.pos=(50,b/1.3)      
                     self.dritter.size=(30,5)
                     self.dritterName.text=self.leute[2][0]
                     
@@ -858,7 +858,7 @@ class screen(AVGApp):
                     self.ersterName.text=self.leute[0][0]
             
                     self.divNode2.pos = (breite/3, 0)
-                    self.zweiter.pos=(50,b-155)
+                    self.zweiter.pos=(50,b/1.3)
                     self.zweiter.size=(30,5)
                     self.zweiterName.text=self.leute[1][0]
                     
@@ -874,7 +874,7 @@ class screen(AVGApp):
             #Zwite Person noch nicht in der Liste
             if Suchen(self.leute, neueLeute[1][0])== -1 :
                 
-                self.dritter.pos= (50,50+(b-200)-Punktezweiter)
+                self.dritter.pos= (50,50+(b-250)-Punktezweiter)
                 self.dritter.size=(30,Punktezweiter)
                 self.dritterName.text=NameZweiter
                 
@@ -886,12 +886,12 @@ class screen(AVGApp):
                 time.sleep(5)
             
                 self.divNode2.pos = (breite/3, 0)
-                self.zweiter.pos=(50,50+(b-200)-Punktezweiter)
+                self.zweiter.pos=(50,50+(b-250)-Punktezweiter)
                 self.zweiter.size=(30,Punktezweiter)
                 self.zweiterName.text=self.leute[1][0]
             
                 self.divNode3.pos = (breite-(breite/3),0)
-                self.dritter.pos=(50,b-155)      
+                self.dritter.pos=(50,b/1.3)      
                 self.dritter.size=(30,5)
                 self.dritterName.text=self.leute[2][0]
                 
@@ -900,7 +900,7 @@ class screen(AVGApp):
             else :
                 i = Suchen(self.leute, neueLeute[1][0])
                 if i == 2:
-                    self.dritter.pos=(50,50+(b-200)-Punktezweiter)
+                    self.dritter.pos=(50,50+(b-250)-Punktezweiter)
                     self.dritter.size=(30,Punktezweiter)
                     TauschenDIV(self.divNode2, self.divNode3, breite/3, breite-(breite/3))
                     self.leute[2][1] = neueLeute[2][1]
@@ -909,17 +909,17 @@ class screen(AVGApp):
                     time.sleep(5)
             
                     self.divNode2.pos = (breite/3, 0)
-                    self.zweiter.pos=(50,50+(b-200)-Punktezweiter)
+                    self.zweiter.pos=(50,50+(b-250)-Punktezweiter)
                     self.zweiter.size=(30,Punktezweiter)
                     self.zweiterName.text=self.leute[1][0]
             
                     self.divNode3.pos = (breite-(breite/3),0)
-                    self.dritter.pos=(50,b-155)      
+                    self.dritter.pos=(50,b/1.3)      
                     self.dritter.size=(30,5)
                     self.dritterName.text=self.leute[2][0] 
                         
                 else:
-                    self.zweiter.pos=(50,50+(b-200)-Punktezweiter)
+                    self.zweiter.pos=(50,50+(b-250)-Punktezweiter)
                     self.zweiter.size=(30,Punktezweiter)
                     self.leute[1][1] = neueLeute[1][1]
                     
@@ -927,14 +927,14 @@ class screen(AVGApp):
             #Dritter noch nicht in Liste
             if Suchen(self.leute, neueLeute[2][0])== -1 :
                     
-                self.dritter.pos= (50,50+(b-200)-Punktedritter)
+                self.dritter.pos= (50,50+(b-250)-Punktedritter)
                 self.dritter.size=(30,Punktedritter)
                 self.dritterName.text=NameDritter
                     
                 SetzenimArray(self.leute, neueLeute[2][0], neueLeute[2][1])   
                 #Dritter in Liste
             else:
-                self.dritter.pos= (50,50+(b-200)-Punktedritter)
+                self.dritter.pos= (50,50+(b-250)-Punktedritter)
                 self.dritter.size=(30,Punktedritter)
                 SetzenimArray(self.leute, neueLeute[2][0], neueLeute[2][1])               
                 
