@@ -677,71 +677,45 @@ class screen(AVGApp):
                                      
             neueLeute=arrayuser
             
-            PunkteErster = neueLeute[0][1]
-            NameErster = neueLeute[0][0]
-            PunkteErster = float(PunkteErster)
+            if neueLeute[0][0]==" ":
+                pass
             
-            PunkteZweiter = neueLeute[1][1]
-            NameZweiter = neueLeute[1][0]
-            PunkteZweiter = float(PunkteZweiter)
+            else:
+                PunkteErster = neueLeute[0][1]
+                NameErster = neueLeute[0][0]
+                PunkteErster = float(PunkteErster)
             
-            PunkteDritter = neueLeute[2][1]
-            NameDritter = neueLeute[2][0]
-            PunkteDritter = float(PunkteDritter)
+                PunkteZweiter = neueLeute[1][1]
+                NameZweiter = neueLeute[1][0]
+                PunkteZweiter = float(PunkteZweiter)
             
-            Hundertprozent = b-200
-            Punktezweiter = (Hundertprozent/PunkteErster)*PunkteZweiter
-            Punktedritter = (Hundertprozent/PunkteErster)*PunkteDritter
+                PunkteDritter = neueLeute[2][1]
+                NameDritter = neueLeute[2][0]
+                PunkteDritter = float(PunkteDritter)
             
-            breite = 2*(a/5)
+                Hundertprozent = b-200
+            
+                Punktezweiter = (Hundertprozent/PunkteErster)*PunkteZweiter
+                Punktedritter = (Hundertprozent/PunkteErster)*PunkteZweiter
+                breite = 2*(a/5)
             
             
             #Erster der neuen Liste nicht in alter Liste
-            if Suchen(self.leute, neueLeute[0][0])== -1 :
-                self.dritter.pos=(50,50)
-                self.dritter.size=(30, Hundertprozent)
-                self.dritterName.text=NameErster
-                
-                TauschenDIV(self.divNode2, self.divNode3, breite/3, breite-(breite/3))        
-                time.sleep(5)     
-                TauschenDIV(self.divNode3, self.divNode1, breite/3, 0)
-                
-                time.sleep(5)
-                
-                SetzenimArray(self.leute, neueLeute[0][0], neueLeute[0][1])
-                TauschenimArray(self.leute, 1, 2)                
-                TauschenimArray(self.leute, 0, 1)
-                
-                self.divNode1.pos = (0,0) 
-                self.erster.pos=(50,50) 
-                self.erster.size=(30,Hundertprozent)
-                self.ersterName.text=self.leute[0][0]
-            
-                self.divNode2.pos = (breite/3, 0)
-                self.zweiter.pos=(50,b-155)
-                self.zweiter.size=(30,5)
-                self.zweiterName.text=self.leute[1][0]
-            
-                self.divNode3.pos = (breite-(breite/3),0)
-                self.dritter.pos=(50,b-155)      
-                self.dritter.size=(30,5)
-                self.dritterName.text=self.leute[2][0]
-                
-            #Erster schon in der Liste 
-            else :
-                i = Suchen(self.leute, neueLeute[0][0])
-                if i == 2:
+                if Suchen(self.leute, neueLeute[0][0])== -1 :
                     self.dritter.pos=(50,50)
-                    self.dritter.size=(30,Hundertprozent)
-                    TauschenDIV(self.divNode2, self.divNode3, breite/3, breite-(breite/3))     
-                    time.sleep(5)           
+                    self.dritter.size=(30, Hundertprozent)
+                    self.dritterName.text=NameErster
+                
+                    TauschenDIV(self.divNode2, self.divNode3, breite/3, breite-(breite/3))        
+                    time.sleep(5)     
                     TauschenDIV(self.divNode3, self.divNode1, breite/3, 0)
-                    self.leute[2][1] = neueLeute[2][1]
+                
+                    time.sleep(5)
+                
+                    SetzenimArray(self.leute, neueLeute[0][0], neueLeute[0][1])
                     TauschenimArray(self.leute, 1, 2)                
                     TauschenimArray(self.leute, 0, 1)
-                    
-                    time.sleep(5)
-                    
+                
                     self.divNode1.pos = (0,0) 
                     self.erster.pos=(50,50) 
                     self.erster.size=(30,Hundertprozent)
@@ -756,71 +730,78 @@ class screen(AVGApp):
                     self.dritter.pos=(50,b-155)      
                     self.dritter.size=(30,5)
                     self.dritterName.text=self.leute[2][0]
-                    
-                    
-                elif i ==1:
-                    self.zweiter.pos=(50,50)
-                    self.zweiter.size=(30,Hundertprozent)
-                    TauschenDIV(self.divNode2, self.divNode1, breite/3, 0)
-                    self.leute[1][1] = neueLeute[1][1]
-                    TauschenimArray(self.leute, 0, 1)
-                    
-                    time.sleep(5)
-                    
-                    self.divNode1.pos = (0,0) 
-                    self.erster.pos=(50,50) 
-                    self.erster.size=(30,Hundertprozent)
-                    self.ersterName.text=self.leute[0][0]
-            
-                    self.divNode2.pos = (breite/3, 0)
-                    self.zweiter.pos=(50,b-155)
-                    self.zweiter.size=(30,5)
-                    self.zweiterName.text=self.leute[1][0]
-                    
-                    
+                
+            #Erster schon in der Liste 
                 else :
-                    self.erster.pos=(50,50)
-                    self.erster.size=(30,Hundertprozent)
-                    self.leute[0][1] = neueLeute[0][1]
+                    i = Suchen(self.leute, neueLeute[0][0])
+                    if i == 2:
+                        self.dritter.pos=(50,50)
+                        self.dritter.size=(30,Hundertprozent)
+                        TauschenDIV(self.divNode2, self.divNode3, breite/3, breite-(breite/3))     
+                        time.sleep(5)           
+                        TauschenDIV(self.divNode3, self.divNode1, breite/3, 0)
+                        self.leute[2][1] = neueLeute[2][1]
+                        TauschenimArray(self.leute, 1, 2)                
+                        TauschenimArray(self.leute, 0, 1)
+                    
+                        time.sleep(5)
+                    
+                        self.divNode1.pos = (0,0) 
+                        self.erster.pos=(50,50) 
+                        self.erster.size=(30,Hundertprozent)
+                        self.ersterName.text=self.leute[0][0]
+            
+                        self.divNode2.pos = (breite/3, 0)
+                        self.zweiter.pos=(50,b-155)
+                        self.zweiter.size=(30,5)
+                        self.zweiterName.text=self.leute[1][0]
+            
+                        self.divNode3.pos = (breite-(breite/3),0)
+                        self.dritter.pos=(50,b-155)      
+                        self.dritter.size=(30,5)
+                        self.dritterName.text=self.leute[2][0]
                     
                     
-            time.sleep(2)
+                    elif i ==1:
+                        self.zweiter.pos=(50,50)
+                        self.zweiter.size=(30,Hundertprozent)
+                        TauschenDIV(self.divNode2, self.divNode1, breite/3, 0)
+                        self.leute[1][1] = neueLeute[1][1]
+                        TauschenimArray(self.leute, 0, 1)
+                    
+                        time.sleep(5)
+                    
+                        self.divNode1.pos = (0,0) 
+                        self.erster.pos=(50,50) 
+                        self.erster.size=(30,Hundertprozent)
+                        self.ersterName.text=self.leute[0][0]
+            
+                        self.divNode2.pos = (breite/3, 0)
+                        self.zweiter.pos=(50,b-155)
+                        self.zweiter.size=(30,5)
+                        self.zweiterName.text=self.leute[1][0]
+                    
+                    
+                    else:
+                        self.erster.pos=(50,50)
+                        self.erster.size=(30,Hundertprozent)
+                        self.leute[0][1] = neueLeute[0][1]
+                    
+                    
+                time.sleep(2)
             
             #Zwite Person noch nicht in der Liste
-            if Suchen(self.leute, neueLeute[1][0])== -1 :
+                if Suchen(self.leute, neueLeute[1][0])== -1 :
                 
-                self.dritter.pos= (50,50+(b-200)-Punktezweiter)
-                self.dritter.size=(30,Punktezweiter)
-                self.dritterName.text=NameZweiter
-                
-                TauschenDIV(self.divNode3, self.divNode2, breite-(breite/3), breite/3)
-                
-                SetzenimArray(self.leute, neueLeute[1][0], neueLeute[1][1])   
-                TauschenimArray(self.leute, 1, 2)
-                
-                time.sleep(5)
-            
-                self.divNode2.pos = (breite/3, 0)
-                self.zweiter.pos=(50,50+(b-200)-Punktezweiter)
-                self.zweiter.size=(30,Punktezweiter)
-                self.zweiterName.text=self.leute[1][0]
-            
-                self.divNode3.pos = (breite-(breite/3),0)
-                self.dritter.pos=(50,b-155)      
-                self.dritter.size=(30,5)
-                self.dritterName.text=self.leute[2][0]
-                
-                
-            #Zweite Person schon in Liste      
-            else :
-                i = Suchen(self.leute, neueLeute[1][0])
-                if i == 2:
-                    self.dritter.pos=(50,50+(b-200)-Punktezweiter)
+                    self.dritter.pos= (50,50+(b-200)-Punktezweiter)
                     self.dritter.size=(30,Punktezweiter)
-                    TauschenDIV(self.divNode2, self.divNode3, breite/3, breite-(breite/3))
-                    self.leute[2][1] = neueLeute[2][1]
-                    TauschenimArray(self.leute, 1, 2)       
-                    
+                    self.dritterName.text=NameZweiter
+                
+                    TauschenDIV(self.divNode3, self.divNode2, breite-(breite/3), breite/3)
+                
+                    SetzenimArray(self.leute, neueLeute[1][0], neueLeute[1][1])   
+                    TauschenimArray(self.leute, 1, 2)
+                
                     time.sleep(5)
             
                     self.divNode2.pos = (breite/3, 0)
@@ -831,27 +812,55 @@ class screen(AVGApp):
                     self.divNode3.pos = (breite-(breite/3),0)
                     self.dritter.pos=(50,b-155)      
                     self.dritter.size=(30,5)
-                    self.dritterName.text=self.leute[2][0] 
+                    self.dritterName.text=self.leute[2][0]
+                
+                
+            #Zweite Person schon in Liste      
+                else :
+                    i = Suchen(self.leute, neueLeute[1][0])
+                    if i == 2:
+                        self.dritter.pos=(50,50+(b-200)-Punktezweiter)
+                        self.dritter.size=(30,Punktezweiter)
+                        TauschenDIV(self.divNode2, self.divNode3, breite/3, breite-(breite/3))
+                        self.leute[2][1] = neueLeute[2][1]
+                        TauschenimArray(self.leute, 1, 2)       
                     
-                else:
-                    self.zweiter.pos=(50,50+(b-200)-Punktezweiter)
-                    self.zweiter.size=(30,Punktezweiter)
-                    self.leute[1][1] = neueLeute[1][1]
+                        time.sleep(5)
+            
+                        self.divNode2.pos = (breite/3, 0)
+                        self.zweiter.pos=(50,50+(b-200)-Punktezweiter)
+                        self.zweiter.size=(30,Punktezweiter)
+                        self.zweiterName.text=self.leute[1][0]
+            
+                        self.divNode3.pos = (breite-(breite/3),0)
+                        self.dritter.pos=(50,b-155)      
+                        self.dritter.size=(30,5)
+                        self.dritterName.text=self.leute[2][0] 
+                        
+                    else:
+                        self.zweiter.pos=(50,50+(b-200)-Punktezweiter)
+                        self.zweiter.size=(30,Punktezweiter)
+                        self.leute[1][1] = neueLeute[1][1]
                     
-            time.sleep(2)
+                time.sleep(2)
             #Dritter noch nicht in Liste
-            if Suchen(self.leute, neueLeute[2][0])== -1 :
+                if Suchen(self.leute, neueLeute[2][0])== -1 :
+                    
+                    self.dritter.pos= (50,50+(b-200)-Punktedritter)
+                    self.dritter.size=(30,Punktedritter)
+                    self.dritterName.text=NameDritter
+                    
+                    SetzenimArray(self.leute, neueLeute[2][0], neueLeute[2][1])   
+                #Dritter in Liste
+                else:
+                    self.dritter.pos= (50,50+(b-200)-Punktedritter)
+                    self.dritter.size=(30,Punktedritter)
+                    SetzenimArray(self.leute, neueLeute[2][0], neueLeute[2][1])   
+                    
                 
-                self.dritter.pos= (50,50+(b-200)-Punktedritter)
-                self.dritter.size=(30,Punktedritter)
-                self.dritterName.text=NameDritter
-                
-                SetzenimArray(self.leute, neueLeute[2][0], neueLeute[2][1])   
-            #Dritter in Liste
-            else:
-                self.dritter.pos= (50,50+(b-200)-Punktedritter)
-                self.dritter.size=(30,Punktedritter)
-                SetzenimArray(self.leute, neueLeute[2][0], neueLeute[2][1])   
+#        def checkiflessthenthreeUsers(smallarray):
+#             
+#             
                 
 
 
@@ -896,53 +905,6 @@ class screen(AVGApp):
             else: 
                 print "falsches Array gebaut"
                    
-#         def initializeDivs(stringarray):
-#             self.platz1a.text= stringarray[0][1]
-#             self.platz2a.text= stringarray[1][1]
-#             self.platz3a.text= stringarray[2][1]
-#             self.platz4a.text= stringarray[3][1]
-#             self.platz5a.text= stringarray[4][1]
-#             self.platz6a.text= stringarray[5][1]
-#             self.platz7a.text= stringarray[6][1]
-#               
-#             self.platz1b.text= stringarray[0][0]
-#             self.platz2b.text= stringarray[1][0]
-#             self.platz3b.text= stringarray[2][0]
-#             self.platz4b.text= stringarray[3][0]
-#             self.platz5b.text= stringarray[4][0]
-#             self.platz6b.text= stringarray[5][0]
-#             self.platz7b.text= stringarray[6][0]
-#               
-#             self.platz1c.text= stringarray[0][2]
-#             self.platz2c.text= stringarray[1][2]
-#             self.platz3c.text= stringarray[2][2]
-#             self.platz4c.text= stringarray[3][2]
-#             self.platz5c.text= stringarray[4][2]
-#             self.platz6c.text= stringarray[5][2]
-#             self.platz7c.text= stringarray[6][2]
-            
-            #alte Ordnung array aktualisieren
-#             self.alteOrdnung[0][0] = self.platz1b.text 
-#             self.alteOrdnung[0][1] = self.platz1a.text
-#             self.alteOrdnung[0][2] = self.platz1c.text
-#             self.alteOrdnung[1][0] = self.platz2b.text 
-#             self.alteOrdnung[1][1] = self.platz2a.text
-#             self.alteOrdnung[1][2] = self.platz2c.text
-#             self.alteOrdnung[2][0] = self.platz3b.text 
-#             self.alteOrdnung[2][1] = self.platz3a.text
-#             self.alteOrdnung[2][2] = self.platz3c.text
-#             self.alteOrdnung[3][0] = self.platz4b.text 
-#             self.alteOrdnung[3][1] = self.platz4a.text
-#             self.alteOrdnung[3][2] = self.platz4c.text
-#             self.alteOrdnung[4][0] = self.platz5b.text 
-#             self.alteOrdnung[4][1] = self.platz5a.text
-#             self.alteOrdnung[4][2] = self.platz5c.text
-#             self.alteOrdnung[5][0] = self.platz6b.text 
-#             self.alteOrdnung[5][1] = self.platz6a.text
-#             self.alteOrdnung[5][2] = self.platz6c.text
-#             self.alteOrdnung[6][0] = self.platz7b.text 
-#             self.alteOrdnung[6][1] = self.platz7a.text
-#             self.alteOrdnung[6][2] = self.platz7c.text
             
             
         def countdown(m,s):
