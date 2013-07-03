@@ -1323,14 +1323,16 @@ class screen(AVGApp):
             ArrayLen=len(str_builtArrayOutofString)
              
             if (ArrayLen == 7):
-#                 initializeDivs (str_builtArrayOutofString)
-                thread.start_new_thread(updateRanking,(str_builtArrayOutofString,0))
+                animationUpdate(str_builtArrayOutofString)
             
             elif (ArrayLen==3):
                 thread.start_new_thread(recievedpunkte,(str_builtArrayOutofString,0))
             
             else: 
                 print "falsches Array gebaut"
+                
+        
+                   
                    
             
             
@@ -1385,21 +1387,10 @@ class screen(AVGApp):
         
         left()
         right()
-#         thread.start_new_thread(countdown,(0,5))
-#         string = ("Pascal##460!#!Alexander##210!#!Rebecca##60")
-#         checkLenArray(builtArrayOutOfString(string))
+
         
         thread.start_new_thread(initializeWebSocket,()) ##start the WebSocket in new Thread
-        #time.sleep(2)
-        #neu = [['Silbermond', 'Nichts passiert', '7'], ['Juli', 'Gute Zeit', '6'], ['Nickelback', 'Silver side up', '5'], ['Citizens', 'True Romance', '4'], 
-        #      ['Sportfreunde Stiller', 'Applaus Applaus', '3'], ['Will.I.am', 'Scream and Shout', '2'], ['Justin Timberlake', 'Mirrors', '1']]
-#         neu = [['Silbermond', 'Nichts passiert','7'],['Lady Gaga','Fraukegirl','89'],['Babapapa','Braunbaer','70'],['Gustav','Die Enten','55'],
-#                ['Lausebub','Fruehling','40'],['Antonio','Krueger','30'],['Blue','Scheisse','20'],['Mandarin','Mandarin','3']]
-#         neu = [['Silbermond', 'Nichts passiert', '100'], ['Juli', 'Gute Zeit', '88'], ['Nickelback', 'Silver side up', '77'], ['Citizens', 'True Romance', '50'], 
-#               ['Sportfreunde Stiller', 'Applaus Applaus', '43'], ['Will.I.am', 'Scream and Shout', '23'], ['Justin Timberlake', 'Mirrors', '12']]
-#         thread.start_new_thread(updateRanking, (neu,  0))
-#         checkLenArray(neu) #TEST
-#         thread.start_new_thread(fadeAnimSongsNormal, (neu, 0))
+
             
         class MessageBasedHashClientProtocol(WebSocketClientProtocol):
 
@@ -1411,19 +1402,16 @@ class screen(AVGApp):
             def onOpen(self):
                 self.sendClientName()
                 print "Clientname gesendet"
-#                 self.sendTestString ()
-#                 print "AddSong zum Server gesendet"
+
     
             def onMessage(self, message, binary):
                 print "Nachricht erhalten"
-#                  self.messagetest="Gabi##900!#!Ralf##700!#!Marcel##300"
-#                  self.messagetest="Silbermond##Nichts passiert##7!#!Juli##Gute Zeit##6!#!Nickelback##Silver side up##5!#!Citizens##True Romance##4!#!Sportfreunde Stiller##Applaus Applaus##3!#!Will.I.am##Scream and Shout##2!#!Justin Timberlake##Mirrors##1"
-#                 self.messagetest="START"
                 print message
                 if (message=="START"):
                     global countvar
                     countvar=thread.start_new_thread(countdown,(0,2))
-
+                if (message[:6] == 'PLAYED'):
+                    fadeAnimSongsTop3(builtArrayOutOfString(message[6:]))                        
                 else:
                     checkLenArray(builtArrayOutOfString(message))                            
                 print "receivestring ausgefuehrt"
