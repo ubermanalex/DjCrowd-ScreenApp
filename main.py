@@ -31,11 +31,11 @@ class screen(AVGApp):
         #timeHalf = 0.5
         #timeHalfVotes = 500
         (a,b) = parentNode.size     #aufloesung
-        player.setResolution(True,int(a),int(b),32)
+        #player.setResolution(True,int(a),int(b),32)
         canvas = player.createMainCanvas(size=(a,b)) #canvas kreieren
         self.rootNode = canvas.getRootNode()
         self.back = avg.RectNode (pos=(0,0), size=(a,b), parent=self.rootNode, color="000000", fillcolor="3D4163", fillopacity=1) 
-        self.z = int (a-(a/3.5))
+        self.z = int (a-(a/3.0)) #(3.5 bei 1440 x 900)
         self.title=avg.WordsNode (pos=(a/30,0),font="marketing script", variant="Bold", text="DjCrowd", color="E9EBFF", fontsize=55, alignment="left", parent=self.rootNode) 
         self.logog=avg.ImageNode (href="logodj100pxpng.png", pos=(((a/2)-100),0),parent=self.rootNode)
         self.timer=avg.WordsNode (font="marketing script", variant="Bold", text="Countdown 60:00", color="E9EBFF", fontsize=55, indent=self.z, parent=self.rootNode)
@@ -54,7 +54,13 @@ class screen(AVGApp):
             middle=a/2.5+10
             
             self.divNode=avg.DivNode(pos=(0,(b/12)), size=(3*(a/5),b-50),parent=self.rootNode)
-            self.ranking=avg.WordsNode (pos=(a/30,int(b/6)),font="arial", variant="Bold", width=40, height= (b-50),text="1. <br/> <br/> <br/> 2. <br/> <br/> <br/> 3. <br/> <br/> <br/> 4. <br/> <br/> <br/> 5. <br/> <br/> <br/> 6. <br/> <br/> <br/> 7.", color="E9EBFF", fontsize=30, parent=self.rootNode)
+            self.ranking1=avg.WordsNode (pos=(a/30,int(b/6)),font="arial", variant="Bold", width=40, height= (b-50),text="1.", color="E9EBFF", fontsize=30, parent=self.rootNode)
+            self.ranking2=avg.WordsNode (pos=(a/30,int(b/3.5175)),font="arial", variant="Bold", width=40, height= (b-50),text="2.", color="E9EBFF", fontsize=30, parent=self.rootNode)
+            self.ranking3=avg.WordsNode (pos=(a/30,int(b/2.495)),font="arial", variant="Bold", width=40, height= (b-50),text="3." , color="E9EBFF", fontsize=30, parent=self.rootNode)
+            self.ranking4=avg.WordsNode (pos=(a/30,int(b/1.935)),font="arial", variant="Bold", width=40, height= (b-50),text="4.", color="E9EBFF", fontsize=30, parent=self.rootNode)
+            self.ranking5=avg.WordsNode (pos=(a/30,int(b/1.58)),font="arial", variant="Bold", width=40, height= (b-50),text="5.", color="E9EBFF", fontsize=30, parent=self.rootNode)
+            self.ranking6=avg.WordsNode (pos=(a/30,int(b/1.335)),font="arial", variant="Bold", width=40, height= (b-50),text="6.", color="E9EBFF", fontsize=30, parent=self.rootNode)
+            self.ranking7=avg.WordsNode (pos=(a/30,int(b/1.155)),font="arial", variant="Bold", width=40, height= (b-50),text="7.", color="E9EBFF", fontsize=30, parent=self.rootNode)
             self.leftr=avg.RectNode (pos=(0,0), size=(3*(a/5), b-50), parent=self.divNode, color="000000", fillcolor="464646",fillopacity=1)
             self.title=avg.WordsNode (pos=(int(a/5.5),0),font="marketing script", variant="Bold", text=" Top 7 Songs ", color="E9EBFF", fontsize=40, parent=self.divNode)
             self.votes=avg.WordsNode (pos=(int(a/2-80),0),font="marketing script", variant="Bold", text="Votes", color="E9EBFF", fontsize=40, parent=self.divNode)
@@ -1009,7 +1015,7 @@ class screen(AVGApp):
             
             self.divNode1=avg.DivNode(pos=(50,0), size=((breite/3),b-50),parent=self.divNode)
             self.erster=avg.RectNode(pos=(50,b/1.3), size=(30,5), parent=self.divNode1, color="0489B1", fillcolor="2E9AFE", fillopacity=1)
-            self.ersterName=avg.WordsNode(pos=(15,b/1.25), text=" " ,parent=self.divNode1, font='arial', color="6E6E6E", fontsize=20)
+            self.ersterName=avg.WordsNode(pos=(30,b/1.25), text=" " ,parent=self.divNode1, font='arial', color="6E6E6E", fontsize=20)
             self.ersterName.text=self.leute[0][0]
             
             self.divNode2=avg.DivNode(pos=((breite/2.5),0), size=((breite/2.5),b-50),parent=self.divNode)
@@ -1019,7 +1025,7 @@ class screen(AVGApp):
             
             self.divNode3=avg.DivNode(pos=((breite-(breite/3.5)),0), size=((breite/3.5),b-50),parent=self.divNode)
             self.dritter=avg.RectNode(pos=(50, b/1.3), size=(30,5), parent=self.divNode3, color="0489B1", fillcolor="2E9AFE",fillopacity=1)      
-            self.dritterName=avg.WordsNode(pos=(35,b/1.25), text=" " ,parent=self.divNode3, font='arial', color="6E6E6E", fontsize=20)
+            self.dritterName=avg.WordsNode(pos=(30,b/1.25), text=" " ,parent=self.divNode3, font='arial', color="6E6E6E", fontsize=20)
             self.dritterName.text=self.leute[2][0]
             
         def recievedpunkte(arrayuser,null): 
@@ -1053,10 +1059,10 @@ class screen(AVGApp):
             
                 if PunkteErster ==0:
                     PunkteErster=5
-                    balkenpos=b/1.3
+                    balkenposy=b/1.3
                     Hundertprozent = 5
                 else:
-                    balkenpos=50
+                    balkenposy=50
                     Hundertprozent=b-250
                 
                 Punktezweiter = 5
@@ -1128,7 +1134,6 @@ class screen(AVGApp):
             if Suchen(self.leute, neueLeute[0][0])== -1 :
                 self.dritter.pos=(50,balkenposy)
                 self.dritter.size=(30, Hundertprozent)
-                self.dritterName.pos=(35,b/1.25)
                 self.dritterName.text=NameErster
                 
                 TauschenDIV(self.divNode2, self.divNode3, breite/2.5, breite-(breite/3.5))    #Tausch vin dritter zu zweiter    
@@ -1144,21 +1149,18 @@ class screen(AVGApp):
                 self.divNode1.pos = (50,0) 
                 self.erster.pos=(50,balkenposy) 
                 self.erster.size=(30,Hundertprozent)
-                self.ersterName.pos=(15,b/1.25)
                 self.ersterName.text=self.leute[0][0]
                
             
                 self.divNode2.pos = (breite/2.5, 0)
                 self.zweiter.pos=(50,b/1.3)
                 self.zweiter.size=(30,5)
-                self.zweiterName.pos=(30,b/1.25)
                 self.zweiterName.text=self.leute[1][0]
              
             
                 self.divNode3.pos = (breite-(breite/3.5),0)
                 self.dritter.pos=(50,b/1.3)      
                 self.dritter.size=(30,5)
-                self.dritterName.pos=(35,b/1.25)
                 self.dritterName.text=self.leute[2][0]
 
                 
@@ -1239,6 +1241,7 @@ class screen(AVGApp):
                 self.divNode2.pos = (breite/2.5, 0)
                 self.zweiter.pos=(50,50+(b-250)-Punktezweiter)
                 self.zweiter.size=(30,Punktezweiter)
+                self.zweiterName.pos=(30,b/1.25)
                 self.zweiterName.text=self.leute[1][0]
             
                 self.divNode3.pos = (breite-(breite/3.5),0)
@@ -1262,6 +1265,7 @@ class screen(AVGApp):
                     self.divNode2.pos = (breite/2.5, 0)
                     self.zweiter.pos=(50,50+(b-250)-Punktezweiter)
                     self.zweiter.size=(30,Punktezweiter)
+                    self.zweiterName.pos=(30,b/1.25)
                     self.zweiterName.text=self.leute[1][0]
             
                     self.divNode3.pos = (breite-(breite/3.5),0)
@@ -1410,7 +1414,7 @@ class screen(AVGApp):
                 if (message=="START"):
                     global countvar
                     countvar=thread.start_new_thread(countdown,(0,2))
-                if (message[:6] == 'PLAYED'):
+                elif (message[:6] == 'PLAYED'):
                     fadeAnimSongsTop3(builtArrayOutOfString(message[6:]))                        
                 else:
                     checkLenArray(builtArrayOutOfString(message))                            
