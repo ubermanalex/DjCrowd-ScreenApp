@@ -35,7 +35,7 @@ class screen(AVGApp):
         canvas = player.createMainCanvas(size=(a,b)) #canvas kreieren
         self.rootNode = canvas.getRootNode()
         self.back = avg.RectNode (pos=(0,0), size=(a,b), parent=self.rootNode, color="000000", fillcolor="3D4163", fillopacity=1) 
-        self.z = int (a-(a/3.0)) #(3.5 bei 1440 x 900)
+        self.z = int (a-(a/3.0)) #(3.5 bei 1440 x 900) #(3.0 bei 1280x800)
         self.title=avg.WordsNode (pos=(a/30,0),font="marketing script", variant="Bold", text="DjCrowd", color="E9EBFF", fontsize=55, alignment="left", parent=self.rootNode) 
         self.logog=avg.ImageNode (href="logodj100pxpng.png", pos=(((a/2)-100),0),parent=self.rootNode)
         self.timer=avg.WordsNode (font="marketing script", variant="Bold", text="Countdown 60:00", color="E9EBFF", fontsize=55, indent=self.z, parent=self.rootNode)
@@ -53,7 +53,7 @@ class screen(AVGApp):
             
             middle=a/2.5+10
             
-            self.divNode=avg.DivNode(pos=(0,(b/12)), size=(3*(a/5),b-50),parent=self.rootNode)
+            self.divNode=avg.DivNode(pos=(0,(b/11)), size=(3*(a/5),b-50),parent=self.rootNode) #b-50
             self.ranking1=avg.WordsNode (pos=(a/30,int(b/6)),font="arial", variant="Bold", width=40, height= (b-50),text="1.", color="E9EBFF", fontsize=30, parent=self.rootNode)
             self.ranking2=avg.WordsNode (pos=(a/30,int(b/3.5175)),font="arial", variant="Bold", width=40, height= (b-50),text="2.", color="E9EBFF", fontsize=30, parent=self.rootNode)
             self.ranking3=avg.WordsNode (pos=(a/30,int(b/2.495)),font="arial", variant="Bold", width=40, height= (b-50),text="3." , color="E9EBFF", fontsize=30, parent=self.rootNode)
@@ -1003,7 +1003,7 @@ class screen(AVGApp):
             
             
         def right(): #rechts mit Balken
-            self.divNode=avg.DivNode(pos=(a-2*(a/4.25),75), size=(2*(a/4.25),b),parent=self.rootNode)
+            self.divNode=avg.DivNode(pos=(a-2*(a/4.25),(b/11)), size=(2*(a/4.25),b),parent=self.rootNode) #75
             self.rightr=avg.RectNode (pos=(0,0), size=(2*(a/4.25), b), parent=self.divNode, color="000000", fillcolor="464646", fillopacity=1)
             
             breite = 2*(a/4.25)
@@ -1401,15 +1401,15 @@ class screen(AVGApp):
             def sendClientName(self):
                 data = "PYCLIENT: "
                 self.sendMessage(data, binary = True)
-                print data
+                #print data
      
             def onOpen(self):
                 self.sendClientName()
-                print "Clientname gesendet"
+                #print "Clientname gesendet"
 
     
             def onMessage(self, message, binary):
-                print "Nachricht erhalten"
+                #print "Nachricht erhalten"
                 print message
                 if (message=="START"):
                     global countvar
@@ -1418,7 +1418,7 @@ class screen(AVGApp):
                     fadeAnimSongsTop3(builtArrayOutOfString(message[6:]))                        
                 else:
                     checkLenArray(builtArrayOutOfString(message))                            
-                print "receivestring ausgefuehrt"
+                #print "receivestring ausgefuehrt"
         
         
 if __name__=='__main__':
