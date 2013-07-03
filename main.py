@@ -34,8 +34,11 @@ class screen(AVGApp):
         #player.setResolution(True,int(a),int(b),32)
         canvas = player.createMainCanvas(size=(a,b)) #canvas kreieren
         self.rootNode = canvas.getRootNode()
-        self.back = avg.RectNode (pos=(0,0), size=(a,b), parent=self.rootNode, color="000000", fillcolor="3D4163", fillopacity=1) 
-        self.z = int (a-(a/3.0)) #(3.5 bei 1440 x 900) #(3.0 bei 1280x800)
+        self.back = avg.RectNode (pos=(0,0), size=(a,b), parent=self.rootNode, color="000000", fillcolor="3D4163", fillopacity=1)
+        if int(a)<=1024:
+            self.z= int (a-(a/2.5))
+        else:
+             self.z = int (a-(a/3.0)) #(3.5 bei 1440 x 900) #(3.0 bei 1280x800)
         self.title=avg.WordsNode (pos=(a/30,0),font="marketing script", variant="Bold", text="DjCrowd", color="E9EBFF", fontsize=55, alignment="left", parent=self.rootNode) 
         self.logog=avg.ImageNode (href="logodj100pxpng.png", pos=(((a/2)-100),0),parent=self.rootNode)
         self.timer=avg.WordsNode (font="marketing script", variant="Bold", text="Countdown 60:00", color="E9EBFF", fontsize=55, indent=self.z, parent=self.rootNode)
