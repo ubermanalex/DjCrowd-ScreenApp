@@ -1,4 +1,9 @@
 '''
+Created on 03.07.2013
+
+@author: Norine Coenen
+'''
+'''
 Created on 06.06.2013
 
 @author: Steffi
@@ -22,14 +27,13 @@ class screen(AVGApp):
         player = avg.Player.get()   #player
         global a,b,z
        
-        timeFade = 0.5
+        #Variablen fuer die Animationsdauer
+        timeFade = 1
         timeAnim = timeFade *1000
         
-        maxAnimationDauer = 15 #in sekunden, 0.3 bis 1 sekunde schneller fertig
-        #timeVotesFade = 1000
-        #timeVotes = 1
-        #timeHalf = 0.5
-        #timeHalfVotes = 500
+        #Wert fuer die maximale Animationsdauer des Rankings, sodass die einzelnen Aenderungen animiert werden (in Sekunden)
+        maxAnimationDauer = 15
+        
         (a,b) = parentNode.size     #aufloesung
         #player.setResolution(True,int(a),int(b),32)
         canvas = player.createMainCanvas(size=(a,b)) #canvas kreieren
@@ -38,14 +42,16 @@ class screen(AVGApp):
         if int(a)<=1024:
             self.z= int (a-(a/2.5))
         else:
-             self.z = int (a-(a/3.0)) #(3.5 bei 1440 x 900) #(3.0 bei 1280x800)
+            self.z = int (a-(a/3.0)) #(3.5 bei 1440 x 900) #(3.0 bei 1280x800)
         self.title=avg.WordsNode (pos=(a/30,0),font="marketing script", variant="Bold", text="DjCrowd", color="E9EBFF", fontsize=55, alignment="left", parent=self.rootNode) 
         self.logog=avg.ImageNode (href="logodj100pxpng.png", pos=(((a/2)-100),0),parent=self.rootNode)
         self.timer=avg.WordsNode (font="marketing script", variant="Bold", text="Countdown 60:00", color="E9EBFF", fontsize=55, indent=self.z, parent=self.rootNode)
         
-        def left(): #links Songs Votes usw
+        #Initialisiert die linke Haelfte des Bildschirms
+        def left():
             
-            self.alteOrdnung = [] #alter Array zum Vergleichen Initialisierung
+            #Initaialisierung des Vergleichsarrays fuer das Ranking
+            self.alteOrdnung = [] 
             self.alteOrdnung.append(["Interpret1", "Song1", "0"])
             self.alteOrdnung.append(["Interpret2", "Song2", "0"])
             self.alteOrdnung.append(["Interpret3", "Song3", "0"])
@@ -57,6 +63,8 @@ class screen(AVGApp):
             middle=a/2.5+10
             
             self.divNode=avg.DivNode(pos=(0,(b/11)), size=(3*(a/5),b-50),parent=self.rootNode) #b-50
+            
+            #Divs fuer das Ranking
             self.ranking1=avg.WordsNode (pos=(a/30,int(b/6)),font="arial", variant="Bold", width=40, height= (b-50),text="1.", color="E9EBFF", fontsize=30, parent=self.rootNode)
             self.ranking2=avg.WordsNode (pos=(a/30,int(b/3.5175)),font="arial", variant="Bold", width=40, height= (b-50),text="2.", color="E9EBFF", fontsize=30, parent=self.rootNode)
             self.ranking3=avg.WordsNode (pos=(a/30,int(b/2.495)),font="arial", variant="Bold", width=40, height= (b-50),text="3." , color="E9EBFF", fontsize=30, parent=self.rootNode)
@@ -64,15 +72,18 @@ class screen(AVGApp):
             self.ranking5=avg.WordsNode (pos=(a/30,int(b/1.58)),font="arial", variant="Bold", width=40, height= (b-50),text="5.", color="E9EBFF", fontsize=30, parent=self.rootNode)
             self.ranking6=avg.WordsNode (pos=(a/30,int(b/1.335)),font="arial", variant="Bold", width=40, height= (b-50),text="6.", color="E9EBFF", fontsize=30, parent=self.rootNode)
             self.ranking7=avg.WordsNode (pos=(a/30,int(b/1.155)),font="arial", variant="Bold", width=40, height= (b-50),text="7.", color="E9EBFF", fontsize=30, parent=self.rootNode)
+            
+            #Grundgeruest fuer die linke Seite
             self.leftr=avg.RectNode (pos=(0,0), size=(3*(a/5), b-50), parent=self.divNode, color="000000", fillcolor="464646",fillopacity=1)
             self.title=avg.WordsNode (pos=(int(a/5.5),0),font="marketing script", variant="Bold", text=" Top 7 Songs ", color="E9EBFF", fontsize=40, parent=self.divNode)
             self.votes=avg.WordsNode (pos=(int(a/2-80),0),font="marketing script", variant="Bold", text="Votes", color="E9EBFF", fontsize=40, parent=self.divNode)
             
+            #Initialisierung der sieben Divs fuer die Plaetze mit ihren zugehoehrigen Wordsnodes 
+            #(in platzXa steht der Titel des Liedes, in platzXb der Interpret und in platzXc die Anzahl der Votes)
             self.div1=avg.DivNode(pos=(a/18,b/6), size=(3*(a/5)-20,30),parent=self.rootNode)
             self.platz1a=avg.WordsNode (pos=(0,0),font="arial", variant="Bold", text=self.alteOrdnung[0][1], color="DDDC3C", fontsize=30, parent=self.div1)
             self.platz1b=avg.WordsNode (pos=(33,40),font="arial", variant="Bold", text=self.alteOrdnung[0][0], color="DDDC3C", fontsize=20, parent=self.div1)
             self.platz1c=avg.WordsNode (pos=(middle,0),font="arial", variant="Bold", text=self.alteOrdnung[0][2], color="DDDC3C", fontsize=30, parent=self.div1)
-            
             
             self.div2=avg.DivNode(pos=(a/18,b/3.5175), size=(3*(a/5)-20,30),parent=self.rootNode)
             self.platz2a=avg.WordsNode (pos=(0,0),font="arial", variant="Bold", text=self.alteOrdnung[1][1], color="C9C9C5", fontsize=30, parent=self.div2)
@@ -83,8 +94,7 @@ class screen(AVGApp):
             self.platz3a=avg.WordsNode (pos=(0,0),font="arial", variant="Bold", text=self.alteOrdnung[2][1], color="EFBF34", fontsize=30, parent=self.div3)
             self.platz3b=avg.WordsNode (pos=(33,40),font="arial", variant="Bold", text=self.alteOrdnung[2][0], color="EFBF34", fontsize=20, parent=self.div3)
             self.platz3c=avg.WordsNode (pos=(middle,0),font="arial", variant="Bold", text=self.alteOrdnung[2][2], color="EFBF34", fontsize=30, parent=self.div3)
-            
-            
+           
             self.div4=avg.DivNode(pos=(a/18,b/1.935), size=(3*(a/5)-20,30),parent=self.rootNode)
             self.platz4a=avg.WordsNode (pos=(0,0),font="arial", variant="Bold", text=self.alteOrdnung[3][1], color="E9EBFF", fontsize=30, parent=self.div4)
             self.platz4b=avg.WordsNode (pos=(33,40),font="arial", variant="Bold", text=self.alteOrdnung[3][0], color="E9EBFF", fontsize=20, parent=self.div4)
@@ -101,11 +111,8 @@ class screen(AVGApp):
             self.platz6c=avg.WordsNode (pos=(middle,0),font="arial", variant="Bold", text=self.alteOrdnung[5][2], color="E9EBFF", fontsize=30, parent=self.div6)
             
             self.div7=avg.DivNode(pos=(a/18,b/1.155), size=(3*(a/5)-20,30),parent=self.rootNode)
-            #Titel
             self.platz7a=avg.WordsNode (pos=(0,0),font="arial", variant="Bold", text=self.alteOrdnung[6][1], color="E9EBFF", fontsize=30, parent=self.div7)
-            #Interpret
             self.platz7b=avg.WordsNode (pos=(33,40),font="arial", variant="Bold", text=self.alteOrdnung[6][0], color="E9EBFF", fontsize=20, parent=self.div7)
-            #Votes
             self.platz7c=avg.WordsNode (pos=(middle,0),font="arial", variant="Bold", text=self.alteOrdnung[6][2], color="E9EBFF", fontsize=30, parent=self.div7)
             
            
@@ -154,10 +161,10 @@ class screen(AVGApp):
             self.platz5c.text= neueOrdnung[4][2]
             self.platz6c.text= neueOrdnung[5][2]
             self.platz7c.text= neueOrdnung[6][2]
-            #print "jetzt doch?"
+            
             #altes array anpassen
             self.alteOrdnung = deepcopy(neueOrdnung)
-            #print "waaas"
+           
             fadeIn(self.div1, timeAnim)
             fadeIn(self.div2, timeAnim)
             fadeIn(self.div3, timeAnim)
@@ -165,12 +172,19 @@ class screen(AVGApp):
             fadeIn(self.div5, timeAnim)
             fadeIn(self.div6, timeAnim)
             fadeIn(self.div7, timeAnim)
-            fadeIn(self.ranking, timeAnim)
+            #Ranking wieder einblenden
+            fadeIn(self.ranking1, timeAnim)
+            fadeIn(self.ranking2, timeAnim)
+            fadeIn(self.ranking3, timeAnim)
+            fadeIn(self.ranking4, timeAnim)
+            fadeIn(self.ranking5, timeAnim)
+            fadeIn(self.ranking6, timeAnim)
+            fadeIn(self.ranking7, timeAnim)
+            
             fadeIn(self.platz1c, timeAnim)
             fadeIn(self.platz2c, timeAnim)
             fadeIn(self.platz3c, timeAnim)
-                
-            #print "ich"  
+            
             
         def fadeAnimSongsNormal (neueOrdnung, null):
             time.sleep(0.1)
@@ -240,29 +254,18 @@ class screen(AVGApp):
          
         def animationUpdate (neueOrdnung):
             animationDauer = 3
-            print "initalisierung", animationDauer
+            
             kopie = deepcopy(self.alteOrdnung)
-            #kopie = []
-            #for i in range(7):    
-            #   kopie.append(self.alteOrdnung[i])
-            #print neueOrdnung
-            #print self.alteOrdnung
-            #print kopie
-#             self.alteOrdnung[0][0] = "scheisse"
-#             print neueOrdnung
-#             print self.alteOrdnung
-#             print kopie
-
+            
+            
             #berechne animationsdauer
-            
-            
             
             
             
             #platz 1
             anzAnim1 = schonda(kopie, neueOrdnung[0][1], neueOrdnung[0][0]) #platz 1
             animationDauer += (anzAnim1 + 1) * timeFade #animationen und votes anpassung animation
-            print "platz 1:", animationDauer
+            
             if anzAnim1 == 7: #nich in liste
                 #arraykopie altes array anpassen
                 kopie[6][0] = neueOrdnung[0][0]
@@ -507,7 +510,7 @@ class screen(AVGApp):
                 if alteOrdnung[i][1] == song and alteOrdnung[i][0] == interpret:
                     return i
                 i += 1
-            return -1
+            return 7
         
         def swap (a, b): #linke Swap animation von den Divs fuer Ranking
             def startAnim():
@@ -924,8 +927,9 @@ class screen(AVGApp):
         
         
         def Top3Anim (number1div, number2div, number3div, number1titel, number2titel, number3titel, size1t, size2t, size3t, pos1div, pos2div, pos3div, 
-                      number1inter, number2inter, number3inter, pos1inter, pos2inter, pos3inter, size1inter, size2inter, size3inter,
-                      div4, div5, div6, div7, ranking, number1votes, number2votes, number3votes, top7, votes):
+                      number1inter, number2inter, number3inter, pos1inter, pos2inter, pos3inter, size1inter, size2inter, size3inter, 
+                      div4, div5, div6, div7, ranking1, ranking2, ranking3, ranking4, ranking5, ranking6, ranking7, 
+                      number1votes, number2votes, number3votes, top7, votes):
                 def topthreeanim():
                     animObj.start()
                     
@@ -950,7 +954,16 @@ class screen(AVGApp):
                                         LinearAnim(div5, "opacity", 2000, 1, 0),
                                         LinearAnim(div6, "opacity", 2000, 1, 0),
                                         LinearAnim(div7, "opacity", 2000, 1, 0),
-                                        LinearAnim(ranking, "opacity", 2000, 1, 0),
+                                        
+                                        #ranking ausfaden
+                                        LinearAnim(ranking1, "opacity", 2000, 1, 0),
+                                        LinearAnim(ranking2, "opacity", 2000, 1, 0), 
+                                        LinearAnim(ranking3, "opacity", 2000, 1, 0),
+                                        LinearAnim(ranking4, "opacity", 2000, 1, 0),
+                                        LinearAnim(ranking5, "opacity", 2000, 1, 0),
+                                        LinearAnim(ranking6, "opacity", 2000, 1, 0),
+                                        LinearAnim(ranking7, "opacity", 2000, 1, 0),
+                                        
                                         LinearAnim(number1votes, "opacity", 2000, 1, 0),
                                         LinearAnim(number2votes, "opacity", 2000, 1, 0),
                                         LinearAnim(number3votes, "opacity", 2000, 1,0),
@@ -1370,7 +1383,7 @@ class screen(AVGApp):
                 seconds -= 1
                 if seconds ==-1:
                     seconds = 3599
-                    '''Top3Anim(self.div1, self.div2, self.div3, 
+                    Top3Anim(self.div1, self.div2, self.div3, 
                              self.platz1a, self.platz2a, self.platz3a, 
                              self.platz1a.fontsize, self.platz2a.fontsize, self.platz3a.fontsize, 
                              self.div1.pos, self.div2.pos, self.div3.pos,
@@ -1378,9 +1391,9 @@ class screen(AVGApp):
                              self.platz1b.pos, self.platz2b.pos, self.platz3b.pos,
                              self.platz1b.fontsize, self.platz2b.fontsize, self.platz3b.fontsize,
                              self.div4, self.div5, self.div6, self.div7,
-                             self.ranking,
+                             self.ranking1, self.ranking2, self.ranking3, self.ranking4, self.ranking5, self.ranking6, self.ranking7,
                              self.platz1c, self.platz2c, self.platz3c,
-                             self.title, self.votes)'''
+                             self.title, self.votes)
                     
         
         def initializeWebSocket():##Starts the WebSocket
@@ -1404,24 +1417,23 @@ class screen(AVGApp):
             def sendClientName(self):
                 data = "PYCLIENT: "
                 self.sendMessage(data, binary = True)
-                #print data
-     
+                print "Clientname gesendet"
+                
             def onOpen(self):
                 self.sendClientName()
-                #print "Clientname gesendet"
+           
 
-    
             def onMessage(self, message, binary):
-                #print "Nachricht erhalten"
+                print "Nachricht erhalten"
                 print message
                 if (message=="START"):
                     global countvar
-                    countvar=thread.start_new_thread(countdown,(0,2))
+                    countvar=thread.start_new_thread(countdown,(0,30))
                 elif (message[:6] == 'PLAYED'):
                     fadeAnimSongsTop3(builtArrayOutOfString(message[6:]))                        
                 else:
                     checkLenArray(builtArrayOutOfString(message))                            
-                #print "receivestring ausgefuehrt"
+           
         
         
 if __name__=='__main__':
