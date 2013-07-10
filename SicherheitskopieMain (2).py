@@ -1522,9 +1522,9 @@ class screen(AVGApp):
             
             #Falls das uebergebene Array komplett leer ist oder sich zu vorher nichts geaendert hat, wird das Array unveraendert gelassen 
             if neueLeute[0][0]==" " and neueLeute[1][0] == " " and neueLeute[2][0] == " ":
-                pass
+                return 0
             elif neueLeute==self.leute:
-                pass
+                return 0
             
             #Hat sich das Array nur an der ersten Stelle geaendert, so werden die Stellen zwei und drei mit Werten aus dem Vergleichsarray aufgefuellt.   
             elif neueLeute [0][0]!=" " and neueLeute [1][0]==" " and neueLeute [2][0]==" ":
