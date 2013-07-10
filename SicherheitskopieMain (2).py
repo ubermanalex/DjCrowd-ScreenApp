@@ -79,46 +79,46 @@ class screen(AVGApp):
             self.ranking7=avg.WordsNode (pos=(a/30,int(b/1.155)),font="arial", variant="Bold", width=40, height= (b-50),text="7.", color="E9EBFF", fontsize=30, parent=self.rootNode)
             
             #Grundgeruest fuer die linke Seite
-            self.leftr=avg.RectNode (pos=(0,0), size=(3*(a/5), b-50), parent=self.divNode, color="000000", fillcolor="464646",fillopacity=1)
+            self.leftr=avg.RectNode (pos=(0,0), size=(3*(a/5), b-50), parent=self.divNode, color="000000", fillcolor="46464B",fillopacity=1)
             self.title=avg.WordsNode (pos=(int(a/5.5),0),font="marketing script", variant="Bold", text=" Top 7 Songs ", color="E9EBFF", fontsize=40, parent=self.divNode)
             self.votes=avg.WordsNode (pos=(int(a/2-80),0),font="marketing script", variant="Bold", text="Votes", color="E9EBFF", fontsize=40, parent=self.divNode)
             
             #Initialisierung der sieben Divs fuer die Plaetze mit ihren zugehoehrigen Wordsnodes 
             #(in platzXa steht der Titel des Liedes, in platzXb der Interpret und in platzXc die Anzahl der Votes)
             self.div1=avg.DivNode(pos=(a/18,b/6), size=(3*(a/5)-20,30),parent=self.rootNode)
-            self.platz1a=avg.WordsNode (pos=(0,0),font="arial", variant="Bold", text=self.alteOrdnung[0][1], color="F69400", fontsize=30, parent=self.div1)
-            self.platz1b=avg.WordsNode (pos=(33,40),font="arial", variant="Bold", text=self.alteOrdnung[0][0], color="F69400", fontsize=20, parent=self.div1)
-            self.platz1c=avg.WordsNode (pos=(middle,0),font="arial", variant="Bold", text=self.alteOrdnung[0][2], color="F69400", fontsize=30, parent=self.div1)
+            self.platz1a=avg.WordsNode (pos=(0,0),font="arial", variant="Bold", text=self.alteOrdnung[0][1], color="FFD700", fontsize=30, parent=self.div1)
+            self.platz1b=avg.WordsNode (pos=(33,40),font="arial", variant="Bold", text=self.alteOrdnung[0][0], color="FFD700", fontsize=20, parent=self.div1)
+            self.platz1c=avg.WordsNode (pos=(middle,0),font="arial", variant="Bold", text=self.alteOrdnung[0][2], color="FFD700", fontsize=30, parent=self.div1)
             
             self.div2=avg.DivNode(pos=(a/18,b/3.5175), size=(3*(a/5)-20,30),parent=self.rootNode)
-            self.platz2a=avg.WordsNode (pos=(0,0),font="arial", variant="Bold", text=self.alteOrdnung[1][1], color="FFD95D", fontsize=30, parent=self.div2)
-            self.platz2b=avg.WordsNode (pos=(33,40),font="arial", variant="Bold", text=self.alteOrdnung[1][0], color="FFD95D", fontsize=20, parent=self.div2)
-            self.platz2c=avg.WordsNode (pos=(middle,0),font="arial", variant="Bold", text=self.alteOrdnung[1][2], color="FFD95D", fontsize=30, parent=self.div2)
+            self.platz2a=avg.WordsNode (pos=(0,0),font="arial", variant="Bold", text=self.alteOrdnung[1][1], color="FFEC6A", fontsize=30, parent=self.div2)
+            self.platz2b=avg.WordsNode (pos=(33,40),font="arial", variant="Bold", text=self.alteOrdnung[1][0], color="FFEC6A", fontsize=20, parent=self.div2)
+            self.platz2c=avg.WordsNode (pos=(middle,0),font="arial", variant="Bold", text=self.alteOrdnung[1][2], color="FFEC6A", fontsize=30, parent=self.div2)
             
             self.div3=avg.DivNode(pos=(a/18,b/2.495), size=(3*(a/5)-20,30),parent=self.rootNode)
-            self.platz3a=avg.WordsNode (pos=(0,0),font="arial", variant="Bold", text=self.alteOrdnung[2][1], color="FAE49A", fontsize=30, parent=self.div3)
-            self.platz3b=avg.WordsNode (pos=(33,40),font="arial", variant="Bold", text=self.alteOrdnung[2][0], color="FAE49A", fontsize=20, parent=self.div3)
-            self.platz3c=avg.WordsNode (pos=(middle,0),font="arial", variant="Bold", text=self.alteOrdnung[2][2], color="FAE49A", fontsize=30, parent=self.div3)
+            self.platz3a=avg.WordsNode (pos=(0,0),font="arial", variant="Bold", text=self.alteOrdnung[2][1], color="FFFFCD", fontsize=30, parent=self.div3)
+            self.platz3b=avg.WordsNode (pos=(33,40),font="arial", variant="Bold", text=self.alteOrdnung[2][0], color="FFFFCD", fontsize=20, parent=self.div3)
+            self.platz3c=avg.WordsNode (pos=(middle,0),font="arial", variant="Bold", text=self.alteOrdnung[2][2], color="FFFFCD", fontsize=30, parent=self.div3)
            
             self.div4=avg.DivNode(pos=(a/18,b/1.935), size=(3*(a/5)-20,30),parent=self.rootNode)
-            self.platz4a=avg.WordsNode (pos=(0,0),font="arial", variant="Bold", text=self.alteOrdnung[3][1], color="E9EBFF", fontsize=30, parent=self.div4)
-            self.platz4b=avg.WordsNode (pos=(33,40),font="arial", variant="Bold", text=self.alteOrdnung[3][0], color="E9EBFF", fontsize=20, parent=self.div4)
-            self.platz4c=avg.WordsNode (pos=(middle,0),font="arial", variant="Bold", text=self.alteOrdnung[3][2], color="E9EBFF", fontsize=30, parent=self.div4)
+            self.platz4a=avg.WordsNode (pos=(0,0),font="arial", variant="Bold", text=self.alteOrdnung[3][1], color="D0D1E2", fontsize=30, parent=self.div4)
+            self.platz4b=avg.WordsNode (pos=(33,40),font="arial", variant="Bold", text=self.alteOrdnung[3][0], color="D0D1E2", fontsize=20, parent=self.div4)
+            self.platz4c=avg.WordsNode (pos=(middle,0),font="arial", variant="Bold", text=self.alteOrdnung[3][2], color="D0D1E2", fontsize=30, parent=self.div4)
             
             self.div5=avg.DivNode(pos=(a/18,b/1.58), size=(3*(a/5)-20,30),parent=self.rootNode)
-            self.platz5a=avg.WordsNode (pos=(0,0),font="arial", variant="Bold", text=self.alteOrdnung[4][1], color="E9EBFF", fontsize=30, parent=self.div5)
-            self.platz5b=avg.WordsNode (pos=(33,40),font="arial", variant="Bold", text=self.alteOrdnung[4][0], color="E9EBFF", fontsize=20, parent=self.div5)
-            self.platz5c=avg.WordsNode (pos=(middle,0),font="arial", variant="Bold", text=self.alteOrdnung[4][2], color="E9EBFF", fontsize=30, parent=self.div5)
+            self.platz5a=avg.WordsNode (pos=(0,0),font="arial", variant="Bold", text=self.alteOrdnung[4][1], color="D0D1E2", fontsize=30, parent=self.div5)
+            self.platz5b=avg.WordsNode (pos=(33,40),font="arial", variant="Bold", text=self.alteOrdnung[4][0], color="D0D1E2", fontsize=20, parent=self.div5)
+            self.platz5c=avg.WordsNode (pos=(middle,0),font="arial", variant="Bold", text=self.alteOrdnung[4][2], color="D0D1E2", fontsize=30, parent=self.div5)
             
             self.div6=avg.DivNode(pos=(a/18,b/1.335), size=(3*(a/5)-20,30),parent=self.rootNode)
-            self.platz6a=avg.WordsNode (pos=(0,0),font="arial", variant="Bold", text=self.alteOrdnung[5][1], color="E9EBFF", fontsize=30, parent=self.div6)
-            self.platz6b=avg.WordsNode (pos=(33,40),font="arial", variant="Bold", text=self.alteOrdnung[5][0], color="E9EBFF", fontsize=20, parent=self.div6)
-            self.platz6c=avg.WordsNode (pos=(middle,0),font="arial", variant="Bold", text=self.alteOrdnung[5][2], color="E9EBFF", fontsize=30, parent=self.div6)
+            self.platz6a=avg.WordsNode (pos=(0,0),font="arial", variant="Bold", text=self.alteOrdnung[5][1], color="D0D1E2", fontsize=30, parent=self.div6)
+            self.platz6b=avg.WordsNode (pos=(33,40),font="arial", variant="Bold", text=self.alteOrdnung[5][0], color="D0D1E2", fontsize=20, parent=self.div6)
+            self.platz6c=avg.WordsNode (pos=(middle,0),font="arial", variant="Bold", text=self.alteOrdnung[5][2], color="D0D1E2", fontsize=30, parent=self.div6)
             
             self.div7=avg.DivNode(pos=(a/18,b/1.155), size=(3*(a/5)-20,30),parent=self.rootNode)
-            self.platz7a=avg.WordsNode (pos=(0,0),font="arial", variant="Bold", text=self.alteOrdnung[6][1], color="E9EBFF", fontsize=30, parent=self.div7)
-            self.platz7b=avg.WordsNode (pos=(33,40),font="arial", variant="Bold", text=self.alteOrdnung[6][0], color="E9EBFF", fontsize=20, parent=self.div7)
-            self.platz7c=avg.WordsNode (pos=(middle,0),font="arial", variant="Bold", text=self.alteOrdnung[6][2], color="E9EBFF", fontsize=30, parent=self.div7)
+            self.platz7a=avg.WordsNode (pos=(0,0),font="arial", variant="Bold", text=self.alteOrdnung[6][1], color="D0D1E2", fontsize=30, parent=self.div7)
+            self.platz7b=avg.WordsNode (pos=(33,40),font="arial", variant="Bold", text=self.alteOrdnung[6][0], color="D0D1E2", fontsize=20, parent=self.div7)
+            self.platz7c=avg.WordsNode (pos=(middle,0),font="arial", variant="Bold", text=self.alteOrdnung[6][2], color="D0D1E2", fontsize=30, parent=self.div7)
             
             
     #Deklaration aller noetigen Hilfsvariablen fuer die Animationen der linken Seite
@@ -1445,8 +1445,8 @@ class screen(AVGApp):
         def right():
             #Initialisert den Hintergrung der rechten Seite
             self.divNode=avg.DivNode(pos=(a-2*(a/4.25),(b/11)), size=(2*(a/4.25),b),parent=self.rootNode)
-            self.rightr=avg.RectNode (pos=(0,0), size=(2*(a/4.25), b), parent=self.divNode, color="000000", fillcolor="464646", fillopacity=1)
-            self.ersterPunkte=avg.WordsNode(pos=(87,10), text="0000", parent=self.divNode, font='arial', color="6E6E6E", fontsize=20)
+            self.rightr=avg.RectNode (pos=(0,0), size=(2*(a/4.25), b), parent=self.divNode, color="000000", fillcolor="46464B", fillopacity=1)
+            self.ersterPunkte=avg.WordsNode(pos=(60,0), text="0000", parent=self.divNode, font='marketing script', color="E9EBFF", fontsize=40)
             breite = 2*(a/4.25)
             
             #Initialisert ein Vergleichsarray fuer die spaetere Animationen 
@@ -1457,20 +1457,20 @@ class screen(AVGApp):
             
             #Initialisert Name und Balken der drei angezeigten User im Ranking
             self.divNode1=avg.DivNode(pos=(50,0), size=((breite/3),b-50),parent=self.divNode)
-            self.erster=avg.RectNode(pos=(50,50+(b-250)-5), size=(30,5), parent=self.divNode1, color="0489B1", fillcolor="2E9AFE", fillopacity=1)
-            self.ersterName=avg.WordsNode(pos=(30,b/1.25), text=" " ,parent=self.divNode1, font='arial', color="6E6E6E", fontsize=20)
+            self.erster=avg.RectNode(pos=(50,50+(b-250)-5), size=(30,5), parent=self.divNode1, color="EDEDC1", fillcolor="FFFFCD", fillopacity=1)
+            self.ersterName=avg.WordsNode(pos=(30,b/1.25), text=" " ,parent=self.divNode1, font='arial', color="E9EBFF", fontsize=20)
             self.ersterName.text=self.leute[0][0]
             
             
             
             self.divNode2=avg.DivNode(pos=((breite/2.5),0), size=((breite/2.5),b-50),parent=self.divNode)
-            self.zweiter=avg.RectNode(pos=(50,50+(b-250)-5), size=(30,5), parent=self.divNode2, color="0489B1", fillcolor="2E9AFE", fillopacity=1)
-            self.zweiterName=avg.WordsNode(pos=(30,b/1.25), text=" " ,parent=self.divNode2, font='arial', color="6E6E6E", fontsize=20)
+            self.zweiter=avg.RectNode(pos=(50,50+(b-250)-5), size=(30,5), parent=self.divNode2, color="EDEDC1", fillcolor="FFFFCD", fillopacity=1)
+            self.zweiterName=avg.WordsNode(pos=(30,b/1.25), text=" " ,parent=self.divNode2, font='arial', color="E9EBFF", fontsize=20)
             self.zweiterName.text=self.leute[1][0]
             
             self.divNode3=avg.DivNode(pos=((breite-(breite/3.5)),0), size=((breite/3.5),b-50),parent=self.divNode)
-            self.dritter=avg.RectNode(pos=(50,50+(b-250)-5), size=(30,5), parent=self.divNode3, color="0489B1", fillcolor="2E9AFE",fillopacity=1)      
-            self.dritterName=avg.WordsNode(pos=(30,b/1.25), text=" " ,parent=self.divNode3, font='arial', color="6E6E6E", fontsize=20)
+            self.dritter=avg.RectNode(pos=(50,50+(b-250)-5), size=(30,5), parent=self.divNode3, color="EDEDC1", fillcolor="FFFFCD",fillopacity=1)      
+            self.dritterName=avg.WordsNode(pos=(30,b/1.25), text=" " ,parent=self.divNode3, font='arial', color="E9EBFF", fontsize=20)
             self.dritterName.text=self.leute[2][0]
         
     #Deklaration aller noetigen Hilfsvariablen fuer die Animationen der rechten Seite 
@@ -1660,7 +1660,7 @@ class screen(AVGApp):
                 elif PunkteErster > 9:
                     self.ersterPunkte.text="00"+str(int(PunkteErster))
                 else: self.ersterPunkte.text="000"+str(int(PunkteErster))
-                time.sleep(3)
+                time.sleep(3) #TODO:
                 
                 #Die gleichen Operationen werden nun auch auf dem Vergleichsarray ausgefuehrt
                 if self.leute [0][1]=="0":
@@ -1681,7 +1681,7 @@ class screen(AVGApp):
                 self.ersterName.text=self.leute[0][0]
                 
                 if float(self.leute[0][1])==0:
-                    p=5 
+                    p=5
                     q=5
                     r=5
                 else:
@@ -1742,7 +1742,6 @@ class screen(AVGApp):
                     TauschenimArray(self.leute, 1, 2)                
                     TauschenimArray(self.leute, 0, 1)
                     
-                    time.sleep(3)
                     #Zuletzt werden noch die User-Divs zurueckgetauscht, um sie spaeter wieder unter dem gleichen Namen angesprochen werden koennen
                     self.divNode1.pos = (50,0) 
                     self.erster.pos=(50,balkenposy) 
@@ -1762,6 +1761,7 @@ class screen(AVGApp):
                     self.dritter.pos=(50,50+(b-250)-Dritterpunkte)      
                     self.dritter.size=(30,Dritterpunkte)
                     self.dritterName.text=self.leute[2][0]
+                    time.sleep(3) #TODO
                     
                 #Der Erste befindet sich bereits an der zweiten Stelle in der Liste.
                 elif i ==1:
@@ -1788,7 +1788,6 @@ class screen(AVGApp):
                     self.leute[1][1] = neueLeute[1][1]
                     TauschenimArray(self.leute, 0, 1)
                     
-                    time.sleep(5)
                     #Anschliessend werden die Divs wieder zuruechgetauscht, um sie im Folgenden wieder unter dem gleichen Namen ansprechen zu koennen.
                     self.divNode1.pos = (50,0) 
                     self.erster.pos=(50,balkenposy) 
@@ -1802,7 +1801,8 @@ class screen(AVGApp):
                     self.zweiter.pos=(50,balkenposy)
                     self.zweiter.size=(30,Hundertprozent)
                     self.zweiterName.text=self.leute[1][0]
-             
+                    time.sleep(3) #TODO
+                    
            
                     
                 #Befindet sich der Erste bereits an der ersten Stelle im Ranking, so muessen nur die Daten des Balkens und im Array angepasst werden.   
@@ -1819,7 +1819,7 @@ class screen(AVGApp):
                         self.ersterPunkte.text="00"+str(int(PunkteErster))
                     else: self.ersterPunkte.text="000"+str(int(PunkteErster))
 
-            time.sleep(3)
+            time.sleep(3) #TODO
             
             #Der neue Zweite des User-Rankings ist noch nicht in der Liste zu finden.
             if Suchen(self.leute, neueLeute[1][0])== -1 :
