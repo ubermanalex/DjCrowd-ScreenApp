@@ -86,19 +86,19 @@ class screen(AVGApp):
             #Initialisierung der sieben Divs fuer die Plaetze mit ihren zugehoehrigen Wordsnodes 
             #(in platzXa steht der Titel des Liedes, in platzXb der Interpret und in platzXc die Anzahl der Votes)
             self.div1=avg.DivNode(pos=(a/18,b/6), size=(3*(a/5)-20,30),parent=self.rootNode)
-            self.platz1a=avg.WordsNode (pos=(0,0),font="arial", variant="Bold", text=self.alteOrdnung[0][1], color="DDDC3C", fontsize=30, parent=self.div1)
-            self.platz1b=avg.WordsNode (pos=(33,40),font="arial", variant="Bold", text=self.alteOrdnung[0][0], color="DDDC3C", fontsize=20, parent=self.div1)
-            self.platz1c=avg.WordsNode (pos=(middle,0),font="arial", variant="Bold", text=self.alteOrdnung[0][2], color="DDDC3C", fontsize=30, parent=self.div1)
+            self.platz1a=avg.WordsNode (pos=(0,0),font="arial", variant="Bold", text=self.alteOrdnung[0][1], color="F69400", fontsize=30, parent=self.div1)
+            self.platz1b=avg.WordsNode (pos=(33,40),font="arial", variant="Bold", text=self.alteOrdnung[0][0], color="F69400", fontsize=20, parent=self.div1)
+            self.platz1c=avg.WordsNode (pos=(middle,0),font="arial", variant="Bold", text=self.alteOrdnung[0][2], color="F69400", fontsize=30, parent=self.div1)
             
             self.div2=avg.DivNode(pos=(a/18,b/3.5175), size=(3*(a/5)-20,30),parent=self.rootNode)
-            self.platz2a=avg.WordsNode (pos=(0,0),font="arial", variant="Bold", text=self.alteOrdnung[1][1], color="C9C9C5", fontsize=30, parent=self.div2)
-            self.platz2b=avg.WordsNode (pos=(33,40),font="arial", variant="Bold", text=self.alteOrdnung[1][0], color="C9C9C5", fontsize=20, parent=self.div2)
-            self.platz2c=avg.WordsNode (pos=(middle,0),font="arial", variant="Bold", text=self.alteOrdnung[1][2], color="C9C9C5", fontsize=30, parent=self.div2)
+            self.platz2a=avg.WordsNode (pos=(0,0),font="arial", variant="Bold", text=self.alteOrdnung[1][1], color="FFD95D", fontsize=30, parent=self.div2)
+            self.platz2b=avg.WordsNode (pos=(33,40),font="arial", variant="Bold", text=self.alteOrdnung[1][0], color="FFD95D", fontsize=20, parent=self.div2)
+            self.platz2c=avg.WordsNode (pos=(middle,0),font="arial", variant="Bold", text=self.alteOrdnung[1][2], color="FFD95D", fontsize=30, parent=self.div2)
             
             self.div3=avg.DivNode(pos=(a/18,b/2.495), size=(3*(a/5)-20,30),parent=self.rootNode)
-            self.platz3a=avg.WordsNode (pos=(0,0),font="arial", variant="Bold", text=self.alteOrdnung[2][1], color="EFBF34", fontsize=30, parent=self.div3)
-            self.platz3b=avg.WordsNode (pos=(33,40),font="arial", variant="Bold", text=self.alteOrdnung[2][0], color="EFBF34", fontsize=20, parent=self.div3)
-            self.platz3c=avg.WordsNode (pos=(middle,0),font="arial", variant="Bold", text=self.alteOrdnung[2][2], color="EFBF34", fontsize=30, parent=self.div3)
+            self.platz3a=avg.WordsNode (pos=(0,0),font="arial", variant="Bold", text=self.alteOrdnung[2][1], color="FAE49A", fontsize=30, parent=self.div3)
+            self.platz3b=avg.WordsNode (pos=(33,40),font="arial", variant="Bold", text=self.alteOrdnung[2][0], color="FAE49A", fontsize=20, parent=self.div3)
+            self.platz3c=avg.WordsNode (pos=(middle,0),font="arial", variant="Bold", text=self.alteOrdnung[2][2], color="FAE49A", fontsize=30, parent=self.div3)
            
             self.div4=avg.DivNode(pos=(a/18,b/1.935), size=(3*(a/5)-20,30),parent=self.rootNode)
             self.platz4a=avg.WordsNode (pos=(0,0),font="arial", variant="Bold", text=self.alteOrdnung[3][1], color="E9EBFF", fontsize=30, parent=self.div4)
@@ -1525,8 +1525,17 @@ class screen(AVGApp):
                 return 0
             elif neueLeute==self.leute:
                 return 0
+            elif neueLeute[0][0]!=" " and int(neueLeute[0][1])==0:
+                return 0
+            elif neueLeute[0][0]!=" " and int(neueLeute[0][1])==0:
+                return 0
+            elif neueLeute[0][0]!=" " and int(neueLeute[0][1])==0 and neueLeute[1][0]!=" " and int (neueLeute[1][1])==0:
+                return 0
+            elif neueLeute[0][0]!=" " and int(neueLeute[0][1])==0 and neueLeute[1][0]!=" " and int (neueLeute[1][1])==0 and neueLeute[2][0]!=" " and int (neueLeute[2][1])==0:
+                return 0
             
-            #Hat sich das Array nur an der ersten Stelle geaendert, so werden die Stellen zwei und drei mit Werten aus dem Vergleichsarray aufgefuellt.   
+            #Hat sich das Array nur an der ersten Stelle geaendert, so werden die Stellen zwei und drei mit Werten aus dem Vergleichsarray aufgefuellt.
+               
             elif neueLeute [0][0]!=" " and neueLeute [1][0]==" " and neueLeute [2][0]==" ":
                 #Werte an der ersten Position kommen aus dem neuen Array
                 PunkteErster = neueLeute[0][1]
@@ -1631,19 +1640,28 @@ class screen(AVGApp):
                
             #Der neue erste User des Rankings ist noch nicht in der alten Liste zu finden
             if Suchen(self.leute, neueLeute[0][0])== -1 :
+                print self.leute
+                print neueLeute
                 #Der neue Erste wird an der dritten Position eingeblendet.
                 self.dritter.pos=(50,balkenposy)
                 self.dritter.size=(30, Hundertprozent)
                 self.dritterName.text=NameErster
                 #Anschliessend wird er an die zweite Position getauscht.
                 TauschenDIV(self.divNode2, self.divNode3, breite/2.5, breite-(breite/3.5)) 
-                time.sleep(5) 
+                time.sleep(3) 
                 #Anschliessend wird der neue Erste noch von der zweiten an die erste Position getauscht.    
                 TauschenDIV(self.divNode3, self.divNode1, breite/2.5, 50)
                 
-                time.sleep(5)
+                time.sleep(3)
                 
                 #Die gleichen Operationen werden nun auch auf dem Vergleichsarray ausgefuehrt
+                if self.leute [0][1]=="0":
+                    z=5
+                    position=b/1.3
+                else:
+                    z=Hundertprozent
+                    position=balkenposy
+                
                 SetzenimArray(self.leute, neueLeute[0][0], neueLeute[0][1])
                 TauschenimArray(self.leute, 1, 2)                
                 TauschenimArray(self.leute, 0, 1)
@@ -1654,9 +1672,6 @@ class screen(AVGApp):
                 self.erster.size=(30,Hundertprozent)
                 self.ersterName.text=self.leute[0][0]
                 
-                print float(self.leute[0][1])
-                print float(self.leute[1][1])
-                
                 if float(self.leute[0][1])==0:
                     p=5 
                     q=5
@@ -1666,10 +1681,11 @@ class screen(AVGApp):
                     q=float(self.leute[1][1])
                     r=float(self.leute[2][1])
                 
+                
                 Zweiterpunkte = (Hundertprozent / p) * q
                 self.divNode2.pos = (breite/2.5, 0)
-                self.zweiter.pos=(50,balkenposy)
-                self.zweiter.size=(30,Hundertprozent)
+                self.zweiter.pos=(50,position)
+                self.zweiter.size=(30,z)
                 self.zweiterName.text=self.leute[1][0]
              
                 Dritterpunkte = (Hundertprozent / p) * r
@@ -1691,6 +1707,22 @@ class screen(AVGApp):
                     time.sleep(5)           
                     TauschenDIV(self.divNode3, self.divNode1, breite/2.5, 0)
                     #Anschliessend werden diese Modifikationen auch auf dem Array durchgefuehrt.
+                    if self.leute [0][1]=="0":
+                        z=5
+                        position=b/1.3
+                    else:
+                        z=Hundertprozent
+                        position=balkenposy
+                    
+                    if float(self.leute[0][1])==0:
+                        p=5 
+                        q=5
+                        r=5
+                    else:
+                        p=float(self.leute[0][1])
+                        q=float(self.leute[1][1])
+                        r=float(self.leute[2][1])
+                        
                     self.leute[2][1] = neueLeute[2][1]
                     TauschenimArray(self.leute, 1, 2)                
                     TauschenimArray(self.leute, 0, 1)
@@ -1702,14 +1734,7 @@ class screen(AVGApp):
                     self.erster.size=(30,Hundertprozent)
                     self.ersterName.text=self.leute[0][0]
                     
-                    if float(self.leute[0][1])==0:
-                        p=5 
-                        q=5
-                        r=5
-                    else:
-                        p=float(self.leute[0][1])
-                        q=float(self.leute[1][1])
-                        r=float(self.leute[2][1])
+                    
                     
                     Zweiterpunkte = (Hundertprozent / p) * q
                     self.divNode2.pos = (breite/2.5, 0)
@@ -1730,6 +1755,14 @@ class screen(AVGApp):
                     self.zweiter.size=(30,Hundertprozent)
                     TauschenDIV(self.divNode2, self.divNode1, breite/2.5, 50)
                     #Auch die Daten im Vergleichsarray werden aktualisiert und an die erste Stelle getauscht.
+                    if float(self.leute[0][1])==0:
+                        p=5 
+                        q=5
+                    else:
+                        p=float(self.leute[0][1])
+                        q=float(self.leute[1][1])
+                    
+                    
                     self.leute[1][1] = neueLeute[1][1]
                     TauschenimArray(self.leute, 0, 1)
                     
@@ -1740,12 +1773,6 @@ class screen(AVGApp):
                     self.erster.size=(30,Hundertprozent)
                     self.ersterName.text=self.leute[0][0]
                     
-                    if float(self.leute[0][1])==0:
-                        p=5 
-                        q=5
-                    else:
-                        p=float(self.leute[0][1])
-                        q=float(self.leute[1][1])
                     
                     
                     Zweiterpunkte = (Hundertprozent / p) * q
@@ -1774,6 +1801,15 @@ class screen(AVGApp):
                 #Der Dritte wird an den zweiten Platz getauscht
                 TauschenDIV(self.divNode3, self.divNode2, breite-(breite/3.5), breite/2.5)
                 #Die Werte werden im Vergleichsarray an der dritten Stelle gesetzt und anschliessend hier auch an die zweite Position getauscht.
+                if float(self.leute[0][1])==0:
+                    p=5 
+                    q=5
+                    r=5
+                else:
+                    p=float(self.leute[0][1])
+                    q=float(self.leute[1][1])
+                    r=float(self.leute[2][1])
+                    
                 SetzenimArray(self.leute, neueLeute[1][0], neueLeute[1][1])   
                 TauschenimArray(self.leute, 1, 2)
                 
@@ -1786,14 +1822,7 @@ class screen(AVGApp):
                 self.zweiterName.pos=(30,b/1.25)
                 self.zweiterName.text=self.leute[1][0]
                 
-                if float(self.leute[0][1])==0:
-                    p=5 
-                    q=5
-                    r=5
-                else:
-                    p=float(self.leute[0][1])
-                    q=float(self.leute[1][1])
-                    r=float(self.leute[2][1])
+                
                 
                 
                 Dritterpunkte = (Hundertprozent / p) * r
@@ -1815,7 +1844,15 @@ class screen(AVGApp):
                     TauschenDIV(self.divNode2, self.divNode3, breite/2.5, breite-(breite/3.5))
                     #Anschliessend wird noch das Vergleichsarray entsprechend angepasst.
                     self.leute[2][1] = neueLeute[2][1]
-                    TauschenimArray(self.leute, 1, 2)       
+                    TauschenimArray(self.leute, 1, 2)    
+                    if float(self.leute[0][1])==0:
+                        p=5 
+                        q=5
+                        r=5
+                    else:
+                        p=float(self.leute[0][1])
+                        q=float(self.leute[1][1])
+                        r=float(self.leute[2][1])   
                     
                     time.sleep(5)
                     #Nun muessen noch die Divs wieder zurueckgetauscht werden, um bei spaeteren Aufrufen an der gleichen Ausgangsposition zu stehen.
@@ -1825,14 +1862,7 @@ class screen(AVGApp):
                     self.zweiterName.pos=(30,b/1.25)
                     self.zweiterName.text=self.leute[1][0]
                     
-                    if float(self.leute[0][1])==0:
-                        p=5 
-                        q=5
-                        r=5
-                    else:
-                        p=float(self.leute[0][1])
-                        q=float(self.leute[1][1])
-                        r=float(self.leute[2][1])
+                    
                     
                     Dritterpunkte = (Hundertprozent / p) * r
                     self.divNode3.pos = (breite-(breite/3.5),0)
@@ -1937,7 +1967,7 @@ class screen(AVGApp):
                 seconds -= 1
                 #Sollte der Wert jetzt negativ werden, so wird der Countdown zurueckgesetzt.
                 if seconds ==-1:
-                    seconds = 119
+                    seconds = 59
                 #Rechnet die Sekunden wieder in Minuten und Sekunden um.
                 (mint,sect)=secsToMs(seconds)
                 #Sorgt fuer eine korrekte Darstellung des Countdowns auf dem Screen.
