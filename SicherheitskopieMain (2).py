@@ -1665,10 +1665,11 @@ class screen(AVGApp):
                 #Die gleichen Operationen werden nun auch auf dem Vergleichsarray ausgefuehrt
                 if self.leute [0][1]=="0":
                     z=5
-                    position=50-(b-250)-5
+                    position=50+(b-250)-5
                 else:
                     z=Hundertprozent
-                    position=balkenposy
+                    position=50
+                
                 
                 SetzenimArray(self.leute, neueLeute[0][0], neueLeute[0][1])
                 TauschenimArray(self.leute, 1, 2)                
@@ -1680,26 +1681,22 @@ class screen(AVGApp):
                 self.erster.size=(30,Hundertprozent)
                 self.ersterName.text=self.leute[0][0]
                 
-                if float(self.leute[0][1])==0:
-                    p=5
-                    q=5
-                    r=5
-                else:
-                    p=float(self.leute[0][1])
-                    q=float(self.leute[1][1])
-                    r=float(self.leute[2][1])
-                
-                
-                Zweiterpunkte = (Hundertprozent / p) * q
+
                 self.divNode2.pos = (breite/2.5, 0)
                 self.zweiter.pos=(50,position)
                 self.zweiter.size=(30,z)
                 self.zweiterName.text=self.leute[1][0]
-             
-                Dritterpunkte = (Hundertprozent / p) * r
+                
+                if self.leute[2][1] == "0":
+                    x = 5
+                    balkenpos = 50+(b-250)-5
+                else:
+                    x = self.leute[2][1]
+                    float(x)
+                    
                 self.divNode3.pos = (breite-(breite/3.5),0)
-                self.dritter.pos=(50,50+(b-250)-Dritterpunkte)      
-                self.dritter.size=(30,Dritterpunkte)
+                self.dritter.pos=(50,50+(b-250)-x)      
+                self.dritter.size=(30,x)
                 self.dritterName.text=self.leute[2][0]
                 
             #Befindet sich der neue Erste bereits in der Liste, wird abhaenging von seiner aktuellen Position 
@@ -1729,14 +1726,6 @@ class screen(AVGApp):
                         z=Hundertprozent
                         position=balkenposy
                     
-                    if float(self.leute[0][1])==0:
-                        p=5 
-                        q=5
-                        r=5
-                    else:
-                        p=float(self.leute[0][1])
-                        q=float(self.leute[1][1])
-                        r=float(self.leute[2][1])
                         
                     self.leute[2][1] = neueLeute[2][1]
                     TauschenimArray(self.leute, 1, 2)                
@@ -1748,18 +1737,22 @@ class screen(AVGApp):
                     self.erster.size=(30,Hundertprozent)
                     self.ersterName.text=self.leute[0][0]
                     
-                    
-                    
-                    Zweiterpunkte = (Hundertprozent / p) * q
                     self.divNode2.pos = (breite/2.5, 0)
-                    self.zweiter.pos=(50,50+(b-250)-Zweiterpunkte)
-                    self.zweiter.size=(30,Zweiterpunkte)
+                    self.zweiter.pos=(50,position)
+                    self.zweiter.size=(30,z)
                     self.zweiterName.text=self.leute[1][0]
-             
-                    Dritterpunkte = (Hundertprozent / p) * r
+                    
+                    if self.leute[2][1] == "0":
+                        x = 5
+                        balkenpos = 50+(b-250)-5
+                    else:
+                        x = self.leute[2][1]
+                        float(x)
+                    
+                    
                     self.divNode3.pos = (breite-(breite/3.5),0)
-                    self.dritter.pos=(50,50+(b-250)-Dritterpunkte)      
-                    self.dritter.size=(30,Dritterpunkte)
+                    self.dritter.pos=(50,50+(b-250)-x)      
+                    self.dritter.size=(30,x)
                     self.dritterName.text=self.leute[2][0]
                     time.sleep(3) #TODO
                     
@@ -1777,12 +1770,13 @@ class screen(AVGApp):
                         self.ersterPunkte.text="00"+str(int(PunkteErster))
                     else: self.ersterPunkte.text="000"+str(int(PunkteErster))
                     #Auch die Daten im Vergleichsarray werden aktualisiert und an die erste Stelle getauscht.
-                    if float(self.leute[0][1])==0:
-                        p=5 
-                        q=5
+                    if self.leute [0][1]=="0":
+                        z=5
+                        position=50+(b-250)-5
                     else:
-                        p=float(self.leute[0][1])
-                        q=float(self.leute[1][1])
+                        z=Hundertprozent
+                        position=balkenposy
+                    
                     
                     
                     self.leute[1][1] = neueLeute[1][1]
@@ -1798,8 +1792,8 @@ class screen(AVGApp):
                     
                     Zweiterpunkte = (Hundertprozent / p) * q
                     self.divNode2.pos = (breite/2.5, 0)
-                    self.zweiter.pos=(50,balkenposy)
-                    self.zweiter.size=(30,Hundertprozent)
+                    self.zweiter.pos=(50,position)
+                    self.zweiter.size=(30,z)
                     self.zweiterName.text=self.leute[1][0]
                     time.sleep(3) #TODO
                     
@@ -1852,13 +1846,21 @@ class screen(AVGApp):
                     q=float(self.leute[1][1])
                     r=float(self.leute[2][1])
                     
-                
-                
-                Dritterpunkte = (Hundertprozent / p) * r
+                if self.leute[2][1] == "0":
+                     x = 5
+                     balkenpos = 50+(b-250)-5
+                else:
+                     x = self.leute[2][1]
+                     float(x)
+                    
+                    
                 self.divNode3.pos = (breite-(breite/3.5),0)
-                self.dritter.pos=(50,50+(b-250)-Dritterpunkte)      
-                self.dritter.size=(30,Dritterpunkte)
+                self.dritter.pos=(50,50+(b-250)-x)      
+                self.dritter.size=(30,x)
                 self.dritterName.text=self.leute[2][0]
+                time.sleep(3)
+                
+                
                 
                 
             #Der neue Zweite befindet sich bereits in der Liste.
@@ -1883,21 +1885,19 @@ class screen(AVGApp):
                     self.zweiterName.pos=(30,b/1.25)
                     self.zweiterName.text=self.leute[1][0]
                     
-                    if float(self.leute[0][1])==0:
-						p=5 
-						q=5
-						r=5
+                    if self.leute[2][1] == "0":
+                        x = 5
+                        balkenpos = 50+(b-250)-5
                     else:
-						p=float(self.leute[0][1])
-						q=float(self.leute[1][1])
-						r=float(self.leute[2][1])
+                        x = self.leute[2][1]
+                        float(x)
                     
                     
-                    Dritterpunkte = (Hundertprozent / p) * r
                     self.divNode3.pos = (breite-(breite/3.5),0)
-                    self.dritter.pos=(50,50+(b-250)-Punktezweiter)      
-                    self.dritter.size=(30,Punktezweiter)
-                    self.dritterName.text=self.leute[2][0] 
+                    self.dritter.pos=(50,50+(b-250)-x)      
+                    self.dritter.size=(30,x)
+                    self.dritterName.text=self.leute[2][0]
+                    time.sleep(3) 
                 #Der neue Zweite steht in der Liste bereits an der zweiten Stelle.   
                 else:
                     #Es werden einfach nur die Werte des Balkens und die Daten im Vergleichsarray angepasst.
@@ -1905,7 +1905,7 @@ class screen(AVGApp):
                     self.zweiter.size=(30,Punktezweiter)
                     self.leute[1][1] = neueLeute[1][1]
                     
-            time.sleep(3)
+            
             
             #Der neue Dritte befindet sich noch nicht in der Liste.
             if Suchen(self.leute, neueLeute[2][0])== -1 :
@@ -2024,6 +2024,8 @@ class screen(AVGApp):
         #Ruft die Mehoden auf, die die linke und rechte Bildschirmseite initialisieren
         left()
         right()
+        #testarray = [["Kirstin","10"],["Stefanie","0"],["Alexander", "0"]]
+        #thread.start_new_thread(recievedpunkte,(testarray, 0))
         #Startet den WebSocket in einem neuen Tread
         thread.start_new_thread(initializeWebSocket,())
 
