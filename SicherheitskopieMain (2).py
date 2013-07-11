@@ -1910,6 +1910,9 @@ class screen(AVGApp):
             #Der neue Dritte befindet sich noch nicht in der Liste.
             if Suchen(self.leute, neueLeute[2][0])== -1 :
                 #Die Werte an der dritten Position werden komplett neu initialisiert.
+                if self.leute[2][1] == "0":
+                    Punktedritter = 5
+                    
                 self.dritter.pos= (50,50+(b-250)-Punktedritter)
                 self.dritter.size=(30,Punktedritter)
                 self.dritterName.text=NameDritter
@@ -1918,6 +1921,8 @@ class screen(AVGApp):
             #Der neue Dritte befindet sich bereits in der Liste.
             else:
                 #Die Werte werden auf dem Screen angepasst und auch im Vergleichsarray aktualisiert
+                if self.leute[2][1] == "0":
+                    Punktedritter = 5
                 self.dritter.pos= (50,50+(b-250)-Punktedritter)
                 self.dritter.size=(30,Punktedritter)
                 SetzenimArray(self.leute, neueLeute[2][0], neueLeute[2][1])  
@@ -2024,7 +2029,7 @@ class screen(AVGApp):
         #Ruft die Mehoden auf, die die linke und rechte Bildschirmseite initialisieren
         left()
         right()
-        #testarray = [["Kirstin","100"],["Stefanie","90"],["Alexander", "50"]]
+        #testarray = [["Kirstin","100"],[" ","0"],[" ", "0"]]
         #thread.start_new_thread(recievedpunkte,(testarray, 0))
         #Startet den WebSocket in einem neuen Tread
         thread.start_new_thread(initializeWebSocket,())
