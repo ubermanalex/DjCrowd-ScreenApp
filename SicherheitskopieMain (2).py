@@ -1,7 +1,7 @@
 '''
 Created on 03.07.2013
 
-@author: Stefanie Lehmann, Kirstin Buchholz, Norine Coenen, Alexander Vielhauer
+@author: Kirstin Buchholz, Norine Coenen, Stefanie Lehmann
 '''
 
 from libavg import *
@@ -2024,7 +2024,7 @@ class screen(AVGApp):
         #Ruft die Mehoden auf, die die linke und rechte Bildschirmseite initialisieren
         left()
         right()
-        #testarray = [["Kirstin","10"],["Stefanie","0"],["Alexander", "0"]]
+        #testarray = [["Kirstin","100"],["Stefanie","90"],["Alexander", "50"]]
         #thread.start_new_thread(recievedpunkte,(testarray, 0))
         #Startet den WebSocket in einem neuen Tread
         thread.start_new_thread(initializeWebSocket,())
