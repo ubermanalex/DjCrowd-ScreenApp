@@ -45,7 +45,7 @@ class screen(AVGApp):
         else:
             self.z = int (a-(a/3.0)) #(3.5 bei 1440 x 900) #(3.0 bei 1280x800)
         self.title=avg.WordsNode (pos=(a/30,15),font="marketing script", variant="Bold", text="DjCrowd", color="E9EBFF", fontsize=55, alignment="left", parent=self.rootNode) 
-        self.logog=avg.ImageNode (href="logodj100pxpng.png", pos=(((a/2)-100),15),parent=self.rootNode)
+        self.logog=avg.ImageNode (href="logodj100pxpng.png", pos=(((a/2)-117),15),parent=self.rootNode)
         self.timer=avg.WordsNode (pos=(200,15),font="marketing script", variant="Bold", text="Countdown 60:00", color="E9EBFF", fontsize=55, indent=self.z, parent=self.rootNode)
         
         
