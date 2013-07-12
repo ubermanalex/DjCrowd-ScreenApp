@@ -16,16 +16,13 @@ from autobahn.websocket import *
 
 from copy import deepcopy
 
+global serverip
+
 class screen(AVGApp):
     def __init__(self, parentNode):
         
         player = avg.Player.get()   #player
         global a,b,z
-        
-        #aktuelle IP des Servers 
-        #serverip = "192.168.2.111" #kirstin
-        #serverip = "192.168.2.110" #alex
-        serverip = "192.168.178.31"
         
         #Initialisierung des Countdowns
         zeit = (0,10)
@@ -2063,6 +2060,10 @@ class screen(AVGApp):
                   
 #Funktion, die die Aufloesung des Bildschirms ausliest
 if __name__=='__main__':
+	while True:
+        x = raw_input()
+        serverip = x
+        break
     user32 = ctypes.windll.user32
     screensize = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
     screen.start(resolution=(screensize[0], screensize[1]))
