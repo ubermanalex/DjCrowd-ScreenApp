@@ -1483,53 +1483,16 @@ class screen(AVGApp):
             self.dritter=avg.RectNode(pos=(50,50+(b-250)-5), size=(30,5), parent=self.divNode3, color="EDEDC1", fillcolor="FFFFCD",fillopacity=1)      
             self.dritterName=avg.WordsNode(pos=(50,900), text=" " ,parent=self.divNode3, font='marketing script', color="E9EBFF", fontsize=35)
             self.dritterName.text=self.leute[2][0]
+          
         
-    #Deklaration aller noetigen Hilfsvariablen fuer die Animationen der rechten Seite 
-        #Prueft ob, und wenn ja, wo sich der User bereits im Ranking befindet.
-        def Suchen(array, name):
-                i = 0
-                while i<2 :
-                    if array[i][0] == name:
-                        return i
-                    i += 1
-                #Wird der Name nicht gefunden, so wird -1 zurueckgegeben
-                return -1
+       
         
-        #Animiert das Tauschen von zwei uebergebenen Objekten in der Horizontalen
-        def TauschenDIV(a,b,AX,BX):
-                def startAnim():
-                    animObj.start()
-                #Definiert zwei lineare Animationen und fuehrt diese als parallele Animation aus.
-                animObj1 = LinearAnim(a, "x", 2000, AX, BX)
-                animObj2 = LinearAnim(b, "x", 2000, BX, AX)
-                animList = (animObj2, animObj1)
-                animObj = ParallelAnim(animList)
-
-                player.setTimeout(0, startAnim) 
-        
-        
-        #Tauscht die Positionen der User mit ihren Punkten im Ranking
-        def TauschenimArray(array, Position1, Position2):
-            #Speichert sich die Werte an Position 1 zwischen
-            name1 = array[Position1][0]
-            punkte1 = array[Position1][1]
-            
-            #Ueberschreibt die Werte an Position 1 mit denen von Position 2
-            array[Position1][0] = array[Position2][0]
-            array[Position1][1] = array[Position2][1]
-            
-            #Schreibt die zwischengespeicherten Werte von Position 1 in Position 2
-            array[Position2][0] = name1
-            array[Position2][1] = punkte1
-        
-        #Ueberschreibt die Werte an der dritten Position des uebergebenen Arrays mit den entsprechenden Werten. 
-        def SetzenimArray(array, name, punkte):
-            array[2][0] = name
-            array[2][1] = punkte     
+        #Fuehrt bei der rechten Seite die Animation der Top 3 User aus
         def recievedpunkte(neueLeute, null):
-            
+            #Faengt Randfall ab, dass es noch keinen User gibt
             if neueLeute[0][0]==" " and neueLeute[1][0] == " " and neueLeute[2][0] == " ":
                 return 0
+            #Faengt Randfall ab, falls einer der User 0 Punkte hat wird er auf 5 gesetzt, um den Balken noch sichtbar zu machen
             if neueLeute[0][1] == "0":
                 return 0
             if neueLeute[1][1] == "0":
@@ -1538,14 +1501,14 @@ class screen(AVGApp):
             if neueLeute[2][1] == "0":
                 neueLeute[2][1] = "5"
                 neueLeute[2][0] = " "
-                
+            #Die DivNodes um die Balken, sowie die Punkteanzahl des Ersten werden ausgeblendet    
             fadeOut(self.divNode1, 2000)
             fadeOut(self.divNode2, 2000)
             fadeOut(self.divNode3, 2000)
             fadeOut(self.ersterPunkte, 2000)
             time.sleep(2)
             
-            
+            #Die Werte werden eingelesen
             PunkteErster = neueLeute[0][1]
             PunkteErster = float(PunkteErster)
          
@@ -1554,7 +1517,7 @@ class screen(AVGApp):
          
             PunkteDritter = neueLeute[2][1]
             PunkteDritter = float(PunkteDritter)
-            
+        
             if PunkteErster ==0:
                 PunkteErster=5
                 balkenposy=b/1.3
@@ -1569,11 +1532,11 @@ class screen(AVGApp):
                 Punktedritter = (Hundertprozent/PunkteErster)*PunkteDritter
            
             
-            
+            #Der Balken und Name des Ersten wird aktualisert
             self.erster.pos = (50, balkenposy)
             self.erster.size = (30, Hundertprozent)
             self.ersterName.text = neueLeute[0][0]
-            
+            #Die Punkte des Ersten werden aktualisiert
             if PunkteErster > 999:
                 self.ersterPunkte.text = str(int(PunkteErster))
             elif PunkteErster > 99:
@@ -1583,7 +1546,7 @@ class screen(AVGApp):
             else:
                 self.ersterPunkte.text = "000" + str(int(PunkteErster))
                 
-                
+            #Die Balken des Zweiten und Drittens werden gebaut    
             if neueLeute[1][1] != "5":
                 self.zweiter.pos = (50, 50+(b-250)-Punktezweiter)
                 self.zweiter.size = (30, Punktezweiter)
@@ -1593,7 +1556,7 @@ class screen(AVGApp):
                 self.dritter.pos = (50, 50+(b-250)-Punktedritter)
                 self.dritter.size = (30, Punktedritter)
                 self.dritterName.text = neueLeute[2][0]
-            
+            #Nacheinander wird das ganze eingeblendet
             time.sleep(2)
             
             fadeIn(self.divNode3, 2000)
@@ -1610,427 +1573,7 @@ class screen(AVGApp):
             fadeIn(self.ersterPunkte, 2000)
             time.sleep(2)
             
-        #Fuehrt die Animation auf der rechten Bildschirmseite entsprechend des uebergebenen neuen Arrays durch, indem es die Werte mit dem 
-        '''def recievedpunkte(neueLeute,null): 
-            balkenposy = 50
-            hundertprozent = b-250
-            breite = 2*(a/4.25)
-            
-            #Falls das uebergebene Array komplett leer ist oder sich zu vorher nichts geaendert hat, wird das Array unveraendert gelassen 
-            if neueLeute[0][0]==" " and neueLeute[1][0] == " " and neueLeute[2][0] == " ":
-                return 0
-            elif neueLeute==self.leute:
-                return 0
-            elif neueLeute[0][0]!=" " and int(neueLeute[0][1])==0:
-                return 0
-            elif neueLeute[0][0]!=" " and int(neueLeute[0][1])==0:
-                return 0
-            elif neueLeute[0][0]!=" " and int(neueLeute[0][1])==0 and neueLeute[1][0]!=" " and int (neueLeute[1][1])==0:
-                return 0
-            elif neueLeute[0][0]!=" " and int(neueLeute[0][1])==0 and neueLeute[1][0]!=" " and int (neueLeute[1][1])==0 and neueLeute[2][0]!=" " and int (neueLeute[2][1])==0:
-                return 0
-            
-            #Hat sich das Array nur an der ersten Stelle geaendert, so werden die Stellen zwei und drei mit Werten aus dem Vergleichsarray aufgefuellt.
-               
-            elif neueLeute [0][0]!=" " and neueLeute [1][0]==" " and neueLeute [2][0]==" ":
-                #Werte an der ersten Position kommen aus dem neuen Array
-                PunkteErster = neueLeute[0][1]
-                NameErster = neueLeute[0][0]
-                PunkteErster = float(PunkteErster)
-                
-                #Werte an der zweiten und dritten Stelle weden aus dem Vergleichsarray geladen
-                PunkteZweiter = "0"
-                NameZweiter = " "
-                PunkteZweiter = float(PunkteZweiter)
-            
-                PunkteDritter = "0"
-                NameDritter = " "
-                PunkteDritter = float(PunkteDritter)
-                
-                #Das Argumentarray wird ebenfalls mit den Werten des Vergleichsarrays aufgefuellt
-                neueLeute[1] = [" ", "0"]
-                neueLeute[2] = [" ", "0"]
-            
-                #Hat keiner der User Punkte, so werden alle als kleine Balken direkt ueber den Namen dargestellt.
-                if PunkteErster ==0:
-                    PunkteErster=5
-                    balkenposy=b/1.3
-                    Hundertprozent = 5
-                #Der Erste hat mehr als 0 Punkte und wird somit mit einem 100% grossen Balken dargestellt und der Vergleichswert "Hundertprozent" wird auf die Punktzahl des Ersten gesetzt.
-                else:
-                    balkenposy=50
-                    Hundertprozent=b-250
-                #Die Punkte des Zweiten und Dritten werden mit fuenf Punkten initialisiert, da diese nicht uebergeben wurden.
-                Punktezweiter = 5
-                Punktedritter = 5
-                breite = 2*(a/4.25)
-            
-            
-            #Hat sich das Array an den ersten beiden Stellen geaendert, so wird die letzte Stelle mit Werten aus dem Vergleichsarray aufgefuellt.   
-            elif neueLeute [0][0]!=" " and neueLeute [1][0]!=" " and neueLeute [2][0]==" ":
-                #Die ersten beiden Balken laden ihre Daten aus dem neu uebergebenen Array
-                PunkteErster = neueLeute[0][1]
-                NameErster = neueLeute[0][0]
-                PunkteErster = float(PunkteErster)
-            
-                PunkteZweiter = neueLeute[1][1]
-                NameZweiter = neueLeute [1][0]
-                PunkteZweiter = float(PunkteZweiter)
-                
-                #Im letzten Balken werden die Datn aus dem vorher Ersten gespeichert.
-                PunkteDritter = "0"
-                NameDritter = " "
-                PunkteDritter = float(PunkteDritter)
-                
-                #Die uebernommenen alten Werte muessen noch ins Argumentarray uebertragen werden.
-                neueLeute[2]=[" ", "0"]
-            
-                #Falls der Erste 0 Punkte hat, werden die Punkte von allen mit fuenf Punkten ueberschrieben, damit ueberhaupt etwas angezeigt werden kann.
-                #Anschliessend werden die Hundertprozent angepasst und die Balken richtig plaziert
-                if PunkteErster ==0:
-                    PunkteErster=5
-                    balkenposy=b/1.3
-                    Hundertprozent = 5
-                    Punktezweiter = 5
-                    Punktedritter = 5
-                    
-                #Mindestens der Erste hat Punkte erhalten, so wird die Hundertprozent angepasst und die Groessen und Positionen der anderen beiden Balken wird relativ dazu berechnet.
-                else:
-                    balkenposy=50
-                    Hundertprozent=b-250
-                    Punktezweiter = (Hundertprozent/PunkteErster)*PunkteZweiter
-                    Punktedritter = (Hundertprozent/PunkteErster)*PunkteDritter
-                     
-                
-            #Wurde ein komplett volles Array uebergeben, kann einfach ohne vorherige Aenderungen daraus gelesen werden.
-            else:
-                #Die Balkendaten der drei Plaetze werden direkt aus dem Argumentarray gelesen.
-                PunkteErster = neueLeute[0][1]
-                NameErster = neueLeute[0][0]
-                PunkteErster = float(PunkteErster)
-             
-                PunkteZweiter = neueLeute[1][1]
-                NameZweiter = neueLeute[1][0]
-                PunkteZweiter = float(PunkteZweiter)
-             
-                PunkteDritter = neueLeute[2][1]
-                NameDritter = neueLeute[2][0]
-                PunkteDritter = float(PunkteDritter)
-                
-                #Hat keiner der User Punkte bekommen, so werden alle als kleine 5-Punkte-Balken dargestellt und die Hundertprozent wird auf 5 gesetzt.
-                if PunkteErster ==0:
-                    PunkteErster=5
-                    balkenposy=b/1.3
-                    Hundertprozent = 5
-                    Punktezweiter = 5
-                    Punktedritter = 5
-                #Hat mindestens der Erste Punkte erhalten, so wird die Hundertprozent angepasst und die Groessen und Positionen der anderen beiden Balken wird relativ dazu berechnet.
-                else:
-                    balkenposy=50
-                    Hundertprozent=b-250
-                    Punktezweiter = (Hundertprozent/PunkteErster)*PunkteZweiter
-                    Punktedritter = (Hundertprozent/PunkteErster)*PunkteDritter
-                
-            breite = 2*(a/4.25)
-   
-            EP = self.leute[0][1]
-            float(EP)
-               
-            #Der neue erste User des Rankings ist noch nicht in der alten Liste zu finden
-            if Suchen(self.leute, neueLeute[0][0])== -1 :
-                print self.leute
-                print neueLeute
-                #Der neue Erste wird an der dritten Position eingeblendet.
-                self.dritter.pos=(50,balkenposy)
-                self.dritter.size=(30, Hundertprozent)
-                self.dritterName.text=NameErster
-                #Anschliessend wird er an die zweite Position getauscht.
-                TauschenDIV(self.divNode2, self.divNode3, breite/2.5, breite-(breite/3.5)) 
-                time.sleep(3) 
-                #Anschliessend wird der neue Erste noch von der zweiten an die erste Position getauscht.    
-                TauschenDIV(self.divNode3, self.divNode1, breite/2.5, 50)
-                if PunkteErster > 999:
-                    self.ersterPunkte.text=str(int(PunkteErster))
-                elif PunkteErster > 99:
-                    self.ersterPunkte.text="0"+str(int(PunkteErster))
-                elif PunkteErster > 9:
-                    self.ersterPunkte.text="00"+str(int(PunkteErster))
-                else: self.ersterPunkte.text="000"+str(int(PunkteErster))
-                time.sleep(3) #TODO:
-                
-                #Die gleichen Operationen werden nun auch auf dem Vergleichsarray ausgefuehrt
-                if self.leute [0][1]=="0":
-                    z=5
-                    position=50+(b-250)-5
-                else:
-                    z=Hundertprozent
-                    position=50
-                
-                SetzenimArray(self.leute, neueLeute[0][0], neueLeute[0][1])
-                TauschenimArray(self.leute, 1, 2)                
-                TauschenimArray(self.leute, 0, 1)
-                
-                #Tauscht die User-Divs wieder zurueck, damit sie im Anschluss wieder unter den gleichen Namen ansprechbar sind.
-                self.divNode1.pos = (50,0) 
-                self.erster.pos=(50,balkenposy) 
-                self.erster.size=(30,Hundertprozent)
-                self.ersterName.text=self.leute[0][0]
-                
-
-                self.divNode2.pos = (breite/2.5, 0)
-                self.zweiter.pos=(50,position)
-                self.zweiter.size=(30,z)
-                self.zweiterName.text=self.leute[1][0]
-                
-                if self.leute[2][1] == "0":
-                    y = 5
-                else:
-                    x = self.leute[2][1]
-                    float(x)
-                    y = (Hundertprozent / float(EP)) * x
-                    
-                self.divNode3.pos = (breite-(breite/3.5),0)
-                self.dritter.pos=(50,50+(b-250)-y)      
-                self.dritter.size=(30,y)
-                self.dritterName.text=self.leute[2][0]
-                print "Erster nicht in Liste"
-                
-            #Befindet sich der neue Erste bereits in der Liste, wird abhaenging von seiner aktuellen Position 
-            else :
-                #Schaut, an welcher Position sich der neue Erste bifindet.
-                i = Suchen(self.leute, neueLeute[0][0])
-                #Er befindet sich an der letzten Stelle.
-                if i == 2:
-                    #Zuerst wird er an der dritten Position eingeblendet und anschliessend erst an die zweite und dann an die dritte Position getauscht.
-                    self.dritter.pos=(50,50)
-                    self.dritter.size=(30,Hundertprozent)
-                    TauschenDIV(self.divNode2, self.divNode3, breite/2.5, breite-(breite/3.5))     
-                    time.sleep(5)           
-                    TauschenDIV(self.divNode3, self.divNode1, breite/2.5, 0)
-                    if PunkteErster > 999:
-                        self.ersterPunkte.text=str(int(PunkteErster))
-                    elif PunkteErster > 99:
-                        self.ersterPunkte.text="0"+str(int(PunkteErster))
-                    elif PunkteErster > 9:
-                        self.ersterPunkte.text="00"+str(int(PunkteErster))
-                    else: self.ersterPunkte.text="000"+str(int(PunkteErster))
-                    #Anschliessend werden diese Modifikationen auch auf dem Array durchgefuehrt.
-                    if self.leute [0][1]=="0":
-                        z=5
-                        position=50+(b-250)-5
-                    else:
-                        z=Hundertprozent
-                        position=balkenposy
-                    
-                    self.leute[2][1] = neueLeute[2][1]
-                    TauschenimArray(self.leute, 1, 2)                
-                    TauschenimArray(self.leute, 0, 1)
-                    
-                    #Zuletzt werden noch die User-Divs zurueckgetauscht, um sie spaeter wieder unter dem gleichen Namen angesprochen werden koennen
-                    self.divNode1.pos = (50,0) 
-                    self.erster.pos=(50,balkenposy) 
-                    self.erster.size=(30,Hundertprozent)
-                    self.ersterName.text=self.leute[0][0]
-                    
-                    self.divNode2.pos = (breite/2.5, 0)
-                    self.zweiter.pos=(50,position)
-                    self.zweiter.size=(30,z)
-                    self.zweiterName.text=self.leute[1][0]
-                    
-                    if self.leute[2][1] == "0":
-                        y = 5
-                        balkenpos = 50+(b-250)-5
-                    else:
-                        x = self.leute[2][1]
-                        float(x)
-                        y = (Hundertprozent / flaot(EP)) * x
-                    
-                    
-                    self.divNode3.pos = (breite-(breite/3.5),0)
-                    self.dritter.pos=(50,50+(b-250)-y)      
-                    self.dritter.size=(30,y)
-                    self.dritterName.text=self.leute[2][0]
-                    time.sleep(3) #TODO
-                    print "Erster an dritter Position"
-                #Der Erste befindet sich bereits an der zweiten Stelle in der Liste.
-                elif i ==1:
-                    #Die Daten an der zweiten Position werden entsprechend der des Ersten aktuaisert und das zweite Div wird an die erste Stelle getauscht.
-                    self.zweiter.pos=(50,50)
-                    self.zweiter.size=(30,Hundertprozent)
-                    TauschenDIV(self.divNode2, self.divNode1, breite/2.5, 50)
-                    if PunkteErster > 999:
-                        self.ersterPunkte.text=str(int(PunkteErster))
-                    elif PunkteErster > 99:
-                        self.ersterPunkte.text="0"+str(int(PunkteErster))
-                    elif PunkteErster > 9:
-                        self.ersterPunkte.text="00"+str(int(PunkteErster))
-                    else: self.ersterPunkte.text="000"+str(int(PunkteErster))
-                    #Auch die Daten im Vergleichsarray werden aktualisiert und an die erste Stelle getauscht.
-                    if self.leute [0][1]=="0":
-                        z=5
-                        position=50+(b-250)-5
-                    else:
-                        z=Hundertprozent
-                        position=balkenposy
-                    
-                    
-                    
-                    self.leute[1][1] = neueLeute[1][1]
-                    TauschenimArray(self.leute, 0, 1)
-                    
-                    #Anschliessend werden die Divs wieder zuruechgetauscht, um sie im Folgenden wieder unter dem gleichen Namen ansprechen zu koennen.
-                    self.divNode1.pos = (50,0) 
-                    self.erster.pos=(50,balkenposy) 
-                    self.erster.size=(30,Hundertprozent)
-                    self.ersterName.text=self.leute[0][0]
-                    
-                    
-                    
-
-                    self.divNode2.pos = (breite/2.5, 0)
-                    self.zweiter.pos=(50,position)
-                    self.zweiter.size=(30,z)
-                    self.zweiterName.text=self.leute[1][0]
-                    time.sleep(5) #TODO
-                    
-           
-                    print "erster an zweiter Position"
-                #Befindet sich der Erste bereits an der ersten Stelle im Ranking, so muessen nur die Daten des Balkens und im Array angepasst werden.   
-                else:
-                    self.erster.pos=(50,50)
-                    self.erster.size=(30,Hundertprozent)
-                    
-                    self.leute[0][1] = neueLeute[0][1]
-                    if PunkteErster > 999:
-                        self.ersterPunkte.text=str(int(PunkteErster))
-                    elif PunkteErster > 99:
-                        self.ersterPunkte.text="0"+str(int(PunkteErster))
-                    elif PunkteErster > 9:
-                        self.ersterPunkte.text="00"+str(int(PunkteErster))
-                    else: self.ersterPunkte.text="000"+str(int(PunkteErster))
-                    
-                    print "erster an erster Position"
-            time.sleep(3) #TODO
-            
-            #Der neue Zweite des User-Rankings ist noch nicht in der Liste zu finden.
-            if Suchen(self.leute, neueLeute[1][0])== -1 :
-                #Der User an der dritten Position wird mit den Daten des neuen Zweiten ueberschrieben.
-                self.dritter.pos= (50,50+(b-250)-Punktezweiter)
-                self.dritter.size=(30,Punktezweiter)
-                self.dritterName.text=NameZweiter
-                #Der Dritte wird an den zweiten Platz getauscht
-                TauschenDIV(self.divNode3, self.divNode2, breite-(breite/3.5), breite/2.5)
-                #Die Werte werden im Vergleichsarray an der dritten Stelle gesetzt und anschliessend hier auch an die zweite Position getauscht.
-                
-                
-                SetzenimArray(self.leute, neueLeute[1][0], neueLeute[1][1])   
-                TauschenimArray(self.leute, 1, 2)
-                
-                time.sleep(3)
-                #Zuruecktauschen der Divs 2 und 3, ohne die Anzeige auf dem Screen zu veraendern, damit die Plaetze 
-                #anschliessend weiterhin unter dem entsprechenden Namen angesprochen werden koennen.
-                self.divNode2.pos = (breite/2.5, 0)
-                self.zweiter.pos=(50,50+(b-250)-Punktezweiter)
-                self.zweiter.size=(30,Punktezweiter)
-                self.zweiterName.pos=(30,b/1.25)
-                self.zweiterName.text=self.leute[1][0]
-                
-                    
-                if self.leute[2][1] == "0":
-                     y = 5
-                else:
-                    x = self.leute[2][1]
-                    float(x)
-                    y = (Hundertprozent / float(EP)) * x
-                    
-                    
-                self.divNode3.pos = (breite-(breite/3.5),0)
-                self.dritter.pos=(50,50+(b-250)-y)      
-                self.dritter.size=(30,y)
-                self.dritterName.text=self.leute[2][0]
-                time.sleep(3)
-                
-                
-                print "Zweiter nicht in Liste"
-                
-            #Der neue Zweite befindet sich bereits in der Liste.
-            else :
-                #Es wird zuerst getestet, an welcher Stelle er sich schon in der Liste befindet.
-                i = Suchen(self.leute, neueLeute[1][0])
-                #Befindet er sich an der letzten Position:
-                if i == 2:
-                    #Es werden die Werte aktualisiert und er wird an die zweite Stelle animiert.
-                    self.dritter.pos=(50,50+(b-250)-Punktezweiter)
-                    self.dritter.size=(30,Punktezweiter)
-                    TauschenDIV(self.divNode2, self.divNode3, breite/2.5, breite-(breite/3.5))
-                    #Anschliessend wird noch das Vergleichsarray entsprechend angepasst.
-                    self.leute[2][1] = neueLeute[2][1]
-                    TauschenimArray(self.leute, 1, 2)    
-                    
-                    time.sleep(3)
-                    #Nun muessen noch die Divs wieder zurueckgetauscht werden, um bei spaeteren Aufrufen an der gleichen Ausgangsposition zu stehen.
-                    self.divNode2.pos = (breite/2.5, 0)
-                    self.zweiter.pos=(50,50+(b-250)-Punktezweiter)
-                    self.zweiter.size=(30,Punktezweiter)
-                    self.zweiterName.pos=(30,b/1.25)
-                    self.zweiterName.text=self.leute[1][0]
-                    
-                    if self.leute[2][1] == "0":
-                        y = 5
-                    else:
-                        x = self.leute[2][1]
-                        float(x)
-                        y = (Hundertprozent / float(EP)) * x
-                    
-                    
-                    self.divNode3.pos = (breite-(breite/3.5),0)
-                    self.dritter.pos=(50,50+(b-250)-y)      
-                    self.dritter.size=(30,y)
-                    self.dritterName.text=self.leute[2][0]
-                    time.sleep(3) 
-                    print "Zweiter an dritter Position"
-                #Der neue Zweite steht in der Liste bereits an der zweiten Stelle.   
-                else:
-                    #Es werden einfach nur die Werte des Balkens und die Daten im Vergleichsarray angepasst.
-                    self.zweiter.pos=(50,50+(b-250)-Punktezweiter)
-                    self.zweiter.size=(30,Punktezweiter)
-                    self.leute[1][1] = neueLeute[1][1]
-                    
-                    print "Zweiter schon richtig"
-            
-            #Der neue Dritte befindet sich noch nicht in der Liste.
-            if Suchen(self.leute, neueLeute[2][0])== -1 :
-                #Die Werte an der dritten Position werden komplett neu initialisiert.
-                if self.leute[2][1] == "5":
-                    z = 5
-                else: z = Punktedritter
-                    
-                self.dritter.pos= (50,50+(b-250)-z)
-                self.dritter.size=(30,z)
-                self.dritterName.text=NameDritter
-                #Auch die Daten im Vergleichsarray werden angepasst.
-                SetzenimArray(self.leute, neueLeute[2][0], neueLeute[2][1])   
-                print "Dritter noch nicht in Liste"
-            #Der neue Dritte befindet sich bereits in der Liste.
-            else:
-                #Die Werte werden auf dem Screen angepasst und auch im Vergleichsarray aktualisiert
-                if self.leute[2][1] == "5":
-                    z = 5
-                else: z = Punktedritter
-                
-                self.dritter.pos= (50,50+(b-250)-z)
-                self.dritter.size=(30,z)
-                SetzenimArray(self.leute, neueLeute[2][0], neueLeute[2][1])  
-                
-                print "Dritter schon in Liste"
-            
-            if PunkteErster > 999:
-                self.ersterPunkte.text=str(int(PunkteErster))
-            elif PunkteErster > 99:
-                self.ersterPunkte.text="0"+str(int(PunkteErster))
-            elif PunkteErster > 9:
-                self.ersterPunkte.text="00"+str(int(PunkteErster))
-            else: self.ersterPunkte.text="000"+str(int(PunkteErster))'''    
+       
                 
     #Deklarationen der allgemeinen Methoden, u.a. zur Kommunikation ueber den WebSocket
 
