@@ -63,7 +63,7 @@ class screen(AVGApp):
             self.alteOrdnung.append(["-7-", "-7-", "0"])
             
             middle=a/2.5+10
-            
+            #linkes Hauptdiv
             self.divNode=avg.DivNode(pos=(0,(b/11)), size=(3*(a/5),b-50),parent=self.rootNode) #b-50
             
             #Divs fuer das Ranking
@@ -75,7 +75,7 @@ class screen(AVGApp):
             self.ranking6=avg.WordsNode (pos=(a/30,int(b/1.335)),font="arial", variant="Bold", width=40, height= (b-50),text="6.", color="E9EBFF", fontsize=30, parent=self.rootNode)
             self.ranking7=avg.WordsNode (pos=(a/30,int(b/1.155)),font="arial", variant="Bold", width=40, height= (b-50),text="7.", color="E9EBFF", fontsize=30, parent=self.rootNode)
             
-            #Grundgeruest fuer die linke Seite
+            #Grundgeruest fuer die linke Seite /Titel
             self.leftr=avg.RectNode (pos=(0,0), size=(3*(a/5), b-50), parent=self.divNode, color="000000", fillcolor="46464B",fillopacity=1)
             self.title=avg.WordsNode (pos=(int(a/5.5),5),font="marketing script", variant="Bold", text=" Top 7 Songs ", color="E9EBFF", fontsize=40, parent=self.divNode)
             self.votes=avg.WordsNode (pos=(int(a/2-80-20),5),font="marketing script", variant="Bold", text="Votes", color="E9EBFF", fontsize=40, parent=self.divNode)
@@ -1723,6 +1723,8 @@ if __name__=='__main__':
             x = raw_input()
             serverip = x
             break
+# die auskommentierten Methoden unten lesen unter Windows die Aufloesung aus dem Computer heraus und starten den Bildschirm mit der entsprehcenden Aufloesung
 #         user32 = ctypes.windll.user32
 #         screensize = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
+#         screen.start(resolution=(screensize[0], screensize[1]))
     screen.start(resolution=(1920, 1080))
